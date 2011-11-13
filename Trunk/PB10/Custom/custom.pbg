@@ -1,0 +1,7 @@
+Save Format v3.0(19990112)
+@begin Libraries
+ "..\\ClientCustom\\21st\\custom.pbl" "";
+@end;
+@begin Objects
+ "..\\ClientCustom\\21st\\d_custom_moldingcolorletdown.srd" "..\\ClientCustom\\21st\\custom.pbl";
+@end;
