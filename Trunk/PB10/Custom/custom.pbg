@@ -4,6 +4,7 @@ Save Format v3.0(19990112)
 @end;
 @begin Objects
  "..\\ClientCustom\\21st\\d_dbo_mes_joblist.srd" "..\\ClientCustom\\21st\\custom.pbl";
+ "..\\ClientCustom\\21st\\cu_tabpg_jobdetails.sru" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\d_custom_mes_moldingjobcolorletdown.srd" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\d_custom_moldingcolorletdown.srd" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\n_cst_custom_mes_inventorytrans.sru" "..\\ClientCustom\\21st\\custom.pbl";
