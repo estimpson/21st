@@ -1,14 +1,14 @@
 
-if	objectproperty(object_id('dbo.usp_MES_BackFlush'), 'IsProcedure') = 1 begin
-	drop procedure dbo.usp_MES_BackFlush
+if	objectproperty(object_id('dbo.usp_MES_Backflush'), 'IsProcedure') = 1 begin
+	drop procedure dbo.usp_MES_Backflush
 end
 go
 
-create procedure dbo.usp_MES_BackFlush
-	@Operator varchar(10)
+create procedure dbo.usp_MES_Backflush
+	@Operator varchar(5)
 ,	@BackflushNumber varchar(50)
 ,	@TranDT datetime out
-,	@Result int out
+,	@Result integer out
 as
 set nocount on
 set ansi_warnings off
@@ -35,9 +35,7 @@ set	@TranCount = @@TranCount
 if	@TranCount = 0 begin
 	begin tran @ProcName
 end
-else begin
-	save tran @ProcName
-end
+save tran @ProcName
 set	@TranDT = coalesce(@TranDT, GetDate())
 --- </Tran>
 
@@ -46,50 +44,37 @@ set	@TranDT = coalesce(@TranDT, GetDate())
 ---	</ArgumentValidation>
 
 --- <Body>
---	I.	Calculate quantity to issue.
+/*	Calculate quantity to issue. */
 declare
-	@WOID int
-,	@WODID int
-,	@PartProduced varchar(25)
-,	@QtyRequested numeric(20, 6)
-,	@Machine varchar(10)
-,	@Shift char(1)
-,	@ConstrainedPart varchar(25)
-
---select
---	@WOID = WOHeaders.ID
---,	@WODID = WODetails.ID
---,	@TranDT = BackFlushHeaders.TranDT
---,	@PartProduced = BackFlushHeaders.PartProduced
---,	@QtyRequested = BackFlushHeaders.QtyProduced
---,	@Machine = WOHeaders.Machine
---,	@Shift = WOShift.Shift
---from
---	BackFlushHeaders
---	left join WODetails
---		on	BackFlushHeaders.WODID = WODetails.ID
---	left join WOHeaders
---		on	WODetails.WOID = WOHeaders.ID
---	left join WOShift
---		on	WODetails.WOID = WOShift.WOID
---where
---	BackFlushHeaders.ID = @BackflushNumber
+	@WODID int
+,	@workOrderNumber varchar(50)
+,	@workOrderDetailLine float
+,	@qtyRequested numeric(20,6)
 
 select
-	@Machine = coalesce(@Machine, machine)
+	@WODID = wod.RowID
+,	@workOrderNumber = bh.WorkOrderNumber
+,	@workOrderDetailLine = bh.WorkOrderDetailLine
+,	@qtyRequested = bh.QtyProduced
 from
-	part_machine
+	dbo.BackflushHeaders bh
+	join dbo.WorkOrderDetails wod
+		on wod.WorkOrderNumber = bh.WorkOrderNumber
+		and wod.Line = bh.WorkOrderDetailLine
 where
-	part = @PartProduced
-	and sequence = 1
+	BackflushNumber = @BackflushNumber
 
-declare @Inventory table
-(	Serial int
-,	Part varchar(25)
+declare
+	@InventoryConsumption table
+(
+	Serial int
+,	PartCode varchar(25)
 ,	BOMLevel tinyint
 ,	Sequence tinyint
-,	Suffix tinyint
-,	BOMID int
+,	Suffix int
+,	ChildPartSequence int
+,	ChildPartBOMLevel int
+,	BillOfMaterialID int
 ,	AllocationDT datetime
 ,	QtyPer float
 ,	QtyAvailable float
@@ -98,81 +83,83 @@ declare @Inventory table
 ,	QtyOverage float
 )
 
---insert  @Inventory
---select
---	*
---from
---	FT.fn_GetBackflushDetailsMachine(@WODID, @QtyRequested)
-	
+insert
+	@InventoryConsumption
+(	Serial
+,	PartCode
+,	BOMLevel
+,	Sequence
+,	Suffix
+,	ChildPartSequence
+,	ChildPartBOMLevel
+,	BillOfMaterialID
+,	AllocationDT
+,	QtyPer
+,	QtyAvailable
+,	QtyRequired
+,	QtyIssue
+,	QtyOverage
+)
 select
-	@Error = @@Error
-,	@RowCount = @@Rowcount
-
-if	@Error != 0 begin
-	set @Result = 999999
-	rollback tran @ProcName
-	raiserror (@Result, 16, 1, 'BackFlush')		
-	return	@Result
-end
-if	@RowCount !> 0 begin
-	set @Result = 999999
-	rollback tran @ProcName
-	raiserror (@Result, 16, 1, 'BackFlush')
-	return	@Result
-end
-
---	Look for product which does not allow over-consumption.
-if	exists
-	(	select
-			*
-		from
-			@Inventory
-		where
-			QtyOverage > 0
-	) begin
-	
-	set @Result = 999999
-	rollback tran @ProcName
-	raiserror ('Error during Back Flush.  Allocate additional material to continue.', 16, 1)
-	return
-		@Result
-end
-
---	Write negative scrap for overage quantity.
-declare
-	@Serial int
-,	@Part varchar(25)
-
-declare CreateSerial cursor local for
-select
-	Part
+	Serial
+,   PartCode
+,   BOMLevel
+,   Sequence
+,   Suffix
+,	ChildPartSequence
+,	ChildPartBOMLevel
+,   BillOfMaterialID
+,   AllocationDT
+,   QtyPer
+,   QtyAvailable
+,   QtyRequired
+,   QtyIssue
+,   QtyOverage
 from
-	@Inventory
+	dbo.fn_MES_GetBackflushDetails(@workOrderNumber, @workorderDetailLine, @qtyRequested) ugbd
+
+/*	Loop through overages. */
+--- <DefineCursor curosrName="overages">
+declare
+	@overageSerial int
+,	@qtyOverage numeric(20,6)
+
+declare overages cursor local for
+select
+	Serial
+,	QtyOverage = sum(QtyOverage)
+from
+	@InventoryConsumption ic
 where
-	Serial < 0
+	Serial > 0
 	and QtyOverage > 0
+group by
+	Serial
 
 open
-	CreateSerial
+	overages
+
+fetch
+	overages
+into
+	@overageSerial
+,	@qtyOverage
 
 while
-	1 = 1 begin
+	@@fetch_status = 0 begin
 
-	fetch
-		CreateSerial
-	into
-		@Part
-	
-	if	@@FETCH_STATUS != 0 begin
-		break
-	end
-	
-	--- <Call>	
-	set	@CallProcName = 'monitor.usp_NewSerialBlock'
+	--- <LoopBody>
+/*		Record quantity discrepancy for overage (dbo.usp_MES_NewExcessQty) */
+	--- <Call procName="dbo.usp_MES_NewExcessQty" >	
+	set	@CallProcName = 'dbo.usp_MES_NewExcessQty'
 	execute
-		@ProcReturn = monitor.usp_NewSerialBlock
-		@SerialBlockSize = 1
-	,	@FirstNewSerial = @Serial out
+		@ProcReturn = dbo.usp_MES_NewExcessQty
+		@Operator = @Operator
+	,	@WODID = @WODID
+	,	@Serial = @overageSerial
+	,	@QtyExcess = @qtyOverage
+	,	@ExcessReason = 'Overage during backflush.'
+	,	@TranDT = @TranDT out
 	,	@Result = @ProcResult out
 	
 	set	@Error = @@Error
@@ -196,548 +183,115 @@ while
 	end
 	--- </Call>
 	
-	insert
-		object
-	(	serial
-	,	part
-	,	quantity
-	,	std_quantity
-	,	location
-	,	last_date
-	,	unit_measure
-	,	operator
-	,	status
-	,	plant
-	,	name
-	,	last_time
-	,	user_defined_status
-	,	cost
-	,	std_cost
-	,	note
-	)
-	select
-		Serial = @Serial
-	,	Part = @Part
-	,	quantity = QtyOverage
-	,	std_quantity = QtyOverage
-	,	location = @Machine
-	,	last_date = getdate()
-	,	unit_measure = standard_unit
-	,	operator = @Operator
-	,	status = 'A'
-	,	location.plant
-	,	part.name
-	,	last_time = getdate()
-	,	user_defined_status = 'Approved'
-	,	part_standard.cost_cum
-	,	part_standard.cost_cum
-	,	Note = 'Create During Automatic Excess'
-	from
-		@Inventory Inventory
-		join Location
-			on	Location.code = @Machine
-		join part
-			on	part.part = Inventory.Part
-		join part_inventory
-			on	part_inventory.part = Part.Part
-		join part_standard
-			on	part_standard.part = Part.PArt
-	where
-		Inventory.serial < 0
-		and Inventory.Part = @Part
-		and QtyOverage > 0
+	--- </LoopBody>
+	fetch
+		overages
+	into
+		@overageSerial
+	,	@qtyOverage
+end
+
+close
+	overages
+
+deallocate
+	overages
+--- </DefineCursor>
+
+/*	Loop through material issues. */
+--- <DefineCursor curosrName="materialIssues">
+declare
+	@issueSerial int
+,	@qtyIssue numeric(20,6)
+
+declare materialIssues cursor local for
+select
+	Serial
+,	QtyIssue = sum(QtyIssue)
+from
+	@InventoryConsumption ic
+where
+	Serial > 0
+	and
+		QtyIssue > 0
+group by
+	Serial
+
+open
+	materialIssues
+
+fetch
+	materialIssues
+into
+	@issueSerial
+,	@qtyIssue
+
+while
+	@@fetch_status = 0 begin
+
+	--- <LoopBody>
+/*		Write material issues. (dbo.usp_InventoryControl_MaterialIssue) */
+	--- <Call procName"dbo.usp_InventoryControl_MaterialIssue" >	
+	set	@CallProcName = 'dbo.usp_InventoryControl_MaterialIssue'
+	execute
+		@ProcReturn = dbo.usp_InventoryControl_MaterialIssue
+		@Operator = @Operator
+	,	@Serial = @issueSerial
+	,	@QtyIssue = @qtyIssue
+	,	@WorkOrderNumber = @workOrderNumber
+	,	@Notes = 'Material issue by backflush.'
+	,	@TranDT = @TranDT out
+	,	@Result = @ProcResult out
 	
-	select
-		@Error = @@Error
-	,	@RowCount = @@ROWCOUNT
-
+	set	@Error = @@Error
 	if	@Error != 0 begin
-		set @Result = 60111
+		set	@Result = 900501
+		RAISERROR ('Error encountered in %s.  Error: %d while calling %s', 16, 1, @ProcName, @Error, @CallProcName)
 		rollback tran @ProcName
-		raiserror (@Result, 16, 1, @Serial)
-
 		return	@Result
 	end
-
-	if	@RowCount != 1 begin
-		set @Result = 60111
+	if	@ProcReturn != 0 begin
+		set	@Result = 900502
+		RAISERROR ('Error encountered in %s.  ProcReturn: %d while calling %s', 16, 1, @ProcName, @ProcReturn, @CallProcName)
 		rollback tran @ProcName
-		raiserror (@Result, 16, 1, @Serial)
 		return	@Result
 	end
-
-	update
-		@Inventory
-	set 
-		Serial = @Serial
-	where
-		part = @Part
+	if	@ProcResult != 0 begin
+		set	@Result = 900502
+		RAISERROR ('Error encountered in %s.  ProcResult: %d while calling %s', 16, 1, @ProcName, @ProcResult, @CallProcName)
+		rollback tran @ProcName
+		return	@Result
+	end
+	--- </Call>
+	
+	
+	--- </LoopBody>
+	fetch
+		materialIssues
+	into
+		@issueSerial
+	,	@qtyIssue
 end
+
+close
+	materialIssues
+
+deallocate
+	materialIssues
+--- </DefineCursor>
+
+/*	Record back flush details. (i*) */
+--- <Insert rows="*">
+set	@TableName = 'dbo.BackflushDetails'
 
 insert
-	audit_trail
-(	serial
-,	date_stamp
-,	type
-,	part
-,	quantity
-,	remarks
-,	po_number
-,	operator
-,	from_loc
-,	to_loc
-,	on_hand
-,	lot
-,	weight
-,	status
-,	shipper
-,	unit
-,	workorder
-,	std_quantity
-,	cost
-,	custom1
-,	custom2
-,	custom3
-,	custom4
-,	custom5
-,	plant
-,	notes
-,	package_type
-,	suffix
-,	due_date
-,	group_no
-,	std_cost
-,	user_defined_status
-,	engineering_level
-,	parent_serial
-,	origin
-,	destination
-,	sequence
-,	object_type
-,	part_name
-,	start_date
-,	field1
-,	field2
-,	show_on_shipper
-,	tare_weight
-,	kanban_number
-,	dimension_qty_string
-,	dim_qty_string_other
-,	varying_dimension_code
-)
-select
-	serial = object.serial
-,	date_stamp = @TranDT
-,	type = 'E'
-,	part = object.part
-,	quantity = -Inventory.QtyOverage
-,	remarks = 'Qty Ex Aut'
-,	po_number = object.po_number
-,	operator = @Operator
-,	from_loc = left(object.user_defined_status, 10)
-,	to_loc = 'Scrap'
-,	on_hand = part_online.on_hand
-,	lot = object.lot
-,	weight = object.weight
-,	status = 'S'
-,	shipper = object.shipper
-,	unit = object.unit_measure
-,	workorder = convert (varchar, @WOID)
-,	std_quantity = -Inventory.QtyOverage
-,	cost = object.cost
-,	custom1 = object.custom1
-,	custom2 = object.custom2
-,	custom3 = object.custom3
-,	custom4 = object.custom4
-,	custom5 = object.custom5
-,	plant = object.plant
-,	notes = 'Quantity Excess during backflush'
-,	package_type = object.package_type
-,	suffix = object.suffix
-,	due_date = object.date_due
-,	gruop_no = @BackflushNumber
-,	std_cost = object.std_cost
-,	user_defined_status = 'Scrap'
-,	engineering_level = object.engineering_level
-,	parent_serial = object.parent_serial
-,	origin = object.origin
-,	destination = object.destination
-,	sequence = object.sequence
-,	object_type = object.type
-,	part_name = object.name
-,	start_date = object.start_date
-,	field1 = object.field1
-,	field2 = object.field2
-,	show_on_shipper = object.show_on_shipper
-,	tare_weight = object.tare_weight
-,	kanban_number = object.kanban_number
-,	dimension_qty_string = object.dimension_qty_string
-,	dim_qty_string_other = object.dim_qty_string_other
-,	varying_dimension_code = object.varying_dimension_code
-from
-	(	select
-			Part
-		,	Serial
-		,	QtyOverage = sum(QtyOverage)
-		from
-			@Inventory
-		group by
-			Part
-		,	Serial
-	) Inventory
-	join object
-		on	Inventory.Serial = object.serial
-	join part_online
-		on	Inventory.part = part_online.part
-where
-	Inventory.QtyOverage > 0
-	and Inventory.Serial > 0
-
-select
-	@Error = @@Error
-
-if	@Error != 0 begin
-	set @Result = 999999
-	rollback tran @ProcName
-	raiserror (@Result, 16, 1, 'BackFlush')
-
-	return	@Result
-end
-
---insert
---	FT.Defects
---(	TransactionDT
---,	Machine
---,	Part
---,	DefectCode
---,	QtyScrapped
---,	Operator
---,	Shift
---,	WODID
---,	DefectSerial
---)
---select
---	TransactionDT = @TranDT
---,	Machine = @Machine
---,	Part = object.part
---,	DefectCode = 'Qty Ex Aut'
---,	QtyScrapped = -Inventory.QtyOverage
---,	Operator = @Operator
---,	Shift = @Shift
---,	WODID = @WODID
---,	DefectSerial = object.serial
---from
---	(	select
---			Part
---		,	Serial
---		,	QtyOverage = sum(QtyOverage)
---		from
---			@Inventory
---		group by
---			Part
---		,	Serial
---	) Inventory
---	join object
---		on	Inventory.Serial = object.serial
---	join part_online
---		on	Inventory.part = part_online.part
---where
---	Inventory.QtyOverage > 0
-
-select
-	@Error = @@Error
-
-if	@Error != 0 begin
-	set @Result = 999999
-	rollback tran @ProcName
-	raiserror (@Result, 16, 1, 'BackFlush')
-
-	return	@Result
-end
-
---	Write material issue.
-insert
-	audit_trail
-(	serial
-,	date_stamp
-,	type
-,	part
-,	quantity
-,	remarks
-,	po_number
-,	operator
-,	from_loc
-,	to_loc
-,	on_hand
-,	lot
-,	weight
-,	status
-,	shipper
-,	unit
-,	workorder
-,	std_quantity
-,	cost
-,	custom1
-,	custom2
-,	custom3
-,	custom4
-,	custom5
-,	plant
-,	notes
-,	package_type
-,	suffix
-,	due_date
-,	group_no
-,	std_cost
-,	user_defined_status
-,	engineering_level
-,	parent_serial
-,	origin
-,	destination
-,	sequence
-,	object_type
-,	part_name
-,	start_date
-,	field1
-,	field2
-,	show_on_shipper
-,	tare_weight
-,	kanban_number
-,	dimension_qty_string
-,	dim_qty_string_other
-,	varying_dimension_code
-)
-select
-	serial = object.serial
-,	date_stamp = @TranDT
-,	type = 'M'
-,	part = object.part
-,	quantity = Inventory.QtyIssue + Inventory.QtyOverage
-,	remarks = 'Mat Issue'
-,	po_number = object.po_number
-,	operator = @Operator
-,	from_loc = object.location
-,	to_loc = @Machine
-,	on_hand = part_online.on_hand - (Inventory.QtyIssue + Inventory.QtyOverage)
-,	lot = object.lot
-,	weight = object.weight
-,	status = object.status
-,	shipper = object.shipper
-,	unit = object.unit_measure
-,	workorder = convert (varchar, @WOID)
-,	std_quantity = Inventory.QtyIssue + Inventory.QtyOverage
-,	cost = object.cost
-,	custom1 = object.custom1
-,	custom2 = object.custom2
-,	custom3 = object.custom3
-,	custom4 = object.custom4
-,	custom5 = object.custom5
-,	plant = isnull(object.plant, 'EEH')
-,	notes = ''
-,	package_type = object.package_type
-,	suffix = object.suffix
-,	due_date = object.date_due
-,	group_no = @BackflushNumber
-,	std_cost = object.std_cost
-,	user_defined_status = object.user_defined_status
-,	engineering_level = object.engineering_level
-,	parent_serial = object.parent_serial
-,	origin = object.origin
-,	destination = object.destination
-,	sequence = object.sequence
-,	object_type = object.type
-,	part_name = object.name
-,	start_date = object.start_date
-,	field1 = object.field1
-,	field2 = object.field2
-,	show_on_shipper = object.show_on_shipper
-,	tare_weight = object.tare_weight
-,	kanban_number = object.kanban_number
-,	dimension_qty_string = object.dimension_qty_string
-,	dim_qty_string_other = object.dim_qty_string_other
-,	varying_dimension_code = object.varying_dimension_code
-from
-	(	select
-			Part
-		,	Serial
-		,	QtyIssue = sum(isnull(QtyIssue, 0))
-		,	QtyOverage = sum(isnull(QtyOverage, 0))
-		from
-			@Inventory
-		group by
-			Part
-		,	Serial
-	) Inventory
-	join object
-		on Inventory.Serial = object.serial
-	join part_online
-		on Inventory.part = part_online.part
-where
-	Inventory.QtyIssue + Inventory.QtyOverage > 0
-	and Inventory.Serial > 0
-
-select
-	@Error = @@Error
-
-if	@Error != 0 begin
-	set @Result = 999999
-	rollback tran @ProcName
-	raiserror (@Result, 16, 1, 'BackFlush')
-
-	return	@Result
-end
-
---	Write intercompany transactions for material that moves from one company to another.
-
-insert
-	EEA.IntercompanyAuditTrail
-(	ID
-,	Serial
-,	TranDT
-,	Part
-,	PartIntercompany
-,	Operator
-,	QtyTransfer
-,	WOID
-,	Plant
-,	ToProductLine
-,	Notes
-,	BFID
-)
-select
-	ID = -1
-,	Serial = Inventory.Serial
-,	TranDT = @TranDT
-,	Part = Inventory.Part
-,	PartIntercompany = '' -- calculated in trigger
-,	Operator = @Operator
-,	QtyTransfer = QtyIssue + QtyOverage
-,	WOID = @WOID
-,	Plant = o.plant
-,	ToProductLine = plTo.id
-,	Notes = 'Intercompany transaction from backflush.'
-,	BFID = @BackflushNumber
-from
-	(	select
-			Part
-		,	Serial
-		,	QtyIssue = sum(isnull(QtyIssue, 0))
-		,	QtyOverage = sum(isnull(QtyOverage, 0))
-		from
-			@Inventory
-		group by
-			Part
-		,	Serial
-	) Inventory
-	join dbo.object o
-		on o.serial = Inventory.Serial
-	join dbo.part pTo
-		join product_line plTo
-			on plTo.id = pTo.product_line
-		on pTo.part = @PartProduced
-	join dbo.part pFrom
-		join product_line plFrom
-			on plFrom.id = pFrom.product_line
-		on pFrom.part = Inventory.part
-where
-	plTo.gl_segment != plFrom.gl_segment
-
---	Adjust inventory
---		Update objects.
-update
-	object
-set 
-	quantity = object.quantity - Inventory.QtyIssue
-,	std_quantity = object.std_quantity - Inventory.QtyIssue
-,	last_date = getdate()
-,	last_time = getdate()
-,	operator = @Operator
-from
-	object
-	join
-	(	select
-			Serial
-		,	QtyIssue = sum(QtyIssue)
-		,	QtyOverage = sum(QtyOverage)
-		from
-			@Inventory
-		group by
-			Serial
-	) Inventory
-		on	object.serial = Inventory.Serial
-where
-	Inventory.QtyOverage = 0
-
-select
-	@Error = @@Error
-
-if	@Error != 0 begin
-	set @Result = 999999
-	rollback tran @ProcName
-	raiserror (@Result, 16, 1, 'BackFlush')
-
-	return	@Result
-end
-
---		Set depleted objects to empty (they will be deleted when the allocation is ended if	operator quantity is 0).
-update
-	object
-set 
-	quantity = 0
-,	std_quantity = 0
-,	last_date = getdate()
-,	last_time = getdate()
-,	operator = @Operator
-from
-	object
-	join
-	(	select
-			Serial
-		,	QtyOverage = sum(QtyOverage)
-		from
-			@Inventory
-		group by
-			Serial
-	) Inventory
-		on	object.serial = Inventory.Serial
-where
-	Inventory.QtyOverage > 0
-
-select
-	@Error = @@Error
-
-if	@Error != 0 begin
-	set @Result = 999999
-	rollback tran @ProcName
-	raiserror (@Result, 16, 1, 'BackFlush')
-
-	return	@Result
-end
-
---	Update on hand for part.
-update
-	part_online
-set 
-	on_hand = (select sum(std_quantity) from object where part = part_online.part and status = 'A')
-where
-	part in (select Part from @Inventory)
-
-select
-	@Error = @@Error
-
-if	@Error != 0 begin
-	set @Result = 999999
-	rollback tran @ProcName
-	raiserror (@Result, 16, 1, 'BackFlush')
-
-	return	@Result
-end
-
---	Record back flush details.
-insert
-	BackFlushDetails
-(
-	BackflushNumber
+	dbo.BackflushDetails
+(	BackflushNumber
+,	Line
+,	Status
+,	Type
+,	ChildPartSequence
+,	ChildPartBOMLevel
 ,	BillOfMaterialID
 ,	PartConsumed
 ,	SerialConsumed
@@ -748,68 +302,44 @@ insert
 )
 select
 	BackflushNumber = @BackflushNumber
-,	BillOfMaterialID = Inventory.BOMID
-,	PartConsumed = Inventory.Part
-,	SerialConsumed = Inventory.Serial
-,	QtyAvailable = Inventory.QtyAvailable
-,	QtyRequired = Inventory.QtyRequired
-,	QtyIssue = Inventory.QtyIssue
-,	QtyOverage = Inventory.QtyOverage
+,	Line = row_number() over (order by ic.Sequence, ic.AllocationDT)
+,	Status = dbo.udf_StatusValue('dbo.BackflushDetails', 'New')
+,	Type =
+	case
+		when ic.QtyOverage > 0 then dbo.udf_TypeValue('dbo.BackflushDetails', 'Overage Consumption')
+		else dbo.udf_TypeValue('dbo.BackflushDetails', 'Consumption')
+	end
+,	ChildPartSequence = ic.Sequence
+,	ChildPartBOMLevel = ic.BOMLevel
+,	BillOfMaterialID = ic.BillOfMaterialID
+,	PartConsumed = ic.PartCode
+,	SerialConsumed = ic.Serial
+,	QtyAvailable = ic.QtyAvailable
+,	QtyRequired = ic.QtyRequired
+,	QtyIssue = ic.QtyIssue
+,	QtyOverage = ic.QtyOverage
 from
-	@Inventory Inventory
-
-select
-	@Error = @@Error
-,	@RowCount = @@Rowcount
-
-if	@Error != 0 begin
-	set @Result = 999999
-	rollback tran @ProcName
-	raiserror (@Result, 16, 1, 'BackFlush:BackflushDetails')
-
-	return	@Result
-end
-if	@RowCount !> 0 begin
-	set @Result = 999999
-	rollback tran @ProcName
-	raiserror (@Result, 16, 1, 'BackFlush:BackflushDetails')
-
-	return	@Result
-end
-
---		Update material allocation.
-update
-	WODMaterialAllocations
-set 
-	WODMaterialAllocations.QtyIssued = WODMaterialAllocations.QtyIssued + isnull(Inventory.QtyIssue, 0)
-,	WODMaterialAllocations.QtyOverage = WODMaterialAllocations.QtyOverage + isnull(Inventory.QtyOverage, 0)
-from
-	WODMaterialAllocations
-	join @Inventory Inventory
-		on	coalesce(WODMaterialAllocations.BOMID, -1) = Inventory.BOMID
-			and coalesce(WODMaterialAllocations.Suffix, 0) = Inventory.Suffix
+	@InventoryConsumption ic
 where
-	WODMaterialAllocations.WODID = @WODID
-	and WODMaterialAllocations.QtyEnd is null
+	ic.Serial > 0
+	and ic.QtyIssue > 0
+order by
+	ic.Sequence
+,	ic.AllocationDT
 
 select
-	@Error = @@Error
-,	@RowCount = @@Rowcount
+	@Error = @@Error,
+	@RowCount = @@Rowcount
 
 if	@Error != 0 begin
-	set @Result = 999999
+	set	@Result = 999999
+	RAISERROR ('Error inserting into table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
 	rollback tran @ProcName
-	raiserror (@Result, 16, 1, 'BackFlush')
-
-	return	@Result
+	return
 end
+--- </Insert>
+
 --- </Body>
-
----<CloseTran Required=Yes AutoCreate=Yes>
-if	@TranCount = 0 begin
-	commit transaction BackFlush
-end
----</CloseTran Required=Yes AutoCreate=Yes>
 
 ---	<Return>
 set	@Result = 0
@@ -832,9 +362,11 @@ set statistics time on
 go
 
 declare
-	@Param1 scalar_data_type
+	@Operator varchar(5)
+,	@BackflushNumber varchar(50)
 
-set	@Param1 = test_value
+set	@Operator = '619'
+set @BackflushNumber = 'BF_0000000014'
 
 begin transaction Test
 
@@ -845,8 +377,9 @@ declare
 ,	@Error integer
 
 execute
-	@ProcReturn = dbo.usp_NewProcedure
-	@Param1 = @Param1
+	@ProcReturn = dbo.usp_MES_Backflush
+	@Operator = @Operator
+,	@BackflushNumber = @BackflushNumber
 ,	@TranDT = @TranDT out
 ,	@Result = @ProcResult out
 
@@ -854,8 +387,23 @@ set	@Error = @@error
 
 select
 	@Error, @ProcReturn, @TranDT, @ProcResult
+
+select
+	*
+from
+	dbo.BackflushHeaders bh
+where
+	bh.BackflushNumber = @BackflushNumber
+
+select
+	*
+from
+	dbo.BackflushDetails bd
+where
+	bd.BackflushNumber = @BackflushNumber
 go
 
+--commit
 if	@@trancount > 0 begin
 	rollback
 end
@@ -869,91 +417,5 @@ go
 
 Results {
 }
-*/
-/*
-begin transaction
-declare	@ProcResult int,
-	@ProcReturn int,
-	@Operator varchar (10),
-	@WODID int,
-	@QtyRequested numeric (20,6),
-	@Override int,
-	@NewSerial int
-
-set	@Operator = 'Mon'
-set	@WODID = 270400
-set	@QtyRequested = 12
-set	@Override = 1
-
---		A.	Get a serial number.
-select	@NewSerial = next_serial
-from	parameters with (TABLOCKX)
-
-while	exists
-	(	select	serial
-		from	object
-		where	serial = @NewSerial) or
-	exists
-	(	select	serial
-		from	audit_trail
-		where	serial = @NewSerial) begin
-
-	set	@NewSerial = @NewSerial + 1
-end
-
-update	parameters
-set	next_serial = @NewSerial + 1
-
-declare	@NewBFID int
-
---		A.	Create back flush header.
-insert	BackFlushHeaders
-(	WODID,
-	PartProduced,
-	SerialProduced,
-	QtyProduced)
-select	ID,
-	Part,
-	@NewSerial,
-	@QtyRequested
-from	WODetails
-where	ID = @WODID
-
-set	@NewBFID = SCOPE_IDENTITY ()
-
---		B.	Execute back flush details.
-execute	@ProcReturn = dbo.usp_MES_BackFlush
-	@Operator = @Operator,
-	@BackflushNumber = @NewBFID,
-	@Result = @ProcResult
-
-select	@ProcResult,
-	@NewSerial,
-	@ProcReturn
-
-select	*
-from	BackFlushHeaders
-where	ID = @NewBFID
-
-select	*
-from	BackFlushDetails
-Where	BFID = @NewBFID
-
-select	*
-from	audit_trail
-where	date_stamp >= DateAdd (n, -1, getdate()) and
-	serial in
-	(	select	SerialConsumed
-		from	BackFlushDetails
-		where	BFID = @NewBFID)
-
-select	*
-from	object
-where	serial in
-	(	select	SerialConsumed
-		from	BackFlushDetails
-		where	BFID = @NewBFID)
-
-rollback
 */
 go

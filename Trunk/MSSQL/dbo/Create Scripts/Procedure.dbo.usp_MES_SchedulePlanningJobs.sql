@@ -52,7 +52,124 @@ set	@TranDT = coalesce(@TranDT, GetDate())
 ---	</ArgumentValidation>
 
 --- <Body>
---- <Body>
+/*	Do an rebuild on XRt. */
+--- <Call>	
+set	@CallProcName = 'dbo.usp_Scheduling_BuildXRt'
+execute
+	@ProcReturn = dbo.usp_Scheduling_BuildXRt
+	@TranDT = @TranDT out
+,	@Result = @ProcResult out
+
+set	@Error = @@Error
+if	@Error != 0 begin
+	set	@Result = 900501
+	RAISERROR ('Error encountered in %s.  Error: %d while calling %s', 16, 1, @ProcName, @Error, @CallProcName)
+	rollback tran @ProcName
+	return	@Result
+end
+if	@ProcReturn != 0 begin
+	set	@Result = 900502
+	RAISERROR ('Error encountered in %s.  ProcReturn: %d while calling %s', 16, 1, @ProcName, @ProcReturn, @CallProcName)
+	rollback tran @ProcName
+	return	@Result
+end
+if	@ProcResult != 0 begin
+	set	@Result = 900502
+	RAISERROR ('Error encountered in %s.  ProcResult: %d while calling %s', 16, 1, @ProcName, @ProcResult, @CallProcName)
+	rollback tran @ProcName
+	return	@Result
+end
+--- </Call>
+
+/*	Close completed jobs. */
+declare
+	@completedJobs table
+(	WorkOrderNumber varchar(50)
+,	WorkOrderDetailLine float
+)
+
+insert
+	@completedJobs
+select
+	mjl.WorkOrderNumber
+,	mjl.WorkOrderDetailLine
+from
+	dbo.MES_JobList mjl
+where
+	mjl.QtyCompleted >= mjl.QtyRequired
+	and mjl.QtyCompleted >= mjl.QtyLabelled
+
+if	exists
+	(	select
+			*
+		from
+			@completedJobs
+	) begin
+	
+	--- <Update rows="1+">
+	set	@TableName = 'dbo.WorkOrderHeaders'
+	
+	update
+		woh
+	set
+		Status = dbo.udf_StatusValue('dbo.WorkOrderHeaders', 'Completed')
+	from
+		dbo.WorkOrderHeaders woh
+		join @completedJobs cj
+			on cj.WorkOrderNumber = woh.WorkOrderNumber
+	
+	select
+		@Error = @@Error,
+		@RowCount = @@Rowcount
+	
+	if	@Error != 0 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
+		rollback tran @ProcName
+		return
+	end
+	if	@RowCount <= 0 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating into %s in procedure %s.  Rows Updated: %d.  Expected rows: 1 or more.', 16, 1, @TableName, @ProcName, @RowCount)
+		rollback tran @ProcName
+		return
+	end
+	--- </Update>
+	
+	--- <Update rows="1+">
+	set	@TableName = 'dbo.WorkOrderDetails'
+	
+	update
+		wod
+	set
+		Status = dbo.udf_StatusValue('dbo.WorkOrderDetails', 'Completed')
+	from
+		dbo.WorkOrderDetails wod
+		join @completedJobs cj
+			on cj.WorkOrderNumber = wod.WorkOrderNumber
+			and cj.WorkOrderDetailLine = wod.Line
+		
+	select
+		@Error = @@Error,
+		@RowCount = @@Rowcount
+	
+	if	@Error != 0 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
+		rollback tran @ProcName
+		return
+	end
+	if	@RowCount <= 0 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating into %s in procedure %s.  Rows Updated: %d.  Expected rows: 1 or more.', 16, 1, @TableName, @ProcName, @RowCount)
+		rollback tran @ProcName
+		return
+	end
+	--- </Update>
+	
+end
+
+/*	Calculate new planning requirements. */
 set	@HorizonEndDT = coalesce(@HorizonEndDT, getdate() + 7)
 
 declare
@@ -88,8 +205,9 @@ from
 		on oh.order_no = fmnm.OrderNo
 		and oh.blanket_part = fmnm.Part
 where
-	fmnm.Balance > 0
-	and fmnm.RequiredDT <= @HorizonEndDT
+	--fmnm.Balance > 0
+	--and
+	fmnm.RequiredDT <= @HorizonEndDT
 order by
 	fmnm.Part
 ,	oh.customer
@@ -157,7 +275,7 @@ from
 	 				FT.StatusDefn sd
 	 			where
 	 				sd.StatusTable = 'dbo.WorkOrderHeaders'
-	 				and sd.StatusName = 'Running'
+					and sd.StatusName in ('Running')
 			)
 		group by
 			wod.PartCode
@@ -198,6 +316,7 @@ group by
 	coalesce(requirements.PartCode, jobsRunning.PartCode, jobsPlanning.PartCode)
 ,	coalesce(requirements.BillToCode, jobsRunning.BilltoCode, jobsPlanning.BillToCode)
 
+/*	Delete jobs that are no longer needed (planning jobs only). */
 if	exists
 	(	select
 			*
@@ -208,7 +327,7 @@ if	exists
 			and npr.NewPlanningQty = 0
 	) begin
 	
-	--- <Update rows="1+">
+	-- <Update rows="1+">
 	set	@TableName = 'dbo.WorkOrderDetails'
 		
 	update
@@ -239,9 +358,9 @@ if	exists
 		rollback tran @ProcName
 		return
 	end
-	--- </Update>
+	-- </Update>
 		
-	--- <Update rows="1+">
+	-- <Update rows="1+">
 	set	@TableName = 'dbo.WorkOrderHeaders'
 	
 	update
@@ -274,7 +393,7 @@ if	exists
 		rollback tran @ProcName
 		return
 	end
-	--- </Update>
+	-- </Update>
 end
 
 declare newPlanning cursor local for
@@ -453,6 +572,17 @@ set	@Error = @@error
 
 select
 	@Error, @ProcReturn, @TranDT, @ProcResult
+
+select
+	*
+from
+	dbo.WorkOrderHeaders woh
+	join dbo.WorkOrderDetails wod
+		on woh.WorkOrderNumber = wod.WorkOrderNumber
+where
+	woh.MachineCode in ('3', '4')
+order by
+	wod.PartCode
 go
 
 --commit
@@ -471,4 +601,3 @@ Results {
 }
 */
 go
-

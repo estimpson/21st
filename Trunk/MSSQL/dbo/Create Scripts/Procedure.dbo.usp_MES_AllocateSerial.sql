@@ -55,17 +55,63 @@ set	@TranDT = coalesce(@TranDT, GetDate())
 --- </Tran>
 
 ---	<ArgumentValidation>
-
----	</ArgumentValidation>
-
---- <Body>
+/*	Serial must be a valid material for this job. */
 select
 	@WorkOrderNumber = wod.WorkOrderNumber
+,	@WorkOrderDetailSequence = wod.Sequence
 from
 	dbo.WorkOrderDetails wod
 where
 	RowID = @WODID
 
+if	not exists
+		(	select
+	 			*
+			from
+				dbo.WorkOrderDetails wod
+				join dbo.WorkOrderDetailBillOfMaterials wodbom on
+					wod.WorkOrderNumber = wodbom.WorkOrderNumber
+					and wod.Line = wodbom.WorkOrderDetailLine
+					and coalesce(wodbom.Suffix, -1) = coalesce(@Suffix, -1)
+					and wodbom.ChildPart = coalesce
+						(	(	select
+									o.part
+								from
+									dbo.object o
+								where
+									o.serial = @Serial
+									and o.status = 'A'
+							)
+						,	(	select
+									atLast.part
+								from
+									dbo.audit_trail atLast
+								where
+									atLast.serial = @Serial
+									and atLast.status = 'A'
+									and atLast.date_stamp =
+										(	select
+												max(date_stamp)
+											from
+												dbo.audit_trail
+											where
+												serial = @Serial
+										)
+							)
+						)
+			where
+				wod.WorkOrderNumber = @WorkOrderNumber
+				and wod.Sequence = @WorkOrderDetailSequence
+		) begin
+
+	set @Result = 999999
+	RAISERROR ('Invalid object %d for this job in procedure %s.  Error: %d', 16, 1, @Serial, @ProcName, @Error)
+	rollback tran @ProcName
+	return
+end
+---	</ArgumentValidation>
+
+--- <Body>
 /*	Perform breakout if necessary. */
 if	@QtyBreakout > 0 begin
 /*		Perform breakout (dbo.usp_InventoryControl_Breakout) */
@@ -105,14 +151,61 @@ if	@QtyBreakout > 0 begin
 	set @Serial = @BreakoutSerial
 end
 
+/*	Recreate object if necessary. */
+if	not exists
+	(	select
+			*
+		from
+			dbo.object o
+		where
+			serial = @Serial
+	) begin
+
+	--- <Insert>
+	set	@TableName = 'dbo.object'
+
+	insert
+		object
+	(	serial, part, lot, location
+	,	last_date, unit_measure, operator
+	,	status
+	,	origin, cost, note, po_number
+	,	name, plant, quantity, last_time
+	,	package_type, std_quantity
+	,	custom1, custom2, custom3, custom4, custom5
+	,	user_defined_status
+	,	std_cost, field1)
+	select
+		@Serial, atLastTrans.part, atLastTrans.lot, atLastTrans.to_loc
+	,	@TranDT, atLastTrans.unit, @Operator
+	,	'A'
+	,	atLastTrans.shipper, atLastTrans.cost, null /*note*/, atLastTrans.po_number
+	,	atLastTrans.part_name, atLastTrans.plant, case when atLastTrans.type = 'R' then atLastTrans.quantity else 0 end, @TranDT
+	,	atLastTrans.package_type, case when atLastTrans.type = 'R' then atLastTrans.std_quantity else 0 end
+	,	null /*custom1*/, null /*custom2*/, null /*custom3*/, null /*custom4*/, null /*custom5*/
+	,	'Approved'
+	,	atLastTrans.std_cost, '' /*field1*/
+	from
+		dbo.audit_trail atLastTrans
+	where
+		atLastTrans.serial = @Serial
+		and atLastTrans.date_stamp =
+		(	select
+				max(date_stamp)
+			from
+				dbo.audit_trail
+			where
+				serial = @Serial
+		)
+end
+
 /*	Create material allocation record(s). (i1+) */
 --- <Insert rows="*">
 set	@TableName = 'dbo.object'
 
 insert
 	dbo.WorkOrderDetailMaterialAllocations
-(
-	WorkOrderNumber
+(	WorkOrderNumber
 ,	WorkOrderDetailLine
 ,	WorkOrderDetailBillOfMaterialLine
 ,	AllocationDT
@@ -205,90 +298,117 @@ declare
 set
 	@materialLocation = (select location from dbo.object where serial = @Serial)
 
-if	not exists
-	(	select
-			*
-		from
-			dbo.object o
-		where
-			serial = @Serial
-	) begin
-
-	--- <Insert>
+/*	Allocate object when backflush principle is Job, Machine, or Staging Location. (u1) */
+if	(	select
+  	 		coalesce (msbp.BackflushingPrinciple, 2)
+  	 	from
+  	 		dbo.object o
+			join dbo.MES_SetupBackflushingPrinciples msbp
+				on msbp.Type = 3
+				and msbp.ID = o.part
+  	 	where
+  	 		o.serial = @Serial
+  	 ) in (1, 2, 3) begin
+  	 
+	--- <Update rows="1">
 	set	@TableName = 'dbo.object'
 
-	insert
-		object
-	(	serial, part, lot, location
-	,	last_date, unit_measure, operator
-	,	status
-	,	origin, cost, note, po_number
-	,	name, plant, quantity, last_time
-	,	package_type, std_quantity
-	,	custom1, custom2, custom3, custom4, custom5
-	,	user_defined_status
-	,	std_cost, field1)
-	select
-		@Serial, atReceipt.part, atReceipt.lot, atReceipt.to_loc
-	,	@TranDT, atReceipt.unit, @Operator
-	,	'A'
-	,	atReceipt.shipper, atReceipt.cost, null /*note*/, atReceipt.po_number
-	,	atReceipt.part_name, atReceipt.plant, atReceipt.quantity, @TranDT
-	,	atReceipt.package_type, atReceipt.std_quantity
-	,	null /*custom1*/, null /*custom2*/, null /*custom3*/, null /*custom4*/, null /*custom5*/
-	,	'Approved'
-	,	atReceipt.std_cost, '' /*field1*/
+	update
+		o
+	set
+		o.location = l.code
+	,	o.plant = l.plant
 	from
-		dbo.audit_trail atReceipt
+		dbo.object o
+		cross join
+		(	select
+				MachineCode
+			from
+				dbo.WorkOrderHeaders woh
+			where
+				WorkOrderNumber = @WorkOrderNumber
+		) woh
+		left join dbo.MES_SetupBackflushingPrinciples msbp
+			on msbp.Type = 3
+			and msbp.ID = o.part
+		left join dbo.MES_StagingLocations msl
+			on msbp.BackflushingPrinciple = 3 --StagingLocation
+			and msl.PartCode = o.part
+			and msl.MachineCode = woh.MachineCode
+		join dbo.location l on
+			l.code = coalesce(msl.StagingLocationCode, woh.MachineCode)
 	where
-		atReceipt.type = 'R'
-		and atReceipt.serial = @Serial
+		o.serial = @Serial
+		and o.status = 'A'
+
+	select
+		@Error = @@Error,
+		@RowCount = @@Rowcount
+
+	if	@Error != 0 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
+		rollback tran @ProcName
+		return
+	end
+	if	@RowCount != 1 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating %s in procedure %s.  Rows Updated: %d.  Expected rows: 1.', 16, 1, @TableName, @ProcName, @RowCount)
+		rollback tran @ProcName
+		return
+	end
+	--- </Update>
 end
 
-/*	Transfer object to department, staging location, or machine. (u1) */
---- <Update rows="1">
-set	@TableName = 'dbo.object'
-
-update
-	o
-set
-	o.location = l.code
-,	o.plant = l.plant
-from
-	dbo.object o
-	join dbo.location l on
-		l.code = coalesce
-		(	(	select
-					MachineCode
-				from
-					dbo.WorkOrderHeaders woh
-				where
-					WorkOrderNumber = @WorkOrderNumber
-			)
-		,	@Plant
-		)
-where
-	o.serial = @Serial
-	and
-		o.status = 'A'
-
-select
-	@Error = @@Error,
-	@RowCount = @@Rowcount
-
-if	@Error != 0 begin
-	set	@Result = 999999
-	RAISERROR ('Error updating table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
-	rollback tran @ProcName
-	return
+/*	Allocate location when Backflushing Principle is Group Technology. (u1) */
+if	(	select
+  	 		msbp.BackflushingPrinciple
+  	 	from
+  	 		dbo.object o
+			join dbo.MES_SetupBackflushingPrinciples msbp
+				on msbp.Type = 3
+				and msbp.ID = o.part
+  	 	where
+  	 		o.serial = @Serial
+  	 ) = 4 begin
+  	 
+  	 --- <Update rows="1">
+  	 set	@TableName = 'dbo.location'
+  	 
+  	 update
+  	 	l
+  	 set
+  	 	sequence = 1
+  	 from
+  	 	dbo.location l
+  	 	join dbo.object o
+  	 		on o.location = l.code
+		join dbo.MES_SetupBackflushingPrinciples msbp
+			on msbp.BackflushingPrinciple = 4
+			and msbp.Type = 3
+			and msbp.ID = o.part
+  	 where
+  	 	o.serial = @Serial
+  	 
+  	 select
+  	 	@Error = @@Error,
+  	 	@RowCount = @@Rowcount
+  	 
+  	 if	@Error != 0 begin
+  	 	set	@Result = 999999
+  	 	RAISERROR ('Error updating table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
+  	 	rollback tran @ProcName
+  	 	return
+  	 end
+  	 if	@RowCount != 1 begin
+  	 	set	@Result = 999999
+  	 	RAISERROR ('Error updating %s in procedure %s.  Rows Updated: %d.  Expected rows: 1.', 16, 1, @TableName, @ProcName, @RowCount)
+  	 	rollback tran @ProcName
+  	 	return
+  	 end
+  	 --- </Update>
+  	 
 end
-if	@RowCount != 1 begin
-	set	@Result = 999999
-	RAISERROR ('Error updating %s in procedure %s.  Rows Updated: %d.  Expected rows: 1.', 16, 1, @TableName, @ProcName, @RowCount)
-	rollback tran @ProcName
-	return
-end
---- </Update>
 
 /*	Create allocation audit trail. (i1)*/
 declare
@@ -386,8 +506,8 @@ declare
 ,	@BreakoutSerial int
 
 set	@Operator = 'mon'
-set	@WODID = 40
-set @Serial = 1827364
+set	@WODID = 418
+set @Serial = 1647645
 
 begin transaction Test
 
@@ -399,7 +519,9 @@ declare
 
 execute
 	@ProcReturn = dbo.usp_MES_AllocateSerial
-	@Param1 = @Param1
+	@Operator = @Operator
+,	@Serial = @Serial
+,	@WODID = @WODID
 ,	@TranDT = @TranDT out
 ,	@Result = @ProcResult out
 

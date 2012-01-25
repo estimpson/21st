@@ -86,6 +86,36 @@ if	@@RowCount != 1 or @@Error != 0 begin
 	return
 end
 
+/*	Pre-object must be valid:  */
+if	exists
+	(	select
+			*
+		from
+			dbo.WorkOrderObjects woo
+		where
+			woo.Serial = @CorrectionSerial
+			and Status = dbo.udf_StatusValue('dbo.WorkOrderObjects', 'Completed')
+	) begin
+	
+	RAISERROR ('Invalid pre-object.  Serial %d was already completed.  Error: %d', 16, 1, @WODID, @ProcName, @CorrectionSerial)
+	rollback tran @ProcName
+	return
+end
+if	exists
+	(	select
+			*
+		from
+			dbo.WorkOrderObjects woo
+		where
+			woo.Serial = @CorrectionSerial
+			and Status = dbo.udf_StatusValue('dbo.WorkOrderObjects', 'Deleted')
+	) begin
+	
+	RAISERROR ('Invalid pre-object.  Serial %d was deleted.  Error: %d', 16, 1, @WODID, @ProcName, @CorrectionSerial)
+	rollback tran @ProcName
+	return
+end
+
 /*	Part valid:  */
 if	not exists
 	(	select	1

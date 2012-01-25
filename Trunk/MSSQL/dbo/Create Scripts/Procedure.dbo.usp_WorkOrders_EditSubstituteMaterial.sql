@@ -73,6 +73,7 @@ from
 	dbo.WorkOrderDetailBillOfMaterials wodbom
 where
 	SubForRowID = @PrimaryBOMID
+	and Status >= 0
 
 select
 	@Error = @@Error,
@@ -109,6 +110,7 @@ from
 	dbo.WorkOrderDetailBillOfMaterials wodbom
 where
 	RowID = @PrimaryBOMID
+	and Status >= 0
 
 select
 	@Error = @@Error,

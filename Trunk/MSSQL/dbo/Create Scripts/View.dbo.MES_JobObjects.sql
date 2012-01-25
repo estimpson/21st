@@ -68,6 +68,16 @@ from
 					)
 			)
 		)
+where
+	woo.Status in
+		(	select
+				sd.StatusCode
+			from
+				FT.StatusDefn sd
+			where
+				sd.StatusTable = 'dbo.WorkOrderObjects'
+				and sd.StatusName in ('New', 'Completed')
+		)
 go
 
 select

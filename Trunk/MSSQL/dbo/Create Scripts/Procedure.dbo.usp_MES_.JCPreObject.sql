@@ -3,8 +3,8 @@
 Create procedure fx21stPilot.dbo.usp_MES_JCPreObject
 */
 
-use fx21stPilot
-go
+--use fx21stPilot
+--go
 
 if	objectproperty(object_id('dbo.usp_MES_JCPreObject'), 'IsProcedure') = 1 begin
 	drop procedure dbo.usp_MES_JCPreObject
@@ -557,11 +557,11 @@ end
 --- </Insert>
 
 /*	Perform back flush.  */
---execute @ProcReturn = dbo.usp_MES_Backflush
---	@Operator = @Operator
---,	@BFID = @NewBFID
---,	@TranDT = @TranDT out
---,	@Result = @ProcResult out
+execute @ProcReturn = dbo.usp_MES_Backflush
+	@Operator = @Operator
+,	@BackflushNumber = @NewBackflushNumber
+,	@TranDT = @TranDT out
+,	@Result = @ProcResult out
 
 set @Error = @@Error
 if @ProcResult != 0 
@@ -593,7 +593,7 @@ set	@TableName = 'dbo.WorkOrderObjects'
 update
 	woo
 set 
-	Status = 2 -- Change to a constant.
+	Status = dbo.udf_StatusValue('dbo.WorkOrderObjects', 'Completed')
 ,	CompletionDT = @TranDT
 ,	BackflushNumber = @NewBackflushNumber
 ,	UndoBackflushNumber = null
@@ -678,8 +678,8 @@ declare
 	@Operator varchar(10)
 ,	@PreObjectSerial int
 
-set	@Operator = 'ES'
-set	@PreObjectSerial = 791622
+set	@Operator = 'mon'
+set	@PreObjectSerial = 1836519
 
 begin transaction Test
 
@@ -709,13 +709,13 @@ where
 	SerialProduced = @PreObjectSerial
 
 select
-	BackFlushDetails.*
+	bd.*
 from
-	BackFlushDetails
-	join BackFlushHeaders
-		on BackFlushHeaders.ID = BackFlushDetails.BFID
+	dbo.BackflushDetails bd
+	join dbo.BackflushHeaders bh
+		on bd.BackflushNumber = bh.BackflushNumber
 where
-	SerialProduced = @PreObjectSerial
+	bh.SerialProduced = @PreObjectSerial
 
 select
 	*
@@ -724,14 +724,22 @@ from
 where
 	date_stamp = @TranDT
 
-select	*
-from	audit_trail
-where	date_stamp >= DateAdd (n, -1, getdate()) and
-	serial in
-	(	select	SerialConsumed
-		from	BackFlushDetails
-			join BackFlushHeaders on BackFlushHeaders.ID = BackFlushDetails.BFID
-		where	SerialProduced = @PreObjectSerial)
+select
+	*
+from
+	dbo.audit_trail at
+where
+	at.date_stamp >= dateadd(n,-1,getdate())
+	and at.serial in
+	(	select
+			SerialConsumed
+		from
+			dbo.BackflushDetails bd
+			join dbo.BackflushHeaders
+				on bd.BackflushNumber = dbo.BackflushHeaders.BackflushNumber
+		where
+			SerialProduced = @PreObjectSerial
+	)
 
 select
 	*
@@ -743,20 +751,21 @@ where
 select
 	*
 from
-	object
+	dbo.object o
 where
-	serial in
+	o.serial in
 	(	select
 			SerialConsumed
 		from
-			BackFlushDetails
-			join BackFlushHeaders
-				on BackFlushHeaders.ID = BackFlushDetails.BFID
+			dbo.BackflushDetails bd
+			join dbo.BackflushHeaders
+				on bd.BackflushNumber = dbo.BackflushHeaders.BackflushNumber
 		where
 			SerialProduced = @PreObjectSerial
 	)
 go
 
+--commit
 if	@@trancount > 0 begin
 	rollback
 end

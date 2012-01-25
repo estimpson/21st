@@ -198,7 +198,7 @@ declare
 ,	@SubstitutionRate numeric(20,6)
 
 set	@Operator = '01956'
-set	@PrimaryBOMID = 3
+set	@PrimaryBOMID = 323
 set	@SubstitutePart = null
 set	@SubstitutionRate = -1
 
@@ -241,3 +241,9 @@ Results {
 */
 go
 
+select
+	*
+from
+	dbo.WorkOrderDetailBillOfMaterials wodbom
+order by
+	1, 3

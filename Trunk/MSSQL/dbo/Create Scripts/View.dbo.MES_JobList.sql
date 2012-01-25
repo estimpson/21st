@@ -25,16 +25,17 @@ select
 ,	wod.PartCode
 ,	WorkOrderDetailSequence = wod.Sequence
 ,	DueDT = wod.DueDT
-,	QtyRequired = wod.QtyRequired
+,	QtyRequired = coalesce(wodms.QtyMattec, wod.QtyRequired)
 ,	QtyLabelled = wod.QtyLabelled
 ,	QtyCompleted = wod.QtyCompleted
 ,	QtyDefect = wod.QtyDefect
 ,	PackageType = pp.code
 ,	StandardPack = coalesce(pp.quantity, oh.standard_pack, pi.standard_pack) --Use the order's standard pack, the default standard pack for the package type, or the standard pack for the part.
-,	NewBoxesRequired = case when wod.QtyRequired > wod.QtyLabelled then ceiling((wod.QtyRequired - wod.QtyLabelled) / coalesce(pp.quantity, oh.standard_pack, pi.standard_pack)) else 0 end
+,	NewBoxesRequired = case when coalesce(wodms.QtyMattec, wod.QtyRequired) > wod.QtyLabelled then ceiling((coalesce(wodms.QtyMattec, wod.QtyRequired) - wod.QtyLabelled) / coalesce(pp.quantity, oh.standard_pack, pi.standard_pack)) else 0 end
 ,	BoxLabelFormat = coalesce(od.box_label, oh.box_label, pp.label_format, pi.label_format)
 ,	BoxesLabelled = coalesce(boxes.BoxesLabelled, 0)
 ,	BoxesCompleted = coalesce(boxes.BoxesCompleted, 0)
+,	BoxesCompletedNotPutaway = coalesce(boxes.BoxesCompletedNotPutAway, 0)
 ,	StartDT = wod.StartDT
 ,	EndDT = wod.EndDT
 ,	ShipperID = wod.ShipperID
@@ -43,6 +44,9 @@ from
 	dbo.WorkOrderHeaders woh
 		join dbo.WorkOrderDetails wod
 			on wod.WorkOrderNumber = woh.WorkOrderNumber
+		left join custom.WorkOrderDetailMattecSchedule wodms
+			on wodms.WorkOrderNumber = wod.WorkOrderNumber
+			and wodms.WorkOrderDetailLine = wod.Line
 		left join dbo.order_header oh
 			on oh.order_no = wod.SalesOrderNumber 
 		left join dbo.order_detail od
@@ -62,8 +66,23 @@ from
 			,	BoxesLabelled = count(*)
 			,	BoxesCompleted = count(woo.CompletionDT)
 			,	PackageType = min(woo.PackageType)
+			,	BoxesCompletedNotPutAway = count(case when o.serial is not null then woo.CompletionDT end)
 			from
 				dbo.WorkOrderObjects woo
+				left join dbo.object o
+					join dbo.machine m
+						on o.location = m.machine_no
+					on o.serial = woo.Serial
+			where
+				woo.Status in
+					(	select
+							sd.StatusCode
+						from
+							FT.StatusDefn sd
+						where
+							sd.StatusTable = 'dbo.WorkOrderObjects'
+							and sd.StatusName in ('New', 'Completed')
+					)
 			group by
 				woo.WorkOrderNumber
 			,	woo.WorkOrderDetailLine

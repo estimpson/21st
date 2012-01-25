@@ -122,8 +122,8 @@ declare
 ,	@BreakoutSerial int
 
 set	@Operator = 'mon'
-set @Serial = 1826319
-set @JobID = 59
+set @Serial = 1647645
+set @JobID = 418
 
 begin transaction Test
 
@@ -179,15 +179,21 @@ select
 from
 	dbo.object o
 where
-	part = '1252'
+	serial = 1832411
 order by
 	o.last_date
 
 select
 	*
 from
-	dbo.ReceiverObjects ro
+	dbo.MES_JobList mjl
 where
-	ro.PartCode = 'C43978-025-A'
-order by
-	ro.ReceiveDT desc
+	PartCode like '1220SWR21%'
+
+
+update
+	dbo.WorkOrderHeaders
+set
+	MachineCode = '4'
+where
+	dbo.WorkOrderHeaders.WorkOrderNumber = 'WO_0000000350'

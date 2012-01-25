@@ -11,12 +11,13 @@ select
 ,	cs.WODID
 ,	cs.PartCode
 ,	ChildPart = wodbom.ChildPart
-,	QtyRequired = (cs.QtyRequired - cs.QtyCompleted) * wodbom.XQty
-,	QtyAvailable = alloc.QtyAvailable
+,	QtyRequiredStandardPack = cs.StandardPack * wodbom.XQty * wodbom.XScrap
+,	QtyRequired = (cs.QtyRequired - cs.QtyCompleted) * wodbom.XQty * wodbom.XScrap
+,	QtyAvailable = mai.QtyAvailable
 ,	QtyToPull =
 		case
-			when (cs.QtyRequired - cs.QtyCompleted) * wodbom.XQty > coalesce(alloc.QtyAvailable, 0)
-				then (cs.QtyRequired - cs.QtyCompleted) * wodbom.XQty - coalesce(alloc.QtyAvailable, 0)
+			when (cs.QtyRequired - cs.QtyCompleted) * wodbom.XQty * wodbom.XScrap > coalesce(mai.QtyAvailable, 0)
+				then (cs.QtyRequired - cs.QtyCompleted) * wodbom.XQty * wodbom.XScrap - coalesce(mai.QtyAvailable, 0)
 			else 0
 		end
 ,	FIFOLocation = dbo.fn_MES_GetFIFOLocation_forPart(wodbom.ChildPart, 'A', null, null, null, 'N')
@@ -30,7 +31,8 @@ from
 		,	cs.WorkOrderNumber
 		,	cs.WorkOrderDetailLine
 		,	cs.PartCode
-		,	QtyRequired = cs.QtyLabelled
+		,	cs.StandardPack
+		,	cs.QtyRequired-- QtyRequired = cs.QtyLabelled
 		,	cs.QtyCompleted
 	 	from
 	 		dbo.MES_CurrentSchedules cs
@@ -40,31 +42,20 @@ from
 		,	cs.WorkOrderNumber
 		,	cs.WorkOrderDetailLine
 		,	cs.PartCode
-		,	cs.QtyLabelled
+		,	cs.StandardPack
+		,	cs.QtyRequired --cs.QtyLabelled
 		,	cs.QtyCompleted
 	) cs
 	left join dbo.WorkOrderDetailBillOfMaterials wodbom
-	on
-		wodbom.WorkOrderNumber = cs.WorkOrderNumber
-		and wodbom.WorkOrderDetailLine = cs.WorkOrderDetailLine
+		on	wodbom.WorkOrderNumber = cs.WorkOrderNumber
+			and wodbom.WorkOrderDetailLine = cs.WorkOrderDetailLine
+			and wodbom.Status >= 0
 	left join dbo.part p on
 		p.part = wodbom.ChildPart
-	left join
-	(	select
-	 		Part = o.part
-	 	,	Machine = o.location
-	 	,	QtyAvailable = sum(o.std_quantity)
-	 	from
-	 		dbo.object o
-	 	where
-	 		o.status = 'A'
-	 	group by
-	 		o.part
-	 	,	o.location
-	) alloc on
-		alloc.Part = wodbom.ChildPart
+	left join dbo.MES_AllocatedInventory mai on
+		mai.PartCode = wodbom.ChildPart
 		and
-			alloc.Machine = cs.MachineCode
+			mai.AvailableToMachine = cs.MachineCode
 where
 	cs.QtyRequired > cs.QtyCompleted
 go
@@ -74,6 +65,7 @@ select
 ,	WODID
 ,	PartCode
 ,	ChildPart
+,	QtyRequiredStandardPack
 ,	QtyRequired
 ,	QtyAvailable
 ,	QtyToPull
@@ -84,7 +76,7 @@ select
 from
 	dbo.MES_PickList pl
 order by
-	Commodity
+	WODID
 
 /*
 insert
@@ -106,3 +98,4 @@ set
 where
 	code like 'ALA%'
 */
+

@@ -28,6 +28,7 @@ from
 			MoldedPart = bom.parent_part
 		,	mcl.BaseMaterialCode
 		,	Resin = sum(bom2.quantity)
+		,	mcl.ColorCode
 		from
 			custom.MoldingColorLetdown mcl
 			join dbo.bill_of_material bom
@@ -40,6 +41,7 @@ from
 		group by
 			bom.parent_part
 		,	mcl.BaseMaterialCode
+		,	mcl.ColorCode
 	) BlackFormulas
 	join custom.MoldingColorLetdown mcl2
 		on left(BlackFormulas.BaseMaterialCode, 8) = left(mcl2.BaseMaterialCode, 8)
@@ -50,7 +52,8 @@ from
 		on bom3.parent_part = p.part
 		and bom3.part = mcl2.BaseMaterialCode
 where
-	bom3.ID is null
+	BlackFormulas.ColorCode = 'B'
+	and	bom3.ID is null
 union all
 select
 	parent_part = left(BlackFormulas.MoldedPart, len(BlackFormulas.MoldedPart) - 1) + mcl2.ColorCode
@@ -68,6 +71,7 @@ from
 			MoldedPart = bom.parent_part
 		,	mcl.BaseMaterialCode
 		,	Resin = sum(bom2.quantity)
+		,	mcl.ColorCode
 		from
 			custom.MoldingColorLetdown mcl
 			join dbo.bill_of_material bom
@@ -80,6 +84,7 @@ from
 		group by
 			bom.parent_part
 		,	mcl.BaseMaterialCode
+		,	mcl.ColorCode
 	) BlackFormulas
 	join custom.MoldingColorLetdown mcl2
 		on left(BlackFormulas.BaseMaterialCode, 8) = left(mcl2.BaseMaterialCode, 8)
@@ -90,7 +95,10 @@ from
 		on bom3.parent_part = p.part
 		and bom3.part = mcl2.ColorantCode
 where
-	bom3.ID is null
+	BlackFormulas.ColorCode = 'B'
+	and	bom3.ID is null
+order by
+	1, 2
 
 
 insert
@@ -142,7 +150,8 @@ from
 		on pm2.part = p.part
 where
 	pm2.part is null
-
+order by
+	1, 2
 
 insert
 	dbo.activity_router
