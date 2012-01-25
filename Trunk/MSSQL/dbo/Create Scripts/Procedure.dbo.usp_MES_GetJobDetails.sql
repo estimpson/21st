@@ -58,6 +58,7 @@ select
 ,	BoxesRequired = mjl.NewBoxesRequired + mjl.BoxesLabelled
 ,	mjl.BoxesLabelled
 ,	mjl.BoxesCompleted
+,	mjl.BoxesCompletedNotPutaway
 from
 	dbo.MES_JobList mjl
 where

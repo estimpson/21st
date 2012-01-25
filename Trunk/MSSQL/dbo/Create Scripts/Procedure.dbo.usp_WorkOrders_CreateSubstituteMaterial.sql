@@ -236,9 +236,15 @@ set statistics time on
 go
 
 declare
-	@Param1 [scalar_data_type]
+	@Operator varchar(5)
+,	@PrimaryBOMID int
+,	@SubstitutePart varchar(25)
+,	@SubstitutionRate numeric(20,6)
 
-set	@Param1 = [test_value]
+set	@Operator = '01596'
+set @PrimaryBOMID = 323
+set @SubstitutePart = null
+set @SubstitutionRate = null
 
 begin transaction Test
 
@@ -250,7 +256,10 @@ declare
 
 execute
 	@ProcReturn = dbo.usp_WorkOrders_CreateSubstituteMaterial
-	@Param1 = @Param1
+	@Operator = @Operator
+,	@PrimaryBOMID = @PrimaryBOMID
+,	@SubstitutePart = @SubstitutePart
+,	@SubstitutionRate = @SubstitutionRate
 ,	@TranDT = @TranDT out
 ,	@Result = @ProcResult out
 

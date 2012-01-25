@@ -69,6 +69,7 @@ from
 	dbo.WorkOrderDetailBillOfMaterials wodbom
 where
 	wodbom.SubForRowID = @PrimaryBOMID
+	and wodbom.Status >= 0
 	
 
 select

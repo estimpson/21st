@@ -369,6 +369,105 @@ end
 --- </Update>
 --- </Body>
 
+/*	Set the job status to running. */
+if	exists
+	(	select
+			*
+		from
+			dbo.WorkOrderHeaders woh
+			join dbo.WorkOrderDetails wod
+				on wod.WorkOrderNumber = woh.WorkOrderNumber
+				and wod.RowID = @WODID
+		where
+			woh.Status in
+			(	select
+	 				sd.StatusCode
+	 			from
+	 				FT.StatusDefn sd
+	 			where
+	 				sd.StatusTable = 'dbo.WorkOrderHeaders'
+	 				and sd.StatusName = 'New'
+			)
+	) begin
+	
+	--- <Update rows="1">
+	set	@TableName = 'dbo.WorkOrderHeaders'
+	
+	update
+		woh
+	set
+		Status =
+			(	select
+	 				sd.StatusCode
+	 			from
+	 				FT.StatusDefn sd
+	 			where
+	 				sd.StatusTable = 'dbo.WorkOrderHeaders'
+	 				and sd.StatusName = 'Running'
+			)
+	from
+		dbo.WorkOrderHeaders woh
+		join dbo.WorkOrderDetails wod
+			on wod.WorkOrderNumber = woh.WorkOrderNumber
+			and wod.RowID = @WODID
+
+	select
+		@Error = @@Error,
+		@RowCount = @@Rowcount
+	
+	if	@Error != 0 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
+		rollback tran @ProcName
+		return
+	end
+	if	@RowCount != 1 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating %s in procedure %s.  Rows Updated: %d.  Expected rows: 1.', 16, 1, @TableName, @ProcName, @RowCount)
+		rollback tran @ProcName
+		return
+	end
+	--- </Update>
+	
+	--- <Update rows="1">
+	set	@TableName = 'dbo.WorkOrderDetails'
+	
+	update
+		wod
+	set
+		Status =
+			(	select
+	 				sd.StatusCode
+	 			from
+	 				FT.StatusDefn sd
+	 			where
+	 				sd.StatusTable = 'dbo.WorkOrderDetails'
+	 				and sd.StatusName = 'Running'
+			)
+	from
+		dbo.WorkOrderDetails wod
+	where
+		wod.RowID = @WODID
+	
+	select
+		@Error = @@Error,
+		@RowCount = @@Rowcount
+	
+	if	@Error != 0 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
+		rollback tran @ProcName
+		return
+	end
+	if	@RowCount != 1 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating %s in procedure %s.  Rows Updated: %d.  Expected rows: 1.', 16, 1, @TableName, @ProcName, @RowCount)
+		rollback tran @ProcName
+		return
+	end
+	--- </Update>
+end
+
 --- <CloseTran Required=Yes AutoCreate=Yes>
 if	@TranCount = 0 begin
 	commit tran @ProcName

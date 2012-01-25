@@ -3,6 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "21stCenturyMES", "21stCenturyMES.ssmssqlproj", "{6AC20957-D153-445A-85E4-2D2987FDCFC9}"
 EndProject
 Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccProjectName0 = Create\u0020Scripts
+		SccLocalPath0 = .
+		SccProvider0 = MSSCCI:PushOk\u0020SVNSCC
+		SccProjectUniqueName1 = 21stCenturyMES.ssmssqlproj
+		SccLocalPath1 = .
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Default|Default = Default|Default
 	EndGlobalSection
