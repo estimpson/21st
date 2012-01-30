@@ -15,24 +15,16 @@ table(column=(type=long updatewhereclause=yes name=object_serial dbname="object.
  column=(type=char(10) updatewhereclause=yes name=plant dbname="location.plant" )
  column=(type=char(50) updatewhereclause=yes name=cross_ref dbname="part.cross_ref" )
  column=(type=char(1) updatewhereclause=yes name=status dbname="object.status" )
- retrieve="select	object.serial,
-	part.name,
-	object.location,
-	object.operator,
-	object.quantity,
-	part.part,
-	location.plant,
-	part.cross_ref,
-	object.status
-from	object
-	right outer join part on object.part = part.part
-	left outer join location on object.location = location.code
-" filter=" object_quantity  > 0" sort="plant A part_part A object_serial A " )
+ procedure="1 
+execute
+	custom.usp_InventoryValuation
+	@InventoryDate = :inventoryDate
+" filter=" object_quantity  > 0"arguments=(("InventoryDate", datetime))  sort="plant A part_part A object_serial A " )
 group(level=1 header.height=468 trailer.height=0 by=("plant" ) header.color="536870912" trailer.color="536870912" )
 group(level=2 header.height=375 trailer.height=0 by=("part_part" , "part_name" , "cross_ref" ) header.color="536870912" trailer.color="536870912" )
 text(band=header alignment="2" text="Location:" border="0" color="33554432" x="281" y="385" height="239" width="1000" html.valueishtml="0"  name=object_location_t visible="1"  font.face="Arial" font.height="-14" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
 text(band=header alignment="0" text="Inventory by Location for Auditing" border="0" color="0" x="2479" y="208" height="260" width="3416" html.valueishtml="0"  name=t_1 visible="1"  font.face="Arial" font.height="-15" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
-compute(band=header alignment="0" expression="today()"border="0" color="0" x="6697" y="427" height="177" width="1072" format="[general]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-12" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
+compute(band=header alignment="0" expression=" InventoryDate "border="0" color="0" x="6697" y="427" height="177" width="1072" format="[shortdate]" html.valueishtml="0"  name=compute_1 visible="1"  font.face="Arial" font.height="-12" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="2" background.color="16777215" )
 line(band=header x1="270" y1="656" x2="8000" y2="656"  name=l_1 visible="1" pen.style="0" pen.width="10" pen.color="0"  background.mode="2" background.color="16777215" )
 text(band=header.1 alignment="1" text="Operator:" border="0" color="33554432" x="6572" y="303" height="166" width="562" html.valueishtml="0"  name=object_operator_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
 text(band=header.1 alignment="1" text="Part:" border="0" color="33554432" x="572" y="303" height="166" width="312" html.valueishtml="0"  name=object_part_t visible="1"  font.face="Arial" font.height="-10" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )

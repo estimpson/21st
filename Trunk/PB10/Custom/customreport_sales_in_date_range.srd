@@ -23,7 +23,7 @@ table(column=(type=datetime updatewhereclause=yes name=date_shipped dbname="ship
 from	shipper
 	join shipper_detail on shipper.id = shipper_detail.shipper
 	left join order_header on shipper_detail.order_no = order_header.order_no
-where	shipper.date_shipped between :fromdate and :todate
+where	shipper.date_shipped >= :fromdate and shipper.date_shipped < :todate + 1
 " arguments=(("FROMDATE", datetime),("TODATE", datetime))  sort="part A date_shipped A shipper_destination A " )
 group(level=1 header.height=145 trailer.height=333 by=("part" ) header.color="536870912" trailer.color="536870912" )
 text(band=header alignment="2" text="Part" border="0" color="33554432" x="114" y="791" height="125" width="197" html.valueishtml="0"  name=part_t visible="1"  font.face="Arial" font.height="-8" font.weight="400"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="536870912" )
