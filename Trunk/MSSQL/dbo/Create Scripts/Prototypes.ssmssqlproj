@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Prototypes">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items />
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="PT.Procedure.dbo.usp_GetJobInvAlloc.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>PT.Procedure.dbo.usp_GetJobInvAlloc.sql</FullPath>
+        </FileNode>
+        <FileNode Name="PT.Procedure.dbo.usp_GetJobMaterialAlloc.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>PT.Procedure.dbo.usp_GetJobMaterialAlloc.sql</FullPath>
+        </FileNode>
+        <FileNode Name="PT.Procedure.dbo.usp_GetJobXRt.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>PT.Procedure.dbo.usp_GetJobXRt.sql</FullPath>
+        </FileNode>
+        <FileNode Name="PT.Script.GetBackflushDetails..sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>PT.Script.GetBackflushDetails..sql</FullPath>
+        </FileNode>
+        <FileNode Name="PT.Script.JobsWithSubstitutes.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>PT.Script.JobsWithSubstitutes.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>
