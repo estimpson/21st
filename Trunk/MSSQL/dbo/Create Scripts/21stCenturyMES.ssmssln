@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "21stCenturyMES", "21stCenturyMES.ssmssqlproj", "{6AC20957-D153-445A-85E4-2D2987FDCFC9}"
 EndProject
+Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "Prototypes", "Prototypes.ssmssqlproj", "{33D8CE3D-C964-4804-9DE2-5A243BB8757A}"
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
 		SccNumberOfProjects = 2
@@ -17,6 +19,7 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6AC20957-D153-445A-85E4-2D2987FDCFC9}.Default|Default.ActiveCfg = Default
 		{00000000-0000-0000-0000-000000000000}.Default|Default.ActiveCfg = Default
+		{33D8CE3D-C964-4804-9DE2-5A243BB8757A}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
