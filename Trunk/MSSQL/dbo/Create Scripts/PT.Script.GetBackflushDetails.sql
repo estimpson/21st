@@ -60,6 +60,24 @@ create table
 ,	U4 float default 0
 ,	X4 float default 0
 ,	N4 float default 0
+,	Y4 float default 0
+,	Y3 float default 0
+,	Y2 float default 0
+,	Y1 float default 0
+,	Y0 float default 0
+,	NF0 float default 0
+,	UF1 float default 0
+,	XF1 float default 0
+,	NF1 float default 0
+,	UF2 float default 0
+,	XF2 float default 0
+,	NF2 float default 0
+,	UF3 float default 0
+,	XF3 float default 0
+,	NF3 float default 0
+,	UF4 float default 0
+,	XF4 float default 0
+,	NF4 float default 0
 )
 
 insert
@@ -223,6 +241,7 @@ set
 from
 	tempdb..NetMPS nm
 
+/*	Assign Qty BOM Level 4 */
 update
 	nm
 set
@@ -236,7 +255,7 @@ where
 update
 	nm
 set
-	X4 =  coalesce
+	X4 = coalesce
 	(	(	select
 				sum(nmX.U4 / nmX.XQty / nmX.XScrap / nmX.XSuffix)
 			from
@@ -257,6 +276,232 @@ set
 from
 	tempdb..NetMPS nm
 
+/*	Rollup buildable quantity. */
+update
+	nm
+set
+	Y4 = U4
+from
+	tempdb..NetMPS nm
+
+update
+	nm
+set
+	Y3 = U3 + coalesce
+	(	(	select
+				min(nmY.Y4 / nmY.XQty / nmY.XScrap / nmY.XSuffix)
+			from
+				tempdb..NetMPS nmY
+			where
+				nmY.Hierarchy like nm.Hierarchy + '%'
+				and nmY.BOMLevel = nm.BOMLevel + 1
+		) * nm.XQty * nm.XScrap * nm.XSuffix
+	,	0
+	)
+from
+	tempdb..NetMPS nm
+
+update
+	nm
+set
+	Y2 = U2 + coalesce
+	(	(	select
+				min(nmY.Y3 / nmY.XQty / nmY.XScrap / nmY.XSuffix)
+			from
+				tempdb..NetMPS nmY
+			where
+				nmY.Hierarchy like nm.Hierarchy + '%'
+				and nmY.BOMLevel = nm.BOMLevel + 1
+		) * nm.XQty * nm.XScrap * nm.XSuffix
+	,	0
+	)
+from
+	tempdb..NetMPS nm
+
+update
+	nm
+set
+	Y1 = U1 + coalesce
+	(	(	select
+				min(nmY.Y2 / nmY.XQty / nmY.XScrap / nmY.XSuffix)
+			from
+				tempdb..NetMPS nmY
+			where
+				nmY.Hierarchy like nm.Hierarchy + '%'
+				and nmY.BOMLevel = nm.BOMLevel + 1
+		) * nm.XQty * nm.XScrap * nm.XSuffix
+	,	0
+	)
+from
+	tempdb..NetMPS nm
+
+update
+	nm
+set
+	Y0 = coalesce
+	(	(	select
+				min(nmY.Y1 / nmY.XQty / nmY.XScrap / nmY.XSuffix)
+			from
+				tempdb..NetMPS nmY
+			where
+				nmY.Hierarchy like nm.Hierarchy + '%'
+				and nmY.BOMLevel = nm.BOMLevel + 1
+		) * nm.XQty * nm.XScrap * nm.XSuffix
+	,	0
+	)
+from
+	tempdb..NetMPS nm
+
+/*	Calculate net after primary usage. */
+update
+	nm
+set
+	NF0 = QtyRequired - Y4 - Y3 - Y2 - Y1 - Y0 - X4 - X3 - X2 - X1
+from
+	tempdb..NetMPS nm
+
+/*	Apply inventory using available of substitutes. */
+/*		BOMLevel 1 */
+update
+	nm
+set
+	UF1 = coalesce(case when NF0 > QtyAvailable then QtyAvailable else NF0 end, 0)
+,	QtyAvailable = QtyAvailable - coalesce(case when NF0 > QtyAvailable then QtyAvailable else NF0 end, 0)
+from
+	tempdb..NetMPS nm
+where
+	BOMLevel = 1
+
+update
+	nm
+set
+	XF1 = coalesce
+	(	(	select
+				sum(nmX.UF1 / nmX.XQty / nmX.XScrap / nmX.XSuffix)
+			from
+				tempdb..NetMPS nmX
+			where
+				nm.Hierarchy like nmX.Hierarchy + '%'
+				and nmX.BOMLevel < nm.BOMLevel
+		) * nm.XQty * nm.XScrap * nm.XSuffix
+	,	0
+	)
+from
+	tempdb..NetMPS nm
+
+update
+	nm
+set
+	NF1 = NF0 - UF1 - XF1
+from
+	tempdb..NetMPS nm
+
+/*		BOMLevel 2 */
+update
+	nm
+set
+	UF2 = coalesce(case when NF1 > QtyAvailable then QtyAvailable else NF1 end, 0)
+,	QtyAvailable = QtyAvailable - coalesce(case when NF1 > QtyAvailable then QtyAvailable else NF1 end, 0)
+from
+	tempdb..NetMPS nm
+where
+	BOMLevel = 2
+
+update
+	nm
+set
+	XF2 = coalesce
+	(	(	select
+				sum(nmX.UF2 / nmX.XQty / nmX.XScrap / nmX.XSuffix)
+			from
+				tempdb..NetMPS nmX
+			where
+				nm.Hierarchy like nmX.Hierarchy + '%'
+				and nmX.BOMLevel < nm.BOMLevel
+		) * nm.XQty * nm.XScrap * nm.XSuffix
+	,	0
+	)
+from
+	tempdb..NetMPS nm
+
+update
+	nm
+set
+	NF2 = NF1 - UF2 - XF2
+from
+	tempdb..NetMPS nm
+
+/*		BOMLevel 3 */
+update
+	nm
+set
+	UF3 = coalesce(case when NF2 > QtyAvailable then QtyAvailable else NF2 end, 0)
+,	QtyAvailable = QtyAvailable - coalesce(case when NF2 > QtyAvailable then QtyAvailable else NF2 end, 0)
+from
+	tempdb..NetMPS nm
+where
+	BOMLevel = 3
+
+update
+	nm
+set
+	XF3 = coalesce
+	(	(	select
+				sum(nmX.UF3 / nmX.XQty / nmX.XScrap / nmX.XSuffix)
+			from
+				tempdb..NetMPS nmX
+			where
+				nm.Hierarchy like nmX.Hierarchy + '%'
+				and nmX.BOMLevel < nm.BOMLevel
+		) * nm.XQty * nm.XScrap * nm.XSuffix
+	,	0
+	)
+from
+	tempdb..NetMPS nm
+
+update
+	nm
+set
+	NF3 = NF2 - UF3 - XF3
+from
+	tempdb..NetMPS nm
+
+/*		BOMLevel 4 */
+update
+	nm
+set
+	UF4 = coalesce(case when NF3 > QtyAvailable then QtyAvailable else NF3 end, 0)
+,	QtyAvailable = QtyAvailable - coalesce(case when NF3 > QtyAvailable then QtyAvailable else NF3 end, 0)
+from
+	tempdb..NetMPS nm
+where
+	BOMLevel = 4
+
+update
+	nm
+set
+	XF4 = coalesce
+	(	(	select
+				sum(nmX.UF4 / nmX.XQty / nmX.XScrap / nmX.XSuffix)
+			from
+				tempdb..NetMPS nmX
+			where
+				nm.Hierarchy like nmX.Hierarchy + '%'
+				and nmX.BOMLevel < nm.BOMLevel
+		) * nm.XQty * nm.XScrap * nm.XSuffix
+	,	0
+	)
+from
+	tempdb..NetMPS nm
+
+update
+	nm
+set
+	NF4 = NF3 - UF4 - XF4
+from
+	tempdb..NetMPS nm
+
+/*	Calculate issues. */
 update
 	ia
 set
@@ -273,11 +518,11 @@ from
 			nm.Part
 		,	nm.Sequence
 		,	nm.Suffix
-		,	QtyIssue = sum(U1 + U2 + U3 + U4)
+		,	QtyIssue = sum(U1 + U2 + U3 + U4 + UF1 + UF2 + UF3 + UF4)
 		from
 			tempdb..NetMPS nm
 		where
-			U1 + U2 + U3 + U4 > 0
+			U1 + U2 + U3 + U4 + UF1 + UF2 + UF3 + UF4 > 0
 		group by
 			nm.Part
 		,	nm.Sequence
