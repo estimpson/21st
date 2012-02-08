@@ -66,62 +66,68 @@ where
 
 declare
 	@InventoryConsumption table
-(	Serial int
-,	PartCode varchar(25)
-,	BackflushingPrinciple int
-,	BOMStatus int
-,	BOMLevel tinyint
-,	Sequence tinyint
-,	Suffix int
-,	ChildPartSequence int
-,	ChildPartBOMLevel int
-,	BillOfMaterialID int
-,	AllocationDT datetime
-,	QtyPer float
-,	QtyAvailable float
-,	QtyRequired float
-,	QtyIssue float
-,	QtyOverage float
-)
+	(	Serial int
+	,	Part varchar(25)
+	,	BackflushingPrinciple int
+	,	BOMStatus int
+	,	BOMLevel tinyint
+	,	Sequence tinyint
+	,	Suffix int
+	,	AllocationDT datetime
+	,	BillOfMaterialID int
+	,	QtyOriginal float
+	,	QtyAvailable float
+	,	QtyPer int
+	,	QtyIssue float default 0
+	,	QtyOverage float default 0
+	,	QtyRequired float
+	,	PriorAccum float
+	,	Concurrence tinyint
+	,	LastAllocation tinyint
+	)
 
 insert
 	@InventoryConsumption
 (	Serial
-,	PartCode
+,	Part
 ,	BackflushingPrinciple
 ,	BOMStatus
 ,	BOMLevel
 ,	Sequence
 ,	Suffix
-,	ChildPartSequence
-,	ChildPartBOMLevel
-,	BillOfMaterialID
 ,	AllocationDT
-,	QtyPer
+,	BillOfMaterialID
+,	QtyOriginal
 ,	QtyAvailable
-,	QtyRequired
+,	QtyPer
 ,	QtyIssue
 ,	QtyOverage
+,	QtyRequired
+,	PriorAccum
+,	Concurrence
+,	LastAllocation
 )
 select
 	Serial
-,   PartCode
+,	Part
 ,	BackflushingPrinciple
 ,	BOMStatus
-,   BOMLevel
-,   Sequence
-,   Suffix
-,	ChildPartSequence
-,	ChildPartBOMLevel
-,   BillOfMaterialID
-,   AllocationDT
-,   QtyPer
-,   QtyAvailable
-,   QtyRequired
-,   QtyIssue
-,   QtyOverage
+,	BOMLevel
+,	Sequence
+,	Suffix
+,	AllocationDT
+,	BillOfMaterialID
+,	QtyOriginal
+,	QtyAvailable
+,	QtyPer
+,	QtyIssue
+,	QtyOverage
+,	QtyRequired
+,	PriorAccum
+,	Concurrence
+,	LastAllocation
 from
-	dbo.fn_MES_GetBackflushDetails(@workOrderNumber, @workorderDetailLine, @qtyRequested) ugbd
+	dbo.fn_MES_GetJobBackflushDetails(@workOrderNumber, @workorderDetailLine, @qtyRequested) ugbd
 
 /*	Prevent backflush if missing components. */
 if	exists
@@ -130,8 +136,9 @@ if	exists
 		from
 			@InventoryConsumption ic
 		where
-			ic.BOMStatus = 0
-			and ic.Serial = -1
+			ic.Serial = -1
+			and ic.Sequence > 0
+			and ic.QtyOverage > 0
 	) begin
 	set	@Result = 999999
 	RAISERROR ('Missing inventory for this job.  Check the job''s pick list.', 16, 1, @ProcName, @Error, @CallProcName)
@@ -333,7 +340,7 @@ select
 ,	ChildPartSequence = ic.Sequence
 ,	ChildPartBOMLevel = ic.BOMLevel
 ,	BillOfMaterialID = ic.BillOfMaterialID
-,	PartConsumed = ic.PartCode
+,	PartConsumed = ic.Part
 ,	SerialConsumed = ic.Serial
 ,	QtyAvailable = ic.QtyAvailable
 ,	QtyRequired = ic.QtyRequired
@@ -440,3 +447,4 @@ Results {
 }
 */
 go
+
