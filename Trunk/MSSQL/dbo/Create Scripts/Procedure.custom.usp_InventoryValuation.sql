@@ -1,5 +1,5 @@
-create procedure custom.usp_InventoryValuation
-	@InventoryDate datetime
+alter procedure custom.usp_InventoryValuation
+	@InventoryDate datetime = null
 as 
 
 select
@@ -20,19 +20,7 @@ from
 	(	select
 			*
 		from
-			FT.ObjectHistory oh
-		where
-			oh.RowCreateDT <= @InventoryDate
-			and oh.RowID =
-			(	select
-					max(oh2.RowID)
-				from
-					FT.ObjectHistory oh2
-				where
-					oh2.RowCreateDT <= @InventoryDate
-					and oh2.ObjectSerial = oh.ObjectSerial
-			)
-			and oh.Type != -1
+			dbo.udf_GetInventory_FromDT (@InventoryDate)
 	) object
 	left outer join location
 		on object.LocationCode = location.code

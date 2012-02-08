@@ -11,8 +11,9 @@ if	objectproperty(object_id('custom.usp_InventoryListByLocation'), 'IsProcedure'
 end
 go
 
-create procedure custom.usp_InventoryListByLocation
-	@InventoryDate datetime
+alter procedure custom.usp_InventoryValuation
+	@InventoryDate datetime = null
+,	@ClassType varchar(2) = null
 as
 set nocount on
 set ansi_warnings off
@@ -32,19 +33,7 @@ from
 	(	select
 			*
 		from
-			FT.ObjectHistory oh
-		where
-			oh.RowCreateDT <= @InventoryDate
-			and oh.RowID =
-			(	select
-					max(oh2.RowID)
-				from
-					FT.ObjectHistory oh2
-				where
-					oh2.RowCreateDT <= @InventoryDate
-					and oh2.ObjectSerial = oh.ObjectSerial
-			)
-			and oh.Type != -1
+			dbo.udf_GetInventory_FromDT (@InventoryDate)
 	) object
 	right outer join part on object.PartCode = part.part
 	left outer join location on object.LocationCode = location.code

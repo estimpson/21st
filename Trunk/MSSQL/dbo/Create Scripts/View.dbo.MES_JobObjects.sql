@@ -19,6 +19,7 @@ select
 ,	WODID = wod.RowID
 ,	woo.WorkOrderNumber
 ,	woo.WorkOrderDetailLine
+,	MattecJobNumber = coalesce(wodms.MattecJobNumber, right(woh.WorkOrderNumber, 3))
 ,	woo.Status
 ,	woo.Type
 ,	woo.PartCode
@@ -37,6 +38,9 @@ from
 	join dbo.WorkOrderDetails wod
 		on wod.WorkOrderNumber = woo.WorkOrderNumber
 		and wod.Line = woo.WorkOrderDetailLine
+	left join custom.WorkOrderDetailMattecSchedule wodms
+		on wodms.WorkOrderNumber = wod.WorkOrderNumber
+		and wodms.WorkOrderDetailLine = wod.Line
 	left join dbo.order_header oh
 		on oh.order_no = wod.SalesOrderNumber 
 	left join dbo.order_detail od
@@ -81,21 +85,7 @@ where
 go
 
 select
-	mjo.Serial
-,	mjo.WODID
-,	mjo.WorkOrderNumber
-,	mjo.WorkOrderDetailLine
-,	mjo.Status
-,	mjo.Type
-,	mjo.PartCode
-,	mjo.PackageType
-,	mjo.OperatorCode
-,	mjo.Quantity
-,	mjo.LotNumber
-,	mjo.BoxLabelFormat
-,	mjo.CompletionDT
-,	mjo.BackflushNumber
-,	mjo.UndoBackflushNumber
+	*
 from
 	MES_JobObjects mjo
 go

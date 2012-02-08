@@ -21,13 +21,14 @@ select
 ,	WorkOrderType = woh.Type
 ,	MachineCode = woh.MachineCode
 ,	WorkOrderDetailLine = wod.Line
+,	MattecJobNumber = coalesce(wodms.MattecJobNumber, right(woh.WorkOrderNumber, 3))
 ,	WorkOrderDetailStatus = wod.Status
 ,	wod.PartCode
 ,	WorkOrderDetailSequence = wod.Sequence
 ,	DueDT = wod.DueDT
-,	QtyRequired = coalesce(wodms.QtyMattec, wod.QtyRequired)
-,	QtyLabelled = wod.QtyLabelled
-,	QtyCompleted = wod.QtyCompleted
+,	QtyRequired = case when boxes.QtyLabelled > coalesce(wodms.QtyMattec, wod.QtyRequired) then boxes.QtyLabelled else coalesce(wodms.QtyMattec, wod.QtyRequired) end
+,	QtyLabelled = coalesce(boxes.QtyLabelled, 0)
+,	QtyCompleted = coalesce(boxes.QtyCompleted, 0)
 ,	QtyDefect = wod.QtyDefect
 ,	PackageType = pp.code
 ,	StandardPack = coalesce(pp.quantity, oh.standard_pack, pi.standard_pack) --Use the order's standard pack, the default standard pack for the package type, or the standard pack for the part.
@@ -65,6 +66,8 @@ from
 			,	woo.WorkOrderDetailLine
 			,	BoxesLabelled = count(*)
 			,	BoxesCompleted = count(woo.CompletionDT)
+			,	QtyLabelled = sum(woo.Quantity)
+			,	QtyCompleted = sum(case when woo.CompletionDT is not null then woo.Quantity end)
 			,	PackageType = min(woo.PackageType)
 			,	BoxesCompletedNotPutAway = count(case when o.serial is not null then woo.CompletionDT end)
 			from

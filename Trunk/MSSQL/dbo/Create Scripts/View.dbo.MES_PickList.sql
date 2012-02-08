@@ -7,17 +7,19 @@ go
 create view dbo.MES_PickList
 as
 select
-	cs.MachineCode
-,	cs.WODID
-,	cs.PartCode
+	mjl.MachineCode
+,	mjl.WODID
+,	mjl.WorkOrderNumber
+,	mjl.MattecJobNumber
+,	mjl.PartCode
 ,	ChildPart = wodbom.ChildPart
-,	QtyRequiredStandardPack = cs.StandardPack * wodbom.XQty * wodbom.XScrap
-,	QtyRequired = (cs.QtyRequired - cs.QtyCompleted) * wodbom.XQty * wodbom.XScrap
+,	QtyRequiredStandardPack = mjl.StandardPack * wodbom.XQty * wodbom.XScrap
+,	QtyRequired = (mjl.QtyRequired - mjl.QtyCompleted) * wodbom.XQty * wodbom.XScrap
 ,	QtyAvailable = mai.QtyAvailable
 ,	QtyToPull =
 		case
-			when (cs.QtyRequired - cs.QtyCompleted) * wodbom.XQty * wodbom.XScrap > coalesce(mai.QtyAvailable, 0)
-				then (cs.QtyRequired - cs.QtyCompleted) * wodbom.XQty * wodbom.XScrap - coalesce(mai.QtyAvailable, 0)
+			when (mjl.QtyRequired - mjl.QtyCompleted) * wodbom.XQty * wodbom.XScrap > coalesce(mai.QtyAvailable, 0)
+				then (mjl.QtyRequired - mjl.QtyCompleted) * wodbom.XQty * wodbom.XScrap - coalesce(mai.QtyAvailable, 0)
 			else 0
 		end
 ,	FIFOLocation = dbo.fn_MES_GetFIFOLocation_forPart(wodbom.ChildPart, 'A', null, null, null, 'N')
@@ -25,54 +27,23 @@ select
 ,	Commodity = p.commodity
 ,	PartName = p.name
 from
-	(	select
-	 		cs.MachineCode
-		,	cs.WODID
-		,	cs.WorkOrderNumber
-		,	cs.WorkOrderDetailLine
-		,	cs.PartCode
-		,	cs.StandardPack
-		,	cs.QtyRequired-- QtyRequired = cs.QtyLabelled
-		,	cs.QtyCompleted
-	 	from
-	 		dbo.MES_CurrentSchedules cs
-	 	group by
-	 		cs.MachineCode
-		,	cs.WODID
-		,	cs.WorkOrderNumber
-		,	cs.WorkOrderDetailLine
-		,	cs.PartCode
-		,	cs.StandardPack
-		,	cs.QtyRequired --cs.QtyLabelled
-		,	cs.QtyCompleted
-	) cs
+	dbo.MES_JobList mjl
 	left join dbo.WorkOrderDetailBillOfMaterials wodbom
-		on	wodbom.WorkOrderNumber = cs.WorkOrderNumber
-			and wodbom.WorkOrderDetailLine = cs.WorkOrderDetailLine
+		on	wodbom.WorkOrderNumber = mjl.WorkOrderNumber
+			and wodbom.WorkOrderDetailLine = mjl.WorkOrderDetailLine
 			and wodbom.Status >= 0
 	left join dbo.part p on
 		p.part = wodbom.ChildPart
 	left join dbo.MES_AllocatedInventory mai on
 		mai.PartCode = wodbom.ChildPart
 		and
-			mai.AvailableToMachine = cs.MachineCode
+			mai.AvailableToMachine = mjl.MachineCode
 where
-	cs.QtyRequired > cs.QtyCompleted
+	mjl.QtyRequired > mjl.QtyCompleted
 go
 
 select
-	MachineCode
-,	WODID
-,	PartCode
-,	ChildPart
-,	QtyRequiredStandardPack
-,	QtyRequired
-,	QtyAvailable
-,	QtyToPull
-,	FIFOLocation
-,	ProductLine
-,	Commodity
-,	PartName
+	*
 from
 	dbo.MES_PickList pl
 order by
