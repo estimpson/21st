@@ -53,34 +53,15 @@ set	@TranDT = coalesce(@TranDT, GetDate())
 ---	</ArgumentValidation>
 
 --- <Body>
-if (@PartCode is not null) begin
+if (@WODID is not null) begin
 	select
 --		WODID
-		Mach = MachineCode
+		Mach = convert(varchar(4), MachineCode)
 --	,	PartCode
 	,	ChildPart
 	,	QtyRq = convert(numeric(10,2), QtyRequired)
-	,	QtyPk = QtyAvailable
-	,	QtyNeed = convert(numeric(10,2), QtyToPull)
---	,	FIFOLocation
---	,	ProductLine
---	,	Commodity
---	,	PartName
-	from
-		dbo.MES_PickList pl
-	where
-		PartCode = @PartCode
-	order by
-		QtyRequired/QtyAvailable
-end
-else if (@WODID is not null) begin
-	select
---		WODID
-		Mach = MachineCode
---	,	PartCode
-	,	ChildPart
-	,	QtyRq = convert(numeric(10,2), QtyRequired)
-	,	QtyPk = QtyAvailable
+	,	QtyRequiredStandardPack
+	,	QtyPk = isnull(QtyAvailable, 0)
 	,	QtyNeed = convert(numeric(10,2), QtyToPull)
 --	,	FIFOLocation
 --	,	ProductLine
@@ -91,16 +72,38 @@ else if (@WODID is not null) begin
 	where
 		WODID = @WODID
 	order by
-		QtyRequired/QtyAvailable
+		QtyAvailable/nullif(QtyRequired, 0)
+end
+else if (@PartCode is not null) begin
+	select
+--		WODID
+		Mach = convert(varchar(4), MachineCode)
+--	,	PartCode
+	,	ChildPart
+	,	QtyRq = convert(numeric(10,2), QtyRequired)
+	,	QtyRequiredStandardPack
+	,	QtyPk = isnull(QtyAvailable, 0)
+	,	QtyNeed = convert(numeric(10,2), QtyToPull)
+--	,	FIFOLocation
+--	,	ProductLine
+--	,	Commodity
+--	,	PartName
+	from
+		dbo.MES_PickList pl
+	where
+		PartCode = @PartCode
+	order by
+		QtyAvailable/nullif(QtyRequired, 0)
 end
 else begin
 	select
 --		WODID
-		Mach = MachineCode
+		Mach = convert(varchar(4), MachineCode)
 --	,	PartCode
 	,	ChildPart
 	,	QtyRq = convert(numeric(10,2), QtyRequired)
-	,	QtyPk = QtyAvailable
+	,	QtyRequiredStandardPack
+	,	QtyPk = isnull(QtyAvailable, 0)
 	,	QtyNeed = convert(numeric(10,2), QtyToPull)
 --	,	FIFOLocation
 --	,	ProductLine
@@ -109,7 +112,7 @@ else begin
 	from
 		dbo.MES_PickList pl
 	order by
-		QtyRequired/QtyAvailable
+		QtyAvailable/nullif(QtyRequired, 0)
 end
 --- </Body>
 
