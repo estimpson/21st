@@ -15,18 +15,6 @@
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
           <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
         </ConnectionNode>
-        <ConnectionNode Name="(local)\SQL2008R2:sa">
-          <Created>2012-01-31T15:38:02.8460384-05:00</Created>
-          <Type>SQL</Type>
-          <Server>(local)\SQL2008R2</Server>
-          <UserName>sa</UserName>
-          <Authentication>SQL</Authentication>
-          <InitialDB />
-          <LoginTimeout>15</LoginTimeout>
-          <ExecutionTimeout>0</ExecutionTimeout>
-          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
-          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
-        </ConnectionNode>
         <ConnectionNode Name="192.168.0.228:sa">
           <Created>2011-11-29T12:59:20.8409756-05:00</Created>
           <Type>SQL</Type>
@@ -493,12 +481,6 @@
           <AssociatedConnUserName />
           <FullPath>Script.UpdateMachineILAssy.Bucket.sql</FullPath>
         </FileNode>
-        <FileNode Name="Table.FT.PreObjectHistory.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
-          <FullPath>Table.FT.PreObjectHistory.sql</FullPath>
-        </FileNode>
         <FileNode Name="Table.FT.XRt.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
@@ -512,9 +494,9 @@
           <FullPath>Table.custom.MoldingColorLetdown.sql</FullPath>
         </FileNode>
         <FileNode Name="Table.custom.WorkOrderDetailMattecSchedule.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQL2008R2:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>(local)\SQL2008R2</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>Table.custom.WorkOrderDetailMattecSchedule.sql</FullPath>
         </FileNode>
         <FileNode Name="Table.dbo.Defects.sql">
@@ -650,9 +632,9 @@
           <FullPath>View.dbo.MES_JobList.sql</FullPath>
         </FileNode>
         <FileNode Name="View.dbo.MES_JobObjects.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQL2008R2:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>(local)\SQL2008R2</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>View.dbo.MES_JobObjects.sql</FullPath>
         </FileNode>
         <FileNode Name="View.dbo.MES_MachineList.sql">
