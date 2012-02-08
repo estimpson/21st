@@ -67,9 +67,9 @@ create table tempdb..XRt
 ,	Sequence tinyint
 ,	BOMLevel tinyint
 ,	Suffix int
-,	XQty numeric(30,12)
-,	XScrap numeric(30,12)
-,	XSuffix numeric(30,12)
+,	XQty float
+,	XScrap float
+,	XSuffix float
 ,	SubForBOMID int
 ,	SubRate numeric(20,6)
 )
