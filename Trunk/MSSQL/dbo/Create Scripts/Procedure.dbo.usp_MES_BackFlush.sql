@@ -66,9 +66,10 @@ where
 
 declare
 	@InventoryConsumption table
-(
-	Serial int
+(	Serial int
 ,	PartCode varchar(25)
+,	BackflushingPrinciple int
+,	BOMStatus int
 ,	BOMLevel tinyint
 ,	Sequence tinyint
 ,	Suffix int
@@ -87,6 +88,8 @@ insert
 	@InventoryConsumption
 (	Serial
 ,	PartCode
+,	BackflushingPrinciple
+,	BOMStatus
 ,	BOMLevel
 ,	Sequence
 ,	Suffix
@@ -103,6 +106,8 @@ insert
 select
 	Serial
 ,   PartCode
+,	BackflushingPrinciple
+,	BOMStatus
 ,   BOMLevel
 ,   Sequence
 ,   Suffix
@@ -117,6 +122,22 @@ select
 ,   QtyOverage
 from
 	dbo.fn_MES_GetBackflushDetails(@workOrderNumber, @workorderDetailLine, @qtyRequested) ugbd
+
+/*	Prevent backflush if missing components. */
+if	exists
+	(	select
+			*
+		from
+			@InventoryConsumption ic
+		where
+			ic.BOMStatus = 0
+			and ic.Serial = -1
+	) begin
+	set	@Result = 999999
+	RAISERROR ('Missing inventory for this job.  Check the job''s pick list.', 16, 1, @ProcName, @Error, @CallProcName)
+	rollback tran @ProcName
+	return
+end
 
 /*	Loop through overages. */
 --- <DefineCursor curosrName="overages">
