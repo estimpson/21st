@@ -2,7 +2,20 @@
 <SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Prototypes">
   <Items>
     <LogicalFolder Name="Connections" Type="2" Sorted="true">
-      <Items />
+      <Items>
+        <ConnectionNode Name="192.168.0.228:sa">
+          <Created>2012-02-08T10:36:49.7390828-05:00</Created>
+          <Type>SQL</Type>
+          <Server>192.168.0.228</Server>
+          <UserName>sa</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB>fx21stPilot</InitialDB>
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
@@ -24,11 +37,17 @@
           <AssociatedConnUserName />
           <FullPath>PT.Procedure.dbo.usp_GetJobXRt.sql</FullPath>
         </FileNode>
-        <FileNode Name="PT.Script.GetBackflushDetails..sql">
+        <FileNode Name="PT.Script.GetBackflushDetails.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
           <AssociatedConnUserName />
-          <FullPath>PT.Script.GetBackflushDetails..sql</FullPath>
+          <FullPath>PT.Script.GetBackflushDetails.sql</FullPath>
+        </FileNode>
+        <FileNode Name="PT.Script.GetBackflushDetails2.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>PT.Script.GetBackflushDetails2.sql</FullPath>
         </FileNode>
         <FileNode Name="PT.Script.JobsWithSubstitutes.sql">
           <AssociatedConnectionMoniker />
@@ -36,10 +55,32 @@
           <AssociatedConnUserName />
           <FullPath>PT.Script.JobsWithSubstitutes.sql</FullPath>
         </FileNode>
+        <FileNode Name="PT.TableFunction.dbo.fn_MES_GetJobInventoryAllocation.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>PT.TableFunction.dbo.fn_MES_GetJobInventoryAllocation.sql</FullPath>
+        </FileNode>
+        <FileNode Name="PT.TableFunction.dbo.fn_MES_GetJobXRt.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>PT.TableFunction.dbo.fn_MES_GetJobXRt.sql</FullPath>
+        </FileNode>
+        <FileNode Name="PT.TableType.dbo.MES_XRt.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>PT.TableType.dbo.MES_XRt.sql</FullPath>
+        </FileNode>
       </Items>
     </LogicalFolder>
     <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
       <Items />
     </LogicalFolder>
   </Items>
+  <SccProjectName>Create Scripts</SccProjectName>
+  <SccAuxPath />
+  <SccLocalPath>.</SccLocalPath>
+  <SccProvider>MSSCCI:PushOk SVNSCC</SccProvider>
 </SqlWorkbenchSqlProject>
