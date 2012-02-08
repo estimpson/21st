@@ -54,10 +54,12 @@ set	@TranDT = coalesce(@TranDT, GetDate())
 select
 	mjl.WODID
 ,	mjl.PartCode
+,	mjl.MattecJobNumber
+,	MattecJobAndPart = mjl.MattecJobNumber + ' ' + mjl.PartCode
 ,	BoxesRequired = mjl.NewBoxesRequired + mjl.BoxesLabelled
-,	mjl.BoxesLabelled
-,	mjl.BoxesCompleted
-,	mjl.BoxesCompletedNotPutaway
+,	BoxesLabelled = mjl.BoxesLabelled
+,	BoxesCompleted = mjl.BoxesCompleted
+,	BoxesCompletedNotPutaway = mjl.BoxesCompletedNotPutaway
 from
 	dbo.MES_JobList mjl
 where
@@ -71,7 +73,7 @@ where
 	 			and woo.WorkOrderDetailLine = wod.Line
 	 	where
 	 		mjl.WODID = wod.RowID
-	)	 		
+	)	
 
 --- </Body>
 
