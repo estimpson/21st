@@ -77,10 +77,11 @@ if (@AdjustmentQty < 0) begin
 	execute
 		@ProcReturn = dbo.usp_MES_NewShortageQty
 		@Operator = @Operator
-	,	@WODID = null
+	,	@WODID = @WODID
 	,	@Serial = @Serial
 	,	@QtyShort = @AdjustmentQty
-	,	@ShortageReason = ''
+	,	@ShortageReason = 'Shortage during material putaway.'
+	,	@MakeEquivalentExcess = 1
 	,	@TranDT = @TranDT out
 	,	@Result = @ProcResult out
 		
@@ -111,10 +112,11 @@ else if (@AdjustmentQty > 0) begin
 	execute
 		@ProcReturn = dbo.usp_MES_NewExcessQty
 		@Operator = @Operator
-	,	@WODID = null
+	,	@WODID = @WODID
 	,	@Serial = @Serial
 	,	@QtyExcess = @AdjustmentQty
-	,	@ExcessReason = ''
+	,	@ExcessReason = 'Excess during material putaway.'
+	,	@MakeEquivalentShortage = 1
 	,	@TranDT = @TranDT out
 	,	@Result = @ProcResult out
 		
@@ -286,9 +288,9 @@ declare
 ,	@ShortageReason varchar(255)
 
 set	@Operator = 'mon'
-set @WODID = 393
-set @Serial = 1647644
-set @ObjectQty = 0
+set @WODID = 59
+set @Serial = 1820497
+set @ObjectQty = 30
 set @ShortageReason = 'Put Away'
 
 begin transaction Test
@@ -320,6 +322,15 @@ from
 	dbo.object o
 where
 	o.serial = @Serial
+
+select
+	*
+from
+	dbo.object o
+where
+	o.serial != @Serial
+	and o.part = (select part from dbo.object where serial = @Serial)
+	and o.location = (select location from dbo.object where serial = @Serial)
 go
 
 if	@@trancount > 0 begin

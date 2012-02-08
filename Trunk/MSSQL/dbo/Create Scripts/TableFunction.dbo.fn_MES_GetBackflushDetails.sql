@@ -12,6 +12,8 @@ create function dbo.fn_MES_GetBackflushDetails
 returns @InventoryConsumption table
 (	Serial int
 ,	PartCode varchar(25)
+,	BackflushingPrinciple int
+,	BOMStatus int
 ,	BOMLevel tinyint
 ,	Sequence tinyint
 ,	Suffix int
@@ -95,6 +97,7 @@ begin
 		left join dbo.MES_SetupBackflushingPrinciples msbp
 			on msbp.Type = 3
 			and msbp.ID = oAvailable.PartCode
+			and msbp.BackflushingPrinciple != 0 --(select dbo.udf_TypeValue('dbo.MES_SetupBackflushingPrinciples', 'BackflushingPrinciple', 'No Backflush'))
 		left join dbo.MES_StagingLocations msl
 			on msbp.BackflushingPrinciple = 3 --StagingLocation
 			and msl.PartCode = oAvailable.PartCode
@@ -105,18 +108,25 @@ begin
 			on msbp.BackflushingPrinciple = 4 --GroupTechnology (sequence)
 			and lGroupTechActive.code = oAvailable.LocationCode
 			and lGroupTechActive.sequence > 0
-		join dbo.machine m
-			on m.machine_no = coalesce(lGroupMachines.code, msl.MachineCode, oAvailable.LocationCode)
+		left join dbo.location lPlant
+			join dbo.location lPlantMachines -- All the machines within the inventory's plant.
+				on coalesce(lPlantMachines.plant, 'N/A') = coalesce(lPlant.plant, 'N/A')
+			on msbp.BackflushingPrinciple = 5 --(select dbo.udf_TypeValue('dbo.MES_SetupBackflushingPrinciples', 'BackflushingPrinciple, 'Plant'))
+			and lPlant.code = oAvailable.LocationCode
 		join dbo.WorkOrderDetails wod
 			join dbo.WorkOrderDetailBillOfMaterials wodbom
 				on wod.WorkOrderNumber = wodbom.WorkOrderNumber
 				and wod.Line = wodbom.WorkOrderDetailLine
+				and wodbom.Status >= 0
 			join dbo.WorkOrderHeaders woh
 				on woh.WorkOrderNumber = wod.WorkOrderNumber
 			on wod.WorkOrderNumber = @WorkOrderNumber
 			and wod.Line = @WorkOrderDetailLine
 			and wodbom.ChildPart = oAvailable.PartCode
 			and woh.MachineCode = coalesce(lGroupMachines.code, msl.MachineCode, oAvailable.LocationCode)
+		join dbo.machine m
+			on m.machine_no = coalesce(lGroupMachines.code, lPlantMachines.code, msl.MachineCode, oAvailable.LocationCode)
+			and m.machine_no = woh.MachineCode
 
 /*	Get the job BOM. */
 	declare	@XRt table
@@ -124,6 +134,8 @@ begin
 	,	BillOfMaterialID int
 	,	BOMLevel smallint
 	,	ChildPart varchar (25)
+	,	BackflushingPrinciple int
+	,	BOMStatus int
 	,	XQty float
 	,	unique (Sequence)
 	)
@@ -134,6 +146,8 @@ begin
 	,	BillOfMaterialID
 	,	BOMLevel
 	,	ChildPart
+	,	BackflushingPrinciple
+	,	BOMStatus
 	,	XQty
 	)
 	select
@@ -141,9 +155,14 @@ begin
 	,	wodbom.BillOfMaterialID
 	,	wodbom.ChildPartBOMLevel
 	,	wodbom.ChildPart
+	,	msbp.BackflushingPrinciple
+	,	wodbom.Status
 	,	wodbom.XQty * wodbom.XScrap
 	from
 		dbo.WorkOrderDetailBillOfMaterials wodbom
+		left join dbo.MES_SetupBackflushingPrinciples msbp
+			on msbp.Type = 3 --(select dbo.udf_TypeValue('dbo.MES_SetupBackflushingPrinciples', 'Type', 'Part'))
+			and msbp.ID = wodbom.ChildPart
 	where
 		wodbom.WorkOrderNumber = @WorkOrderNumber
 		and wodbom.WorkOrderDetailLine = @WorkOrderDetailLine
@@ -153,6 +172,8 @@ begin
 	declare	@AllocInventory table
 	(	Serial int
 	,	Part varchar (25)
+	,	BackflushingPrinciple int
+	,	BOMStatus int
 	,	BOMLevel tinyint
 	,	Sequence tinyint
 	,	Suffix tinyint
@@ -191,6 +212,8 @@ begin
 			@AllocInventory
 		(	Serial
 		,	Part
+		,	BackflushingPrinciple
+		,	BOMStatus
 		,	BOMLevel
 		,	Sequence
 		,	Suffix
@@ -206,8 +229,10 @@ begin
 		,	QtyOverage
 		)
 		select
-			Serial = ma.Serial
+			Serial = coalesce(ma.Serial, -1)
 		,	Part = XRt.ChildPart
+		,	BackflushingPrinciple = XRt.BackflushingPrinciple
+		,	BOMStatus = XRt.BOMStatus
 		,	BOMLevel = XRt.BOMLevel
 		,	Sequence = XRt.Sequence
 		,	Suffix = coalesce (ma.Suffix, 0)
@@ -223,9 +248,9 @@ begin
 		,	QtyOverage = 0
 		from
 			@XRt XRt
-			join @MaterialAvailable ma
+			left join @MaterialAvailable ma
 				on XRt.Sequence = ma.Sequence
-			join
+			left join
 			(	select
 					Sequence
 				,	AllocCount = count (1)
@@ -235,7 +260,7 @@ begin
 					Sequence
 			) TotalSequenceAllocations
 				on XRt.Sequence = TotalSequenceAllocations.Sequence
-			join
+			left join
 			(	select
 					Serial = ma2.Serial
 				,	TotalAllocated = sum(coalesce(ma2.QtyPer, XRt.XQty))
@@ -319,6 +344,8 @@ begin
 		@InventoryConsumption
 	(	Serial
 	,	PartCode
+	,	BackflushingPrinciple
+	,	BOMStatus
 	,	BOMLevel
 	,	Sequence
 	,	Suffix
@@ -335,6 +362,8 @@ begin
 	select
 		Serial
 	,	Part
+	,	BackflushingPrinciple
+	,	BOMStatus
 	,	BOMLevel
 	,	Sequence
 	,	Suffix

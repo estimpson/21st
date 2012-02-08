@@ -95,7 +95,7 @@ select
 ,	ID = p.part
 ,	'Part:  ' + p.part
 ,	p.name
-,	BackflushingPrinciple = coalesce(mpbp.BackflushingPrinciple, mgtbp.BackflushingPrinciple, mplbp.BackflushingPrinciple, mcbp.BackflushingPrinciple)
+,	BackflushingPrinciple = coalesce(mpbp.BackflushingPrinciple, mgtbp.BackflushingPrinciple, mplbp.BackflushingPrinciple, mcbp.BackflushingPrinciple, 2)
 ,	DefaultType =
 	case
 		when mgtbp.BackflushingPrinciple > 0 then 0

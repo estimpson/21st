@@ -66,7 +66,7 @@ where
 
 if	not exists
 		(	select
-	 			*
+				*
 			from
 				dbo.WorkOrderDetails wod
 				join dbo.WorkOrderDetailBillOfMaterials wodbom on
@@ -106,6 +106,34 @@ if	not exists
 
 	set @Result = 999999
 	RAISERROR ('Invalid object %d for this job in procedure %s.  Error: %d', 16, 1, @Serial, @ProcName, @Error)
+	rollback tran @ProcName
+	return
+end
+
+/*	If this is a group technology (sequence) backflushing principle, check the inventory
+	location, which must belong to the same group technology (department) as the machine.*/
+if	exists
+	(	select
+			*
+		from
+			dbo.object o
+			join dbo.location lInv
+				on lInv.code = o.location
+			join dbo.MES_SetupBackflushingPrinciples msbp
+				on msbp.BackflushingPrinciple = 4
+				and msbp.Type = 3
+				and msbp.ID = o.part
+			join dbo.WorkOrderHeaders woh
+				join location lMachine
+					on lMachine.code = woh.MachineCode
+				on WorkOrderNumber = @WorkOrderNumber
+		where
+			o.serial = @Serial
+			and lInv.group_no != lMachine.group_no
+	) begin
+
+	set @Result = 999999
+	RAISERROR ('Serial %d not in a  %s.  Error: %d', 16, 1, @Serial, @ProcName, @Error)
 	rollback tran @ProcName
 	return
 end
@@ -300,16 +328,16 @@ set
 
 /*	Allocate object when backflush principle is Job, Machine, or Staging Location. (u1) */
 if	(	select
-  	 		coalesce (msbp.BackflushingPrinciple, 2)
-  	 	from
-  	 		dbo.object o
+			coalesce (msbp.BackflushingPrinciple, 2)
+		from
+			dbo.object o
 			join dbo.MES_SetupBackflushingPrinciples msbp
 				on msbp.Type = 3
 				and msbp.ID = o.part
-  	 	where
-  	 		o.serial = @Serial
-  	 ) in (1, 2, 3) begin
-  	 
+		where
+			o.serial = @Serial
+	) in (1, 2, 3) begin
+	
 	--- <Update rows="1">
 	set	@TableName = 'dbo.object'
 
@@ -362,52 +390,52 @@ end
 
 /*	Allocate location when Backflushing Principle is Group Technology. (u1) */
 if	(	select
-  	 		msbp.BackflushingPrinciple
-  	 	from
-  	 		dbo.object o
+			msbp.BackflushingPrinciple
+		from
+			dbo.object o
 			join dbo.MES_SetupBackflushingPrinciples msbp
-				on msbp.Type = 3
+				on msbp.Type = 3 --(select dbo.udf_TypeValue('dbo.MES_SetupBackflushingPrinciples', 'Part'))
 				and msbp.ID = o.part
-  	 	where
-  	 		o.serial = @Serial
-  	 ) = 4 begin
-  	 
-  	 --- <Update rows="1">
-  	 set	@TableName = 'dbo.location'
-  	 
-  	 update
-  	 	l
-  	 set
-  	 	sequence = 1
-  	 from
-  	 	dbo.location l
-  	 	join dbo.object o
-  	 		on o.location = l.code
+		where
+			o.serial = @Serial
+	) = 4 begin
+	
+	--- <Update rows="1">
+	set	@TableName = 'dbo.location'
+	
+	update
+		l
+	set
+		sequence = 1
+	from
+		dbo.location l
+		join dbo.object o
+			on o.location = l.code
 		join dbo.MES_SetupBackflushingPrinciples msbp
 			on msbp.BackflushingPrinciple = 4
 			and msbp.Type = 3
 			and msbp.ID = o.part
-  	 where
-  	 	o.serial = @Serial
-  	 
-  	 select
-  	 	@Error = @@Error,
-  	 	@RowCount = @@Rowcount
-  	 
-  	 if	@Error != 0 begin
-  	 	set	@Result = 999999
-  	 	RAISERROR ('Error updating table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
-  	 	rollback tran @ProcName
-  	 	return
-  	 end
-  	 if	@RowCount != 1 begin
-  	 	set	@Result = 999999
-  	 	RAISERROR ('Error updating %s in procedure %s.  Rows Updated: %d.  Expected rows: 1.', 16, 1, @TableName, @ProcName, @RowCount)
-  	 	rollback tran @ProcName
-  	 	return
-  	 end
-  	 --- </Update>
-  	 
+	where
+		o.serial = @Serial
+	
+	select
+		@Error = @@Error,
+		@RowCount = @@Rowcount
+	
+	if	@Error != 0 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
+		rollback tran @ProcName
+		return
+	end
+	if	@RowCount != 1 begin
+		set	@Result = 999999
+		RAISERROR ('Error updating %s in procedure %s.  Rows Updated: %d.  Expected rows: 1.', 16, 1, @TableName, @ProcName, @RowCount)
+		rollback tran @ProcName
+		return
+	end
+	--- </Update>
+	
 end
 
 /*	Create allocation audit trail. (i1)*/

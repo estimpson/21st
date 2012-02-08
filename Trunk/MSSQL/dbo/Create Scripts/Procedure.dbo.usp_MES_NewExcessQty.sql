@@ -17,6 +17,7 @@ create procedure dbo.usp_MES_NewExcessQty
 ,	@Serial int
 ,	@QtyExcess numeric (20,6)
 ,	@ExcessReason varchar(255)
+,	@MakeEquivalentShortage bit = 0
 ,	@TranDT datetime out
 ,	@Result integer out
 as
@@ -192,6 +193,8 @@ if	not exists
 else
 	--- <Update rows="1">
 	set	@TableName = 'dbo.object'
+	print @Serial
+	print @QtyExcess
 	
 	update
 		o
@@ -372,7 +375,7 @@ insert
 )
 select
 	TransactionDT = @TranDT
-,	Machine = woh.MachineCode
+,	Machine = coalesce(woh.MachineCode, o.location)
 ,	Part = o.part
 ,	DefectCode = 'Qty Excess'
 ,	QtyScrapped = -@QtyExcess
@@ -407,6 +410,118 @@ if	@RowCount != 1 begin
 	return
 end
 --- </Insert>
+
+/*	Find an equal amount of material that exists at the same location with the same part number and remove it. */
+if	@MakeEquivalentShortage = 1 begin
+
+	declare
+		availableInventoryToShort cursor local for
+	select
+		Serial = oAvailable.serial
+	,	QtyAvailable = coalesce(oAvailable.std_quantity, 0)
+	from
+		dbo.object oAvailable
+		join dbo.object oExcess
+			on oExcess.Serial = @Serial 
+	where
+		oAvailable.status = 'A'
+		and oAvailable.location = oExcess.location
+		and oAvailable.std_quantity > 0
+		and oAvailable.part = oExcess.part
+		and oAvailable.serial != oExcess.serial
+	order by
+		coalesce
+		(	(	select
+					max(atTransfer.date_stamp)
+				from
+					dbo.audit_trail atTransfer
+				where
+					atTransfer.Serial = oAvailable.serial
+					and atTransfer.type = 'T'
+			)
+		,	(	select
+					max(atBreak.date_stamp)
+				from
+					dbo.audit_trail atBreak
+				where
+					atBreak.Serial = oAvailable.serial
+					and atBreak.type = 'B'
+			)
+		)
+
+	open
+		availableInventoryToShort
+
+	declare
+		@qtyShorted numeric(20,6)
+
+	set
+		@qtyShorted = 0
+
+	while
+		@qtyShorted <= @QtyExcess begin
+		
+		declare
+			@shortSerial int
+		,	@shortAmount numeric(20,6)
+		
+		fetch
+			availableInventoryToShort
+		into
+			@shortSerial
+		,	@shortAmount
+		
+		if	@@FETCH_STATUS != 0 begin
+			break
+		end
+		
+		if	@shortAmount > @QtyExcess - @qtyShorted begin
+			set @shortAmount = @QtyExcess - @qtyShorted
+		end
+		
+		--- <Call>
+		set	@CallProcName = 'dbo.usp_MES_NewShortageQty'
+		execute
+			@ProcReturn = dbo.usp_MES_NewShortageQty
+			@Operator = @Operator
+		,	@WODID = @WODID
+		,	@Serial = @shortSerial
+		,	@QtyShort = @shortAmount
+		,	@ShortageReason = 'Material used out of sequence.'
+		,	@MakeEquivalentExcess = 0
+		,	@TranDT = @TranDT out
+		,	@Result = @ProcResult out
+			
+		set	@Error = @@Error
+		if	@Error != 0 begin
+			set	@Result = 900501
+			RAISERROR ('Error encountered in %s.  Error: %d while calling %s', 16, 1, @ProcName, @Error, @CallProcName)
+			rollback tran @ProcName
+			return	@Result
+		end
+		if	@ProcReturn != 0 begin
+			set	@Result = 900502
+			RAISERROR ('Error encountered in %s.  ProcReturn: %d while calling %s', 16, 1, @ProcName, @ProcReturn, @CallProcName)
+			rollback tran @ProcName
+			return	@Result
+		end
+		if	@ProcResult != 0 begin
+			set	@Result = 900502
+			RAISERROR ('Error encountered in %s.  ProcResult: %d while calling %s', 16, 1, @ProcName, @ProcResult, @CallProcName)
+			rollback tran @ProcName
+			return	@Result
+		end
+		--- </Call>
+		
+		set @qtyShorted = @qtyShorted + @shortAmount
+	end
+
+	close
+		availableInventoryToShort
+
+	deallocate
+		availableInventoryToShort
+end
 --- </Body>
 
 --- <CloseTran Required=Yes AutoCreate=Yes>
