@@ -15,6 +15,18 @@
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
           <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
         </ConnectionNode>
+        <ConnectionNode Name="(local)\SQL2008R2:sa">
+          <Created>2012-02-24T17:21:37.6610821-05:00</Created>
+          <Type>SQL</Type>
+          <Server>(local)\SQL2008R2</Server>
+          <UserName>sa</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB>fx21st</InitialDB>
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
         <ConnectionNode Name="192.168.0.228:sa">
           <Created>2011-11-29T12:59:20.8409756-05:00</Created>
           <Type>SQL</Type>
@@ -205,6 +217,12 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>Procedure.dbo.usp_MES_GetJobList.sql</FullPath>
         </FileNode>
+        <FileNode Name="Procedure.dbo.usp_MES_GetMoveJobMachines.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:(local)\SQL2008R2:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>(local)\SQL2008R2</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_MES_GetMoveJobMachines.sql</FullPath>
+        </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_GetPickList.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
@@ -222,6 +240,12 @@
           <AssociatedConnSrvName />
           <AssociatedConnUserName />
           <FullPath>Procedure.dbo.usp_MES_GetScrapEntries_byWODID.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_MES_MoveJob.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_MES_MoveJob.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_NewExcessQty.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
