@@ -190,11 +190,10 @@ if	not exists
 		return
 	end
 	--- </Insert>
-else
+end
+else begin
 	--- <Update rows="1">
 	set	@TableName = 'dbo.object'
-	print @Serial
-	print @QtyExcess
 	
 	update
 		o
@@ -386,7 +385,7 @@ select
 ,	@excessAuditTrailID
 from
     dbo.object o
-    join dbo.WorkOrderHeaders woh
+    left join dbo.WorkOrderHeaders woh
 		join dbo.WorkOrderDetails wod
 			on wod.WorkOrderNumber = woh.WorkOrderNumber
 		on wod.RowID = @WODID

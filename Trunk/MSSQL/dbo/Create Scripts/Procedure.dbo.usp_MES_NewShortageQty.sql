@@ -281,8 +281,6 @@ end
 
 /*	Add an equal amount of material that exists at the same location with the same part number if found. */
 if	@MakeEquivalentExcess = 1 begin
-	print 'Do equivalent excess.'
-
 	declare
 		@excessSerial int
 		
@@ -319,7 +317,7 @@ if	@MakeEquivalentExcess = 1 begin
 	
 	if	@excessSerial > 0 begin
 		--- <Call>
-		set	@CallProcName = 'dbo.usp_MES_NewShortageQty'
+		set	@CallProcName = 'dbo.usp_MES_NewExcessQty'
 		execute
 			@ProcReturn = dbo.usp_MES_NewExcessQty
 			@Operator = @Operator

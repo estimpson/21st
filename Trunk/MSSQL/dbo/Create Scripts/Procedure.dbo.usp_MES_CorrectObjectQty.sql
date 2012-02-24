@@ -145,6 +145,55 @@ end
 
 /*	Delete object if it is no longer needed.*/
 if	@ObjectQty = 0 begin
+	/*	Unallocate location when Backflushing Principle is Group Technology. (u1) */
+	if	(	select
+				msbp.BackflushingPrinciple
+			from
+				dbo.object o
+				join dbo.MES_SetupBackflushingPrinciples msbp
+					on msbp.Type = 3 --(select dbo.udf_TypeValue('dbo.MES_SetupBackflushingPrinciples', 'Part'))
+					and msbp.ID = o.part
+			where
+				o.serial = @Serial
+		) = 4 begin
+		
+		--- <Update rows="1">
+		set	@TableName = 'dbo.location'
+		
+		update
+			l
+		set
+			sequence = null
+		from
+			dbo.location l
+			join dbo.object o
+				on o.location = l.code
+			join dbo.MES_SetupBackflushingPrinciples msbp
+				on msbp.BackflushingPrinciple = 4
+				and msbp.Type = 3
+				and msbp.ID = o.part
+		where
+			o.serial = @Serial
+		
+		select
+			@Error = @@Error,
+			@RowCount = @@Rowcount
+		
+		if	@Error != 0 begin
+			set	@Result = 999999
+			RAISERROR ('Error updating table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
+			rollback tran @ProcName
+			return
+		end
+		if	@RowCount != 1 begin
+			set	@Result = 999999
+			RAISERROR ('Error updating %s in procedure %s.  Rows Updated: %d.  Expected rows: 1.', 16, 1, @TableName, @ProcName, @RowCount)
+			rollback tran @ProcName
+			return
+		end
+		--- </Update>
+	end
+	
 	--- <Delete rows="1">
 	set	@TableName = 'dbo.object'
 	

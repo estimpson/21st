@@ -345,7 +345,7 @@ insert
 )
 select
 	TransactionDT = @TranDT
-,	Machine = woh.MachineCode
+,	Machine = coalesce(woh.MachineCode, o.location)
 ,	Part = o.part
 ,	DefectCode = @DefectCode
 ,	QtyScrapped = @QtyScrap
@@ -356,7 +356,7 @@ select
 ,	AuditTrailID = @qualityAuditTrailID
 from
 	dbo.object o
-	join dbo.WorkOrderHeaders woh
+	left join dbo.WorkOrderHeaders woh
 		join dbo.WorkOrderDetails wod
 			on wod.WorkOrderNumber = woh.WorkOrderNumber
 		on wod.RowID = @WODID
