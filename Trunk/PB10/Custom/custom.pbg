@@ -5,6 +5,7 @@ Save Format v3.0(19990112)
 @begin Objects
  "..\\ClientCustom\\21st\\w_customreport_vendorreceiptcount.srw" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\w_customreport_inventorybylocation.srw" "..\\ClientCustom\\21st\\custom.pbl";
+ "..\\ClientCustom\\21st\\customreport_saleshistory.srd" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\w_customreport_shippedsales.srw" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\w_customreport_unitsales.srw" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\d_dbo_mes_joblist.srd" "..\\ClientCustom\\21st\\custom.pbl";
@@ -18,6 +19,7 @@ Save Format v3.0(19990112)
  "..\\ClientCustom\\21st\\d_custom_moldingcolorletdown.srd" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\w_customreport_bucketsshipped.srw" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\n_cst_custom_mes_inventorytrans.sru" "..\\ClientCustom\\21st\\custom.pbl";
+ "..\\ClientCustom\\21st\\customreport_salesprojection.srd" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\customreport_vendor_receipt_count.srd" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\w_customreport_inventoryvalue.srw" "..\\ClientCustom\\21st\\custom.pbl";
 @end;
