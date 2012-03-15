@@ -8,6 +8,7 @@ Save Format v3.0(19990112)
  "..\\ClientCustom\\21st\\w_customreport_shippedsales.srw" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\w_customreport_unitsales.srw" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\d_dbo_mes_joblist.srd" "..\\ClientCustom\\21st\\custom.pbl";
+ "..\\ClientCustom\\21st\\cu_tabpg_jobbom.sru" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\d_normal_po_detail_display.srd" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\cu_tabpg_jobdetails.sru" "..\\ClientCustom\\21st\\custom.pbl";
  "..\\ClientCustom\\21st\\w_invoice_register.srw" "..\\ClientCustom\\21st\\custom.pbl";
