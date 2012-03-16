@@ -7,8 +7,6 @@ end type
 end forward
 
 global type w_customreport_inventorybylocation from w_customreport_date
-integer x = 214
-integer y = 221
 string title = "Inv Location"
 ddlb_1 ddlb_1
 end type
@@ -37,7 +35,7 @@ type dw_report from w_customreport_date`dw_report within w_customreport_inventor
 string dataobject = "customreport_inventory_by_location"
 end type
 
-event dw_report::pfc_retrieve;call super::pfc_retrieve;
+event dw_report::pfc_retrieve;
 return Retrieve(DateTime(Date(em_date1.text)), ddlb_1.Text)
 
 end event
