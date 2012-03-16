@@ -17,9 +17,9 @@ table(column=(type=long updatewhereclause=yes name=object_serial dbname="object.
  column=(type=char(1) updatewhereclause=yes name=status dbname="object.status" )
  procedure="1 
 execute
-	custom.usp_InventoryValuation
+	custom.usp_InventoryListByLocation
 	@InventoryDate = :inventoryDate
-" filter=" object_quantity  > 0"arguments=(("InventoryDate", datetime))  sort="plant A part_part A object_serial A " )
+,	@ClassType = :ClassType" filter=" object_quantity  > 0"arguments=(("InventoryDate", datetime),("ClassType", string))  sort="plant A part_part A object_serial A " )
 group(level=1 header.height=468 trailer.height=0 by=("plant" ) header.color="536870912" trailer.color="536870912" )
 group(level=2 header.height=375 trailer.height=0 by=("part_part" , "part_name" , "cross_ref" ) header.color="536870912" trailer.color="536870912" )
 text(band=header alignment="2" text="Location:" border="0" color="33554432" x="281" y="385" height="239" width="1000" html.valueishtml="0"  name=object_location_t visible="1"  font.face="Arial" font.height="-14" font.weight="700"  font.family="2" font.pitch="2" font.charset="0" background.mode="1" background.color="553648127" )
