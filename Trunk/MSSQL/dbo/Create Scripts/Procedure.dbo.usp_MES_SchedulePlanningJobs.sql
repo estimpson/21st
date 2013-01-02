@@ -204,10 +204,6 @@ from
 	left join dbo.order_header oh
 		on oh.order_no = fmnm.OrderNo
 		and oh.blanket_part = fmnm.Part
-where
-	--fmnm.Balance > 0
-	--and
-	fmnm.RequiredDT <= @HorizonEndDT
 order by
 	fmnm.Part
 ,	oh.customer
@@ -312,6 +308,10 @@ from
 	join dbo.part_machine pmPrimary
 		on pmPrimary.part = coalesce(requirements.PartCode, jobsRunning.PartCode, jobsPlanning.PartCode)
 		and pmPrimary.sequence = 1
+	left join dbo.MES_MachinePlanningHorizon mmph
+		on mmph.MachineCode = pmPrimary.machine
+where
+	case when coalesce(jobsRunning.QtyScheduled, 0) < requirements.AccumRequired then requirements.RequiredDT end < coalesce(getdate() + mmph.HorizonDays, @HorizonEndDT)
 group by
 	coalesce(requirements.PartCode, jobsRunning.PartCode, jobsPlanning.PartCode)
 ,	coalesce(requirements.BillToCode, jobsRunning.BilltoCode, jobsPlanning.BillToCode)

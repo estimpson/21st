@@ -39,6 +39,8 @@ from
 	left outer join location on object.LocationCode = location.code
 where
 	object.LocationCode != 'PRE-OBJECT'
+	and part.class = left(@ClassType, 1)
+	and part.type = right(@ClassType, 1)
 --- </Body>
 
 /*

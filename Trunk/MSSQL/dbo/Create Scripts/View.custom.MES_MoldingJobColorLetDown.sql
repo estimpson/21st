@@ -44,4 +44,22 @@ select
 from
 	custom.MES_MoldingJobColorLetDown mmjcld
 where
-	WODID = 28
+	WODID = 1274
+go
+
+select
+	*
+from
+	dbo.MES_JobBillOfMaterials mjbomBase
+	join custom.MoldingColorLetdown mcl
+		join dbo.MES_JobBillOfMaterials mjbomColorant
+			on mjbomColorant.ChildPart = mcl.ColorantCode
+		on mcl.BaseMaterialCode = mjbomBase.ChildPart
+		and mjbomColorant.WODID = mjbomBase.WODID
+where
+	mjbomBase.WODID = 1274
+
+select
+	*
+from
+	custom.MoldingColorLetdown mcl

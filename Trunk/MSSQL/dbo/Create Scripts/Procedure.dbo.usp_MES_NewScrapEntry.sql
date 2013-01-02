@@ -84,22 +84,6 @@ if	not exists
 	return
 end
 
-/*	Defect code must be valid:  */
-if	not exists
-	(	select
-			*
-		from
-			dbo.defect_codes dc
-		where
-			dc.code = @DefectCode
-	) begin
-
-	set	@Result = 200101
-	RAISERROR ('Invalid defect code %s in procedure %s.  Error: %d', 16, 1, @DefectCode, @ProcName, @Error)
-	rollback tran @ProcName
-	return
-end
-
 /*	Quantity must be valid:  */
 if	not coalesce(@QtyScrap, 0) > 0 begin
 
@@ -381,46 +365,6 @@ if	@RowCount != 1 begin
 end
 --- </Insert>
 
-/*	Delete object if quantity remaining is zero. */
-if	exists
-	(	select
- 			*
- 		from
- 			dbo.object o
- 		where
- 			serial = @serial
- 			and o.std_quantity <= 0
-	) begin
-	
-	--- <Delete rows="1">
-	set	@TableName = 'dbo.object'
-	 
-	delete
-		o
-	from
-		dbo.object o
-	where
-		serial = @serial	 
-
-	select
-		@Error = @@Error,
-		@RowCount = @@Rowcount
-
-	if	@Error != 0 begin
-		set	@Result = 999999
-		RAISERROR ('Error deleting from table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
-		rollback tran @ProcName
-		return
-	end
-	if	@RowCount != 1 begin
-		set	@Result = 999999
-		RAISERROR ('Error deleting from table %s in procedure %s.  Rows deleted: %d.  Expected rows: 1.', 16, 1, @TableName, @ProcName, @RowCount)
-		rollback tran @ProcName
-		return
-	end
-	--- </Delete>
-end
-
 /*	Adjust part on hand qty.*/
 /*		Update part on hand quantity.  */
 --- <Update rows="1">
@@ -502,6 +446,46 @@ if	@RowCount != 1 begin
 	
 end
 --- </Update>
+
+/*	Delete object if quantity remaining is zero. */
+if	exists
+	(	select
+ 			*
+ 		from
+ 			dbo.object o
+ 		where
+ 			serial = @serial
+ 			and o.std_quantity <= 0
+	) begin
+	
+	--- <Delete rows="1">
+	set	@TableName = 'dbo.object'
+	 
+	delete
+		o
+	from
+		dbo.object o
+	where
+		serial = @serial	 
+
+	select
+		@Error = @@Error,
+		@RowCount = @@Rowcount
+
+	if	@Error != 0 begin
+		set	@Result = 999999
+		RAISERROR ('Error deleting from table %s in procedure %s.  Error: %d', 16, 1, @TableName, @ProcName, @Error)
+		rollback tran @ProcName
+		return
+	end
+	if	@RowCount != 1 begin
+		set	@Result = 999999
+		RAISERROR ('Error deleting from table %s in procedure %s.  Rows deleted: %d.  Expected rows: 1.', 16, 1, @TableName, @ProcName, @RowCount)
+		rollback tran @ProcName
+		return
+	end
+	--- </Delete>
+end
 --- </Body>
 
 ---	<Return>
