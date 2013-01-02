@@ -130,20 +130,23 @@ from
 	dbo.fn_MES_GetJobBackflushDetails(@workOrderNumber, @workorderDetailLine, @qtyRequested) ugbd
 
 /*	Prevent backflush if missing components. */
-if	exists
-	(	select
-			*
-		from
-			@InventoryConsumption ic
-		where
-			ic.Serial = -1
-			and ic.Sequence > 0
-			and ic.QtyOverage > 0
-	) begin
-	set	@Result = 999999
-	RAISERROR ('Missing inventory for this job.  Check the job''s pick list.', 16, 1, @ProcName, @Error, @CallProcName)
-	rollback tran @ProcName
-	return
+/*	disable check */
+if 1 = 0 begin
+	if	exists
+		(	select
+				*
+			from
+				@InventoryConsumption ic
+			where
+				ic.Serial = -1
+				and ic.Sequence > 0
+				and ic.QtyOverage > 0
+		) begin
+		set	@Result = 999999
+		RAISERROR ('Missing inventory for this job.  Check the job''s pick list.', 16, 1, @ProcName, @Error, @CallProcName)
+		rollback tran @ProcName
+		return
+	end
 end
 
 /*	Loop through overages. */

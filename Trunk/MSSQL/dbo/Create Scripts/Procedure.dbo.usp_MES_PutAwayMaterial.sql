@@ -72,7 +72,7 @@ if	(	select
 	update
 		l
 	set
-		sequence = null
+		sequence = case when l.sequence is null then null else 0 end
 	from
 		dbo.location l
 		join dbo.object o

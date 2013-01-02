@@ -133,7 +133,7 @@ if	exists
 	) begin
 
 	set @Result = 999999
-	RAISERROR ('Serial %d not in a  %s.  Error: %d', 16, 1, @Serial, @ProcName, @Error)
+	RAISERROR ('Serial %d not in a %s.  Error: %d', 16, 1, @Serial, @ProcName, @Error)
 	rollback tran @ProcName
 	return
 end

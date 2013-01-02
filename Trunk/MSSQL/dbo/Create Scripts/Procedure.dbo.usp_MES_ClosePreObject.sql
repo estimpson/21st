@@ -131,49 +131,6 @@ if	not coalesce(@QtyRequested, 0) > 0 begin
 	rollback tran @ProcName
 	return
 end
-
-/*	WOD ID must be valid:  */
-declare
-	@WODID int
-,	@Part varchar(25)
-
-select
-	@WODID = wod.RowID
-,	@Part = woo.PartCode
-from
-	dbo.WorkOrderObjects woo
-	join dbo.WorkOrderDetails wod
-		on wod.WorkOrderNumber = woo.WorkOrderNumber
-		and wod.Line = woo.WorkOrderDetailLine
-where
-	woo.Serial = @PreObjectSerial
-
-if	not exists
-	(	select
-			*
-		from
-			dbo.WorkOrderDetails wod
-		where
-			wod.RowID = @WODID
-	) begin
-
-	set @Result = 200101
-	RAISERROR ('Invalid job id %d in procedure %s.  Error: %d', 16, 1, @WODID, @ProcName, @Error)
-	rollback tran @ProcName
-	return
-end
-
-declare
-	@Machine varchar(10)
-
-select
-	@Machine = woh.MachineCode
-from
-	dbo.WorkOrderDetails wod
-	join dbo.WorkOrderHeaders woh
-		on woh.WorkOrderNumber = wod.WorkOrderNumber
-where
-	wod.RowID = @WODID
 ---	</ArgumentValidation>
 
 --- <Body>
@@ -188,14 +145,14 @@ if	exists
 	) begin
 
 	--- <Delete rows="1">
-	set	@TableName = '[tableName]'
+	set	@TableName = 'dbo.object'
 	
 	delete
 		o
 	from
 		dbo.object o
 	where
-		serial = @PreObjectSerial
+		o.serial = @PreObjectSerial
 	
 	select
 		@Error = @@Error,
