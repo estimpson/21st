@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<FXRFGlobals xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <FXConnectionString>Data Source=192.168.0.11\SQL2012;Initial Catalog=FxTSM_Training;Persist Security Info=True;User ID=sa;Password=$Th0ught</FXConnectionString>
+</FXRFGlobals>

@@ -1,0 +1,120 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shipping", "Shipping\Shipping.csproj", "{AB44645F-9130-4563-B5AC-8A384E77594E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connection", "..\..\..\..\FX\RF\Common\Connection\Connection.csproj", "{60DB29CD-0F27-473A-B42B-64240BE3E8AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls", "..\..\..\..\FX\RF\Common\Controls\Controls.csproj", "{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "..\..\..\..\FX\RF\Common\DataLayer\DataLayer.csproj", "{BD16241A-A893-4868-B9BE-6FCB659DF41F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SymbolRFGun", "..\..\..\..\FX\RF\Common\SymbolRFGun\SymbolRFGun.csproj", "{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridCustomColumns", "..\..\..\..\FX\RF\Common\DataGridCustomColumns\DataGridCustomColumns.csproj", "{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CycleCount|Any CPU = CycleCount|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Pallets|Any CPU = Pallets|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Repack|Any CPU = Repack|Any CPU
+		RFReceiving|Any CPU = RFReceiving|Any CPU
+		Transfers|Any CPU = Transfers|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.CycleCount|Any CPU.ActiveCfg = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.CycleCount|Any CPU.Build.0 = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.CycleCount|Any CPU.Deploy.0 = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Pallets|Any CPU.ActiveCfg = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Pallets|Any CPU.Build.0 = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Pallets|Any CPU.Deploy.0 = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Repack|Any CPU.ActiveCfg = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Repack|Any CPU.Build.0 = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Repack|Any CPU.Deploy.0 = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.RFReceiving|Any CPU.ActiveCfg = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.RFReceiving|Any CPU.Build.0 = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.RFReceiving|Any CPU.Deploy.0 = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Transfers|Any CPU.ActiveCfg = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Transfers|Any CPU.Build.0 = Release|Any CPU
+		{AB44645F-9130-4563-B5AC-8A384E77594E}.Transfers|Any CPU.Deploy.0 = Release|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.CycleCount|Any CPU.ActiveCfg = CycleCount|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.CycleCount|Any CPU.Build.0 = CycleCount|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Pallets|Any CPU.ActiveCfg = Pallets|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Pallets|Any CPU.Build.0 = Pallets|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Repack|Any CPU.ActiveCfg = Repack|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Repack|Any CPU.Build.0 = Repack|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.RFReceiving|Any CPU.ActiveCfg = RFReceiving|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.RFReceiving|Any CPU.Build.0 = RFReceiving|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Transfers|Any CPU.ActiveCfg = Transfers|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Transfers|Any CPU.Build.0 = Transfers|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.CycleCount|Any CPU.ActiveCfg = CycleCount|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.CycleCount|Any CPU.Build.0 = CycleCount|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Pallets|Any CPU.ActiveCfg = Pallets|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Pallets|Any CPU.Build.0 = Pallets|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Repack|Any CPU.ActiveCfg = Repack|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Repack|Any CPU.Build.0 = Repack|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.RFReceiving|Any CPU.ActiveCfg = RFReceiving|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.RFReceiving|Any CPU.Build.0 = RFReceiving|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Transfers|Any CPU.ActiveCfg = Transfers|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Transfers|Any CPU.Build.0 = Transfers|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.CycleCount|Any CPU.ActiveCfg = CycleCount|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.CycleCount|Any CPU.Build.0 = CycleCount|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Pallets|Any CPU.ActiveCfg = Pallets|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Pallets|Any CPU.Build.0 = Pallets|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Repack|Any CPU.ActiveCfg = Repack|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Repack|Any CPU.Build.0 = Repack|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.RFReceiving|Any CPU.ActiveCfg = RFReceiving|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.RFReceiving|Any CPU.Build.0 = RFReceiving|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Transfers|Any CPU.ActiveCfg = Transfers|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Transfers|Any CPU.Build.0 = Transfers|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.CycleCount|Any CPU.ActiveCfg = CycleCount|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.CycleCount|Any CPU.Build.0 = CycleCount|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Pallets|Any CPU.ActiveCfg = Pallets|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Pallets|Any CPU.Build.0 = Pallets|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Repack|Any CPU.ActiveCfg = Repack|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Repack|Any CPU.Build.0 = Repack|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.RFReceiving|Any CPU.ActiveCfg = RFReceiving|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.RFReceiving|Any CPU.Build.0 = RFReceiving|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Transfers|Any CPU.ActiveCfg = Transfers|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Transfers|Any CPU.Build.0 = Transfers|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.CycleCount|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.CycleCount|Any CPU.Build.0 = Release|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.Pallets|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.Pallets|Any CPU.Build.0 = Release|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.Repack|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.Repack|Any CPU.Build.0 = Release|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.RFReceiving|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.RFReceiving|Any CPU.Build.0 = Release|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.Transfers|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF1525A-6210-4C4E-9ACA-B3FD91811ACA}.Transfers|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

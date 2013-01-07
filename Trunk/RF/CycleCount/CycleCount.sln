@@ -1,0 +1,82 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connection", "..\..\..\..\FX\RF\Common\Connection\Connection.csproj", "{60DB29CD-0F27-473A-B42B-64240BE3E8AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls", "..\..\..\..\FX\RF\Common\Controls\Controls.csproj", "{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "..\..\..\..\FX\RF\Common\DataLayer\DataLayer.csproj", "{BD16241A-A893-4868-B9BE-6FCB659DF41F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SymbolRFGun", "..\..\..\..\FX\RF\Common\SymbolRFGun\SymbolRFGun.csproj", "{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{223AC97C-29F6-4CB3-9748-054B58A1C8DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CycleCount", "CycleCount.csproj", "{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CycleCount|Any CPU = CycleCount|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Pallets|Any CPU = Pallets|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.CycleCount|Any CPU.ActiveCfg = CycleCount|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.CycleCount|Any CPU.Deploy.0 = CycleCount|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Pallets|Any CPU.ActiveCfg = Pallets|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Pallets|Any CPU.Build.0 = Pallets|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.CycleCount|Any CPU.ActiveCfg = CycleCount|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.CycleCount|Any CPU.Deploy.0 = CycleCount|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Pallets|Any CPU.ActiveCfg = Pallets|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Pallets|Any CPU.Build.0 = Pallets|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.CycleCount|Any CPU.ActiveCfg = CycleCount|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.CycleCount|Any CPU.Build.0 = CycleCount|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.CycleCount|Any CPU.Deploy.0 = CycleCount|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Pallets|Any CPU.ActiveCfg = Pallets|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Pallets|Any CPU.Build.0 = Pallets|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.CycleCount|Any CPU.ActiveCfg = CycleCount|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.CycleCount|Any CPU.Deploy.0 = CycleCount|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Pallets|Any CPU.ActiveCfg = Pallets|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Pallets|Any CPU.Build.0 = Pallets|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.CycleCount|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.CycleCount|Any CPU.Build.0 = Debug|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.CycleCount|Any CPU.Deploy.0 = Debug|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.Pallets|Any CPU.ActiveCfg = Release|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.Pallets|Any CPU.Build.0 = Release|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.Pallets|Any CPU.Deploy.0 = Release|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF05274E-3C5A-4104-9D0C-C8D5F9C867F6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8} = {223AC97C-29F6-4CB3-9748-054B58A1C8DB}
+		{BD16241A-A893-4868-B9BE-6FCB659DF41F} = {223AC97C-29F6-4CB3-9748-054B58A1C8DB}
+		{3A628CEE-EAE1-4A6F-9908-779B5C93AFD3} = {223AC97C-29F6-4CB3-9748-054B58A1C8DB}
+		{60DB29CD-0F27-473A-B42B-64240BE3E8AC} = {223AC97C-29F6-4CB3-9748-054B58A1C8DB}
+	EndGlobalSection
+EndGlobal
