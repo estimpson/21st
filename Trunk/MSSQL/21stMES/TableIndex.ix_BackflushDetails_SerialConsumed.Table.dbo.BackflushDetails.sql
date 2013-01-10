@@ -1,0 +1,1 @@
+create index ix_BackflushDetails_SerialConsumed on dbo.BackflushDetails (SerialConsumed, BackflushNumber)
