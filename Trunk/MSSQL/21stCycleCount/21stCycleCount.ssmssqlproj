@@ -1,0 +1,256 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="21stCycleCount">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="192.168.0.228:sa">
+          <Created>2013-01-04T08:29:22.8650869-05:00</Created>
+          <Type>SQL</Type>
+          <Server>192.168.0.228</Server>
+          <UserName>sa</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB>FIS_Empower_21st</InitialDB>
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="Insert.Fx.Globals.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Insert.Fx.Globals.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.custom.usp_InventoryControl_CycleCount_GetRecentRawConsumptionNotice.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.custom.usp_InventoryControl_CycleCount_GetRecentRawConsumptionNotice.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_Correct.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_Correct.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CountObject.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CountObject.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_AddFoundObject.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_AddFoundObject.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_AddObject.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_AddObject.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_Begin.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_Begin.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_CorrectLocation.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_CorrectLocation.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_CorrectObjectLocations.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_CorrectObjectLocations.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_CorrectObjectQuantities.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_CorrectObjectQuantities.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_CorrectQuantity.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_CorrectQuantity.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_CountObjects.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_CountObjects.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_End.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_End.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_HandleScanInput.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_HandleScanInput.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_MarkObject.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_MarkObject.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_MoveToLost.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_MoveToLost.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_NewHeader.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_NewHeader.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_RecoverObject.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_RecoverObject.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_RecoverObjects.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_RecoverObjects.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_RecoverObjectsFromAuditTrail.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_RecoverObjectsFromAuditTrail.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_CycleCount_UpdateHeaderCounts.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_CycleCount_UpdateHeaderCounts.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_Delete.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_Delete.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_ManualAdd.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_ManualAdd.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.dbo.usp_InventoryControl_Transfer.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_InventoryControl_Transfer.sql</FullPath>
+        </FileNode>
+        <FileNode Name="ScalarFunction.dbo.fn_Inventory_GetPartNetWeight.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>ScalarFunction.dbo.fn_Inventory_GetPartNetWeight.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Insert.FT.StatusDefn.CycleCount_Headers.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Script.Insert.FT.StatusDefn.CycleCount_Headers.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Insert.FT.StatusDefn.CycleCount_Objects.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Script.Insert.FT.StatusDefn.CycleCount_Objects.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.insert.Fx.Globals.CycleCount.HoldLostDays.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Script.insert.Fx.Globals.CycleCount.HoldLostDays.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Insert.MenuItem.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Script.Insert.MenuItem.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Insert.NumberSequence.Cycle Count.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Script.Insert.NumberSequence.Cycle Count.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Insert.Report Library.Cycle Count.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Script.Insert.Report Library.Cycle Count.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Insert.Report List.cycle Count.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Script.Insert.Report List.cycle Count.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Table.dbo.InventoryControl_CycleCountHeaders.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Table.dbo.InventoryControl_CycleCountHeaders.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Table.dbo.InventoryControl_CycleCountObjects.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Table.dbo.InventoryControl_CycleCountObjects.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Table.Fx.Globals.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Table.Fx.Globals.sql</FullPath>
+        </FileNode>
+        <FileNode Name="TableFunction.dbo.InventoryControl_CycleCount_GetSerialInfo.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>TableFunction.dbo.InventoryControl_CycleCount_GetSerialInfo.sql</FullPath>
+        </FileNode>
+        <FileNode Name="TableTrigger.Table.InventoryControl_CycleCountHeaders.Table.trInventoryControl_CycleCountHeaders_i.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>TableTrigger.Table.InventoryControl_CycleCountHeaders.Table.trInventoryControl_CycleCountHeaders_i.sql</FullPath>
+        </FileNode>
+        <FileNode Name="View.custom.InventoryControl_CycleCount_RecentRawConsumptionNotice.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>View.custom.InventoryControl_CycleCount_RecentRawConsumptionNotice.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>

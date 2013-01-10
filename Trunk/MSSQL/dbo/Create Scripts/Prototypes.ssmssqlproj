@@ -73,14 +73,40 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>PT.TableType.dbo.MES_XRt.sql</FullPath>
         </FileNode>
+        <FileNode Name="Script.Calc.BackflushDetails.NetMPS.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Script.Calc.BackflushDetails.NetMPS.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Calc.BackflushDetails.NetOut.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Script.Calc.BackflushDetails.NetOut.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Calc.BackflushDetails.OnHand.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Script.Calc.BackflushDetails.OnHand.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Calc.BackflushDetails.Results.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Script.Calc.BackflushDetails.Results.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Calc.BackflushDetails.XRt.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Script.Calc.BackflushDetails.XRt.sql</FullPath>
+        </FileNode>
       </Items>
     </LogicalFolder>
     <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
       <Items />
     </LogicalFolder>
   </Items>
-  <SccProjectName>Create Scripts</SccProjectName>
-  <SccAuxPath />
-  <SccLocalPath>.</SccLocalPath>
-  <SccProvider>MSSCCI:PushOk SVNSCC</SccProvider>
 </SqlWorkbenchSqlProject>

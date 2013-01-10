@@ -1,4 +1,6 @@
-﻿namespace Shipping
+﻿using Controls;
+
+namespace Shipping
 {
     partial class formShipping
     {
@@ -182,7 +184,7 @@
         public System.Windows.Forms.Panel pnlMain;
         public System.Windows.Forms.ComboBox cbxShippers;
         public System.Windows.Forms.Button btnPickShipper;
-        public System.Windows.Forms.DataGrid gridLines;
+        public ScrollableGrid gridLines;
         public System.Windows.Forms.DataGrid gridObjects;
         public System.Windows.Forms.ComboBox cbxSerials;
         public System.Windows.Forms.Button btnStageUnstage;
