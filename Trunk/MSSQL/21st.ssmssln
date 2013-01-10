@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# SQL Server Management Studio Solution File, Format Version 11.00
+Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "21stCycleCount", "21stCycleCount\21stCycleCount.ssmssqlproj", "{7131CBBF-64C1-4644-B22E-74DFEAF8CD55}"
+EndProject
+Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "21stMES", "21stMES\21stMES.ssmssqlproj", "{FB520729-7BA1-4B48-A823-2D2EEA566A02}"
+EndProject
+Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "21stShipping", "21stShipping\21stShipping.ssmssqlproj", "{BAAD6650-4EB6-43B7-824C-C1F9FFE0DC07}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Default|Default = Default|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7131CBBF-64C1-4644-B22E-74DFEAF8CD55}.Default|Default.ActiveCfg = Default
+		{FB520729-7BA1-4B48-A823-2D2EEA566A02}.Default|Default.ActiveCfg = Default
+		{2A3B3589-A193-41FE-B88A-6852E71D3E8D}.Default|Default.ActiveCfg = Default
+		{BAAD6650-4EB6-43B7-824C-C1F9FFE0DC07}.Default|Default.ActiveCfg = Default
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
