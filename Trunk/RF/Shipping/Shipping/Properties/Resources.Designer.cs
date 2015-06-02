@@ -67,7 +67,7 @@ namespace Shipping.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scan or select an Object to stage or unstage it..
+        ///   Looks up a localized string similar to Scan or enter an Object serial  number to stage or unstage it..
         /// </summary>
         internal static string scanObject {
             get {

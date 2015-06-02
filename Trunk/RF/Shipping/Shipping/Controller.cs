@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
 using Controls;
 using Shipping.Properties;
@@ -8,6 +10,8 @@ using SymbolRFGun;
 using Connection;
 using DataGridCustomColumns;
 using DataLayer.DataAccess;
+using DataLayer.dsShippingTableAdapters;
+using DataLayer;
 
 namespace Shipping
 {
@@ -24,6 +28,7 @@ namespace Shipping
 
         #endregion
 
+        private DataTable dataTableShipperLines;
 
         public string OperatorCode { private get; set; }
 
@@ -72,10 +77,12 @@ namespace Shipping
                 switch (_screenState)
                 {
                     case screenStates.pendingLogin:
-                        shippingForm.cbxShippers.DataSource = shippingForm.cbxSerials.DataSource =
-                            shippingForm.gridLines.DataSource = shippingForm.gridObjects.DataSource = null;
+                        shippingForm.cbxShippers.DataSource = shippingForm.gridLines.DataSource = 
+                            shippingForm.gridObjects.DataSource = null;
 
-                        shippingForm.pnlMain.Enabled = false;
+                        shippingForm.tbxSerial.Text = "";
+
+                        shippingForm.pnlMain.Enabled = shippingForm.pnlObjects.Enabled = false;
                         
                         messageController.ShowInstruction(Resources.loginInstructions);
                         shippingForm.logOnOffControl1.txtOperator.Focus();
@@ -86,12 +93,24 @@ namespace Shipping
                         GetShipperNumbers();
                         break;
                     case screenStates.shipperSelected:
+                        shippingForm.pnlObjects.Enabled = true;
+
+                        // Clear staged objects grid until a shipper line is selected
+                        shippingForm.gridObjects.DataSource = null;
+
                         messageController.ShowInstruction(Resources.scanObject);
                         break;
                     case screenStates.refreshScreen:
-                        //shippingForm.tbxLocation.Text = shippingForm.tbxSerial.Text = "";
+                        shippingForm.cbxShippers.DataSource = shippingForm.gridLines.DataSource =
+                            shippingForm.gridObjects.DataSource = null;
+
+                        shippingForm.tbxSerial.Text = "";
+
+                        shippingForm.pnlObjects.Enabled = false;
+
+                        GetShipperNumbers();
+
                         messageController.ShowInstruction(Resources.scanShipper);
-                        //GetCycleCountList();
                         break;
                 }
             }
@@ -184,13 +203,27 @@ namespace Shipping
             shippingForm.cbxShippers.ValueMember = "id";
             shippingForm.cbxShippers.SelectedItem = null;
         }
+                     
+        public void ShipperScanned(string shipper)        
+        {
+            // Validate shipper and get shipper lines
+            GetShipperLines();
+
+            // Refresh combobox
+            GetShipperNumbers();
+
+            // Set combobox text
+            shippingForm.cbxShippers.Text = shipper;
+        }
 
         public void GetShipperLines()
         {
             string error = "";
+            string customer = "";
+            string duedate = "";
             int shipperID = Convert.ToInt32(shippingForm.cbxShippers.SelectedValue);
 
-            var shipperLines = shipping.GetShipperLines(shipperID, out error);
+            var shipperLines = shipping.GetShipperLines(shipperID, out customer, out duedate, out error);
             if (error != "")
             {
                 alert.ShowError(alertLevel.High, error, "GetShipperLines() Error");
@@ -198,20 +231,22 @@ namespace Shipping
             }
             if (shipperLines == null)
             {
-                alert.ShowError(alertLevel.High, "There are no active Shipper Lines.", "GetShipperLines() Error");
+                alert.ShowError(alertLevel.High, "Failed to return any Shipper Lines.", "GetShipperLines() Error");
                 return;
             }
+            dataTableShipperLines = shipperLines;
 
             // Customize datagrid columns
-            CustomDataGridColumnStyles(shipperLines);
+            CustomDataGridColumnStyles();
 
             // Bind datagrid
             shippingForm.gridLines.DataSource = shipperLines;
 
             ScreenState = screenStates.shipperSelected;
+            messageController.ShowMessage(string.Format("Now staging Shipper {0}, Customer {1}, Due {2}.", shipperID, customer, duedate));
         }
 
-        private void CustomDataGridColumnStyles(DataTable dt)
+        private void CustomDataGridColumnStyles()
         {
             shippingForm.gridLines.TableStyles.Clear();
             var ts = new DataGridTableStyle { MappingName = "GetShipperLines" };
@@ -226,7 +261,7 @@ namespace Shipping
                 Width = shippingForm.gridLines.Width * 18 / 100,
                 ReadOnly = true
             };
-            //dataGridCustomColumn0.SetCellFormat += CgsSetCellFormat;
+            dataGridCustomColumn0.SetCellFormat += CgsSetCellFormat;
             ts.GridColumnStyles.Add(dataGridCustomColumn0);
 
 
@@ -236,10 +271,10 @@ namespace Shipping
                 Owner = shippingForm.gridLines,
                 HeaderText = "CPart",
                 MappingName = "customer_part",
-                Width = shippingForm.gridLines.Width * 35 / 100,
+                Width = shippingForm.gridLines.Width * 30 / 100,
                 ReadOnly = true
             };
-            //dataGridCustomColumn1.SetCellFormat += CgsSetCellFormat;
+            dataGridCustomColumn1.SetCellFormat += CgsSetCellFormat;
             ts.GridColumnStyles.Add(dataGridCustomColumn1);
 
 
@@ -255,7 +290,7 @@ namespace Shipping
                 Alignment = HorizontalAlignment.Right,
                 ReadOnly = true
             };
-            //dataGridCustomColumn2.SetCellFormat += CgsSetCellFormat;
+            dataGridCustomColumn2.SetCellFormat += CgsSetCellFormat;
             ts.GridColumnStyles.Add(dataGridCustomColumn2);
 
 
@@ -271,7 +306,7 @@ namespace Shipping
                 Alignment = HorizontalAlignment.Right,
                 ReadOnly = true
             };
-            //dataGridCustomColumn3.SetCellFormat += CgsSetCellFormat;
+            dataGridCustomColumn3.SetCellFormat += CgsSetCellFormat;
             ts.GridColumnStyles.Add(dataGridCustomColumn3);
 
 
@@ -284,40 +319,38 @@ namespace Shipping
                 Width = shippingForm.gridLines.Width * 18 / 100,
                 ReadOnly = true
             };
-            //dataGridCustomColumn4.SetCellFormat += CgsSetCellFormat;
+            dataGridCustomColumn4.SetCellFormat += CgsSetCellFormat;
             ts.GridColumnStyles.Add(dataGridCustomColumn4);
 
             //  Add new table style to Grid.
             shippingForm.gridLines.TableStyles.Add(ts);
         }
 
+        // Define Event Handler. It must conform to the paramters defined in the delegate.
+        private void CgsSetCellFormat(object sender, DataGridCustomColumns.DataGridFormatCellEventArgs e)
+        {
+            var rowShipperLines = dataTableShipperLines.Rows[e.Row] as DataLayer.dsShipping.GetShipperLinesRow;
 
-        //public void GetCycleCountList()
-        //{
-        //    string error = "";
-        //    isDatabindingCycleCountList = true;
+            try
+            {
+                decimal d = Convert.ToDecimal(rowShipperLines.qty_packed);
+            }
+            catch (Exception)
+            {
+                e.CellColor = Color.White;
+                return;
+            }
 
-        //    var cycleCountNumbers = cycle.GetCycleCountNumbers(out error);
-        //    if (error != "")
-        //    {
-        //        alert.ShowError(alertLevel.High, error, "GetCycleCountList() Error");
-        //        return;
-        //    }
-        //    if (cycleCountNumbers == null)
-        //    {
-        //        alert.ShowError(alertLevel.High, "There are no active Cycle Counts.", "GetCycleCountList() Error");
-        //        return;
-        //    }
-        //    cycleCountForm.cbxCycleCount.DataSource = cycleCountNumbers;
-        //    cycleCountForm.cbxCycleCount.DisplayMember = "Description";
-        //    cycleCountForm.cbxCycleCount.ValueMember = "CycleCountNumber";
+            if (rowShipperLines.qty_packed == 0)
+            {
+                e.CellColor = Color.White;
+                return;
+            }
 
-        //    SelectedCycleCount = cycleCountForm.cbxCycleCount.SelectedValue.ToString();
-        //    cycleCountForm.pnlDataForm.Enabled = true;
-        //    cycleCountForm.tbxLocation.Focus();
-
-        //    isDatabindingCycleCountList = false;
-        //}
+            if (rowShipperLines.qty_packed < rowShipperLines.qty_required) e.CellColor = Color.Yellow;
+            if (rowShipperLines.qty_packed == rowShipperLines.qty_required) e.CellColor = Color.LightGreen;
+            if (rowShipperLines.qty_packed > rowShipperLines.qty_required) e.CellColor = Color.Tomato;
+        }
 
         #endregion
 
@@ -325,113 +358,165 @@ namespace Shipping
 
         #region Serial Methods
 
-        //public void SerialEntered(int serial)
-        //{
-        //    if (LastSerial == null)
-        //    {
-        //        // Prepare current serial for Cycle Count
-        //        GetObjectInfo(serial);
-        //    }
-        //    else
-        //    {
-        //        // Add the previous serial to the Cycle Count, prepare current serial for Cycle Count
-        //        CycleCountTheObject();
-        //        GetObjectInfo(serial);
-        //    }
-        //}
+        public void GetObjects(string part) // Get list of staged objects for the shipper/part
+        {
+            string error = "";
+            int shipperID = Convert.ToInt32(shippingForm.cbxShippers.SelectedValue);
 
-        //private void GetObjectInfo(int serial)
-        //{
-        //    string part, quantity, loc, error = "";
+            var shipperLineObjects = shipping.GetShipperLineObjects(shipperID, part, out error);
+            if (error != "")
+            {
+                alert.ShowError(alertLevel.High, error, "GetShipperLineObjects() Error");
+                return;
+            }
+            if (shipperLineObjects == null) return;
 
-        //    cycle.GetObjectInfo(serial, out part, out quantity, out loc, out error);
-        //    if (error != "")
-        //    {
-        //        alert.ShowError(alertLevel.High, error, "GetObjectInfo() Error");
-        //        cycleCountForm.tbxSerial.Text = "";
-        //        return;
-        //    }
-        //    LastSerial = serial;
-        //    cycleCountForm.tbxPart.Text = part;
-        //    cycleCountForm.tbxQuantity.Text = quantity;
-        //    cycleCountForm.tbxRealQuantity.Focus();
-        //}
+            // Customize datagrid columns
+            CustomDataGridColumnStylesForLineObjects();
 
-        //public void CycleCountTheObject()
-        //{
-        //    decimal realquantity = -1;
-        //    if (cycleCountForm.tbxRealQuantity.Text.Trim() != "")
-        //    {
-        //        realquantity = ValidateQuantity(cycleCountForm.tbxRealQuantity.Text.Trim());
-        //        if (realquantity < 0)
-        //        {
-        //            alert.ShowError(alertLevel.Medium, "Real quantity is not valid.", "Error");
-        //            return;
-        //        }
-        //    }
+            // Bind datagrid
+            shippingForm.gridObjects.DataSource = shipperLineObjects;
 
-        //    string error = "";
-        //    string actionTakenMessage = "";
-        //    int? actionTaken = null;
-        //    string ccnumber = cycleCountForm.cbxCycleCount.SelectedValue.ToString();
-        //    string part = cycleCountForm.tbxPart.Text;
-        //    string loc = cycleCountForm.tbxLocation.Text.Trim();
-        //    int lastserial = Convert.ToInt32(LastSerial);
+            // Set form focus
+            shippingForm.tbxSerial.Focus();
+        }
 
-        //    if (realquantity < 0)
-        //    {
-        //        decimal quantity = Convert.ToDecimal(cycleCountForm.tbxQuantity.Text.Trim());
-        //        int? result = cycle.CycleCountTheObject(OperatorCode, ccnumber, lastserial, part, quantity, loc, out actionTakenMessage, out actionTaken, out error);
-        //        if (error != "")
-        //        {
-        //            alert.ShowError(alertLevel.High, error, "CycleCountTheObject() Error");
-        //        }
-        //        else
-        //        {
-        //            messageController.ShowMessage(actionTakenMessage);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        int? result = cycle.CycleCountTheObject(OperatorCode, ccnumber, lastserial, part, realquantity, loc, out actionTakenMessage, out actionTaken, out error);
-        //        if (error != "")
-        //        {
-        //            alert.ShowError(alertLevel.High, error, "CycleCountTheObject() Error");
-        //        }
-        //        else
-        //        {
-        //            messageController.ShowMessage(actionTakenMessage);
-        //        }
-        //    }
-        //}
+        private void CustomDataGridColumnStylesForLineObjects()
+        {
+            shippingForm.gridObjects.TableStyles.Clear();
+            var ts = new DataGridTableStyle { MappingName = "GetShipperLineObjects" };
 
-        //public int ValidateSerial(string ser)
-        //{
-        //    int serial = 0;
-        //    try
-        //    {
-        //        serial = Convert.ToInt32(ser);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return serial;
-        //    }
-        //    return serial;
-        //}
+            // Serial Column
+            var dataGridCustomColumn0 = new DataGridCustomTextBoxColumn
+            {
+                Owner = shippingForm.gridObjects,
+                HeaderText = "Serial",
+                MappingName = "serial",
+                Width = shippingForm.gridObjects.Width * 25 / 100,
+                ReadOnly = true
+            };
+            //dataGridCustomColumn0.SetCellFormat += CgsSetCellFormat;
+            ts.GridColumnStyles.Add(dataGridCustomColumn0);
 
-        //private decimal ValidateQuantity(string qty)
-        //{
-        //    decimal quantity = -1;
-        //    try
-        //    {
-        //        quantity = Convert.ToDecimal(qty);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return quantity;
-        //    }
-        //    return quantity;
-        //}
+            // Part Column
+            var dataGridCustomColumn1 = new DataGridCustomTextBoxColumn
+            {
+                Owner = shippingForm.gridObjects,
+                HeaderText = "Part",
+                MappingName = "part",
+                Width = shippingForm.gridObjects.Width * 35 / 100,
+                ReadOnly = true
+            };
+            //dataGridCustomColumn1.SetCellFormat += CgsSetCellFormat;
+            ts.GridColumnStyles.Add(dataGridCustomColumn1);
+
+            // Quantity Column
+            var dataGridCustomColumn2 = new DataGridCustomTextBoxColumn
+            {
+                Owner = shippingForm.gridObjects,
+                HeaderText = "Qty",
+                Format = "0.#",
+                FormatInfo = null,
+                MappingName = "quantity",
+                Width = shippingForm.gridObjects.Width * 18 / 100,
+                Alignment = HorizontalAlignment.Right,
+                ReadOnly = true
+            };
+            //dataGridCustomColumn2.SetCellFormat += CgsSetCellFormat;
+            ts.GridColumnStyles.Add(dataGridCustomColumn2);
+
+            //  Add new table style to Grid.
+            shippingForm.gridObjects.TableStyles.Add(ts);
+        }
+
+        public void StageOrUnstageSerial(int serial)
+        {
+            string error = "";
+            int shipperID = Convert.ToInt32(shippingForm.cbxShippers.SelectedValue);
+
+            int result = shipping.StageObject(OperatorCode, shipperID, serial, null, out error);
+            if (error != "")
+            {
+                alert.ShowError(alertLevel.High, string.Format("Serial {0} was not staged. ", serial) + error, "StageObject() Error");
+                return;
+            }
+
+            if (result == 100) // Unstage object
+            {
+                // Show pop-up dialog to verify unstage
+                FXRFGlobals.MyRFGun.Beep();
+                DialogResult dr = MessageBox.Show("Object is already staged. Do you want to unstage it?", "Message",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                if (dr == DialogResult.Yes)
+                {
+                    shipping.UnstageObject(OperatorCode, serial, out error);
+                    if (error != "")
+                    {
+                        alert.ShowError(alertLevel.High, string.Format("Serial {0} was not unstaged. ", serial) + error, "UnstageObject() Error");
+                    }
+                    else // Successful unstage
+                    {
+                        RefreshAfterStageOrUnstage(serial);
+                        messageController.ShowMessage(string.Format("Unstaged {0} from Shipper {1}.", serial, shipperID));
+                    }
+                }  
+                shippingForm.tbxSerial.Text = "";
+            }
+            else if (result == 0) // Successful stage
+            {
+                RefreshAfterStageOrUnstage(serial);
+                messageController.ShowMessage(string.Format("Staged {0} to Shipper {1}.", serial, shipperID));
+            }
+        }
+
+        private void RefreshAfterStageOrUnstage(int serial)
+        {
+            string err = "";
+            shippingForm.tbxSerial.Text = "";
+
+            // Refresh shipper lines grid
+            GetShipperLines();
+
+            // Scroll to row in lines grid based on part number of scanned serial
+            var part = shipping.GetObjectInfo(serial, out err);
+            if (err != "")
+            {
+                alert.ShowError(alertLevel.High, err, "GetShipperLineObjects() Error");
+                return;
+            }
+            if (part == "") return;
+
+            for (int i = 0; i < shippingForm.gridLines.VisibleRowCount; i++)
+            {
+                if (shippingForm.gridLines[i, 0].ToString() == part)
+                    ScrollGridToRow(shippingForm.gridLines, i);
+            }
+
+            // Refresh staged objects grid
+            GetObjects(part);
+        }
+
+        private void ScrollGridToRow(DataGrid control, int rowNumber)
+        {
+            FieldInfo fi = control.GetType().GetField("m_sbVert",
+                                                   BindingFlags.NonPublic | BindingFlags.GetField |
+                                                   BindingFlags.Instance);
+            ((VScrollBar)fi.GetValue(shippingForm.gridLines)).Value = rowNumber;
+        }
+
+        public int ValidateSerial(string ser)
+        {
+            int serial = 0;
+            try
+            {
+                serial = Convert.ToInt32(ser);
+            }
+            catch (Exception)
+            {
+                return serial;
+            }
+            return serial;
+        }
 
         #endregion
 
@@ -448,13 +533,12 @@ namespace Shipping
                 if (scanData.ScanDataType == eScanDataType.Serial || scanData.ScanDataType == eScanDataType.Undef)
                 {
                     int serial = int.Parse(scanData.DataValue.Trim());
-                    //cycleCountForm.tbxSerial.Text = scanData.DataValue.Trim();
-                    //SerialEntered(serial);
+                    shippingForm.tbxSerial.Text = scanData.DataValue.Trim();
+                    StageOrUnstageSerial(serial);
                 }
                 else if (scanData.ScanDataType == eScanDataType.Shipper)
                 {
-                    //cycleCountForm.tbxLocation.Text = scanData.DataValue.Trim();
-                    //LocationEntered(scanData.DataValue.Trim());
+                    ShipperScanned(scanData.DataValue.Trim());
                 }
                 else
                 {
