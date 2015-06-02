@@ -121,7 +121,7 @@
     <value>Enter your operator code and press the Log On button.</value>
   </data>
   <data name="scanObject" xml:space="preserve">
-    <value>Scan or select an Object to stage or unstage it.</value>
+    <value>Scan or enter an Object serial  number to stage or unstage it.</value>
   </data>
   <data name="scanShipper" xml:space="preserve">
     <value>Scan or select a Shipper number.</value>

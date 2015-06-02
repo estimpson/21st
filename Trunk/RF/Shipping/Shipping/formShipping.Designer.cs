@@ -42,10 +42,12 @@ namespace Shipping
             this.gridLines = new System.Windows.Forms.DataGrid();
             this.gridObjects = new System.Windows.Forms.DataGrid();
             this.label2 = new System.Windows.Forms.Label();
-            this.cbxSerials = new System.Windows.Forms.ComboBox();
             this.btnStageUnstage = new System.Windows.Forms.Button();
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.pnlObjects = new System.Windows.Forms.Panel();
+            this.tbxSerial = new System.Windows.Forms.TextBox();
             this.pnlMain.SuspendLayout();
+            this.pnlObjects.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -107,56 +109,65 @@ namespace Shipping
             this.gridLines.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.gridLines.Location = new System.Drawing.Point(3, 26);
             this.gridLines.Name = "gridLines";
-            this.gridLines.Size = new System.Drawing.Size(234, 57);
+            this.gridLines.Size = new System.Drawing.Size(234, 64);
             this.gridLines.TabIndex = 5;
+            this.gridLines.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gridLines_MouseUp);
             // 
             // gridObjects
             // 
             this.gridObjects.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.gridObjects.Location = new System.Drawing.Point(3, 114);
+            this.gridObjects.Location = new System.Drawing.Point(3, 25);
             this.gridObjects.Name = "gridObjects";
-            this.gridObjects.Size = new System.Drawing.Size(234, 65);
+            this.gridObjects.Size = new System.Drawing.Size(228, 70);
             this.gridObjects.TabIndex = 6;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(28, 89);
+            this.label2.Location = new System.Drawing.Point(19, 4);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(37, 20);
             this.label2.Text = "Serial";
             // 
-            // cbxSerials
-            // 
-            this.cbxSerials.Location = new System.Drawing.Point(65, 86);
-            this.cbxSerials.Name = "cbxSerials";
-            this.cbxSerials.Size = new System.Drawing.Size(110, 22);
-            this.cbxSerials.TabIndex = 8;
-            this.cbxSerials.SelectedIndexChanged += new System.EventHandler(this.cbxSerials_SelectedIndexChanged);
-            // 
             // btnStageUnstage
             // 
             this.btnStageUnstage.BackColor = System.Drawing.Color.White;
-            this.btnStageUnstage.Location = new System.Drawing.Point(181, 87);
+            this.btnStageUnstage.Location = new System.Drawing.Point(177, 4);
             this.btnStageUnstage.Name = "btnStageUnstage";
             this.btnStageUnstage.Size = new System.Drawing.Size(54, 20);
             this.btnStageUnstage.TabIndex = 9;
-            this.btnStageUnstage.Text = "Stage";
+            this.btnStageUnstage.Text = "Enter";
             this.btnStageUnstage.Click += new System.EventHandler(this.btnStageUnstage_Click);
             // 
             // pnlMain
             // 
             this.pnlMain.BackColor = System.Drawing.Color.Gainsboro;
-            this.pnlMain.Controls.Add(this.gridObjects);
+            this.pnlMain.Controls.Add(this.pnlObjects);
             this.pnlMain.Controls.Add(this.btnPickShipper);
-            this.pnlMain.Controls.Add(this.cbxSerials);
             this.pnlMain.Controls.Add(this.cbxShippers);
-            this.pnlMain.Controls.Add(this.btnStageUnstage);
-            this.pnlMain.Controls.Add(this.label2);
             this.pnlMain.Controls.Add(this.gridLines);
             this.pnlMain.Controls.Add(this.label1);
             this.pnlMain.Location = new System.Drawing.Point(0, 29);
             this.pnlMain.Name = "pnlMain";
             this.pnlMain.Size = new System.Drawing.Size(240, 186);
+            // 
+            // pnlObjects
+            // 
+            this.pnlObjects.BackColor = System.Drawing.Color.DarkGray;
+            this.pnlObjects.Controls.Add(this.label2);
+            this.pnlObjects.Controls.Add(this.gridObjects);
+            this.pnlObjects.Controls.Add(this.tbxSerial);
+            this.pnlObjects.Controls.Add(this.btnStageUnstage);
+            this.pnlObjects.Location = new System.Drawing.Point(3, 89);
+            this.pnlObjects.Name = "pnlObjects";
+            this.pnlObjects.Size = new System.Drawing.Size(234, 95);
+            // 
+            // tbxSerial
+            // 
+            this.tbxSerial.Location = new System.Drawing.Point(62, 3);
+            this.tbxSerial.Name = "tbxSerial";
+            this.tbxSerial.Size = new System.Drawing.Size(109, 21);
+            this.tbxSerial.TabIndex = 12;
+            this.tbxSerial.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbxSerial_KeyPress);
             // 
             // formShipping
             // 
@@ -171,6 +182,7 @@ namespace Shipping
             this.Name = "formShipping";
             this.Text = "Shipping";
             this.pnlMain.ResumeLayout(false);
+            this.pnlObjects.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -184,12 +196,13 @@ namespace Shipping
         public System.Windows.Forms.Panel pnlMain;
         public System.Windows.Forms.ComboBox cbxShippers;
         public System.Windows.Forms.Button btnPickShipper;
-        public ScrollableGrid gridLines;
-        public System.Windows.Forms.DataGrid gridObjects;
-        public System.Windows.Forms.ComboBox cbxSerials;
         public System.Windows.Forms.Button btnStageUnstage;
         public Controls.LogOnOffControl logOnOffControl1;
         public Controls.MessageBoxControl messageBoxControl1;
+        public System.Windows.Forms.DataGrid gridLines;
+        public System.Windows.Forms.DataGrid gridObjects;
+        public System.Windows.Forms.TextBox tbxSerial;
+        public System.Windows.Forms.Panel pnlObjects;
     }
 }
 
