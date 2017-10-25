@@ -1,0 +1,2 @@
+CREATE USER [estimpson] WITHOUT LOGIN
+GO

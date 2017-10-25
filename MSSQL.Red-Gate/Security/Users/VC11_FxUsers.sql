@@ -1,0 +1,5 @@
+IF NOT EXISTS (SELECT * FROM master.dbo.syslogins WHERE loginname = N'VC11\FxUsers')
+CREATE LOGIN [VC11\FxUsers] FROM WINDOWS
+GO
+CREATE USER [VC11\FxUsers] FOR LOGIN [VC11\FxUsers]
+GO

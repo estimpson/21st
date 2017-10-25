@@ -1,0 +1,42 @@
+CREATE TABLE [dbo].[entitlements]
+(
+[entitlement] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+[description] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[employment_types] [varchar] (250) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[accruals_per_year] [smallint] NULL,
+[anniversary_date_only] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[balance_entitlement] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[print_on_check] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[eligibility_hire_seniority] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[hired_before_date] [datetime] NULL,
+[min_hours_standard_accrual] [decimal] (18, 6) NULL,
+[max_hours_standard_accrual] [decimal] (18, 6) NULL,
+[min_hours_prorated_accrual] [decimal] (18, 6) NULL,
+[max_hours_prorated_accrual] [decimal] (18, 6) NULL,
+[standard_hours] [decimal] (18, 6) NULL,
+[reduce_current_year_balance] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[check_stub_description] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[eligibility_years] [smallint] NULL,
+[eligibility_months] [smallint] NULL,
+[eligibility_days] [smallint] NULL,
+[enrollment_month] [smallint] NULL,
+[enrollment_day] [smallint] NULL,
+[changed_date] [datetime] NULL,
+[changed_user_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[security_unit] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[entitlement_style] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[allow_negative] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[pay_type] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[allow_negative_dollars] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[ledger] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[dr_ledger_account_code] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[cr_ledger_account_code] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[check_sequence] [smallint] NULL,
+[carryover_negative_hours] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[carryover_negative_dollars] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[enrollment_style] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[entitlement_transfer_overage] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[entitlements] ADD CONSTRAINT [pk_entitlements] PRIMARY KEY CLUSTERED  ([entitlement]) ON [PRIMARY]
+GO
