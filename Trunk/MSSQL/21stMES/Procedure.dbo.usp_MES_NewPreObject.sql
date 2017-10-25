@@ -99,6 +99,25 @@ if	not exists
 	rollback tran @ProcName
 	return
 end
+
+/*	WOD BOM Verified:  */
+if	not exists
+	(	select
+			*
+		from
+			custom.WorkOrderDetailBOMVerification wodbv
+			join dbo.WorkOrderDetails wod
+				on wodbv.WorkOrderNumber = wod.WorkOrderNumber
+				and wodbv.WorkOrderDetailLine = wod.Line
+		where
+			wod.RowID = @WODID
+	) begin
+	
+	set	@Result = 999999
+	RAISERROR ('The BOM must be verified for this job before you can generate labels.', 16, 1)
+	rollback tran @ProcName
+	return
+end
 ---	</ArgumentValidation>
 
 --- <Body>

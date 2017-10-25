@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Fx.EDI">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="21st:estimpson">
+          <Created>2016-11-17T15:24:50.3051222-05:00</Created>
+          <Type>SQL</Type>
+          <Server>21st</Server>
+          <UserName>estimpson</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="Procedure.FIS_Empower_21st.EDI.usp_CustomerEDI_SendShipNotices.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>Procedure.FIS_Empower_21st.EDI.usp_CustomerEDI_SendShipNotices.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.FIS_Empower_21st.EDI.usp_XMLShipNotice_CreateOutboundFile.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>Procedure.FIS_Empower_21st.EDI.usp_XMLShipNotice_CreateOutboundFile.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Procedure.FIS_Empower_21st.EDI.usp_XMLShipNotice_GetShipNoticeXML.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>Procedure.FIS_Empower_21st.EDI.usp_XMLShipNotice_GetShipNoticeXML.sql</FullPath>
+        </FileNode>
+        <FileNode Name="ScalarFunction.FIS_Empower_21st.EDI.udf_FormatDT(SYNONYM).sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>ScalarFunction.FIS_Empower_21st.EDI.udf_FormatDT(SYNONYM).sql</FullPath>
+        </FileNode>
+        <FileNode Name="Table.FIS_Empower_21st.EDI.XMLShipNotice_ASNDataRootFunction.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>Table.FIS_Empower_21st.EDI.XMLShipNotice_ASNDataRootFunction.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Table.FIS_Empower_21st.EDI.XMLShipNotice_ASNExceptionHandler.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>Table.FIS_Empower_21st.EDI.XMLShipNotice_ASNExceptionHandler.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>

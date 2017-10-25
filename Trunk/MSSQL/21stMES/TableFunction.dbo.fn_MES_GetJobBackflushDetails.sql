@@ -84,22 +84,26 @@ begin
 	,	Sequence = xr.Sequence
 	,	Suffix = coalesce (xr.Suffix, -1)
 	,	AllocationDT = coalesce
-		(	(	select
-					max(atTransfer.date_stamp)
-				from
-					dbo.audit_trail atTransfer
-				where
-					atTransfer.Serial = oAvailable.Serial
-					and atTransfer.type = 'T'
-			)
-		,	(	select
-					max(atBreak.date_stamp)
-				from
-					dbo.audit_trail atBreak
-				where
-					atBreak.Serial = oAvailable.Serial
-					and atBreak.type = 'B'
-			)
+		(	case when msbpX.Type != 5 then
+				coalesce
+				(	(	select
+							max(atTransfer.date_stamp)
+						from
+							dbo.audit_trail atTransfer
+						where
+							atTransfer.Serial = oAvailable.Serial
+							and atTransfer.type = 'T'
+					)
+				,	(	select
+							max(atBreak.date_stamp)
+						from
+							dbo.audit_trail atBreak
+						where
+							atBreak.Serial = oAvailable.Serial
+							and atBreak.type = 'B'
+					)
+				)
+			end
 		,	getdate()
 		)
 	,	BillOfMaterialID = xr.BOMID
@@ -122,6 +126,7 @@ begin
 				dbo.object o
 			where
 				o.status = 'A'
+				and o.shipper is null
 		) oAvailable
 				left join dbo.MES_SetupBackflushingPrinciples msbp
 					on msbp.Type = 3
@@ -139,7 +144,7 @@ begin
 				left join dbo.location lPlant
 					join dbo.location lPlantMachines -- All the machines within the inventory's plant.
 						on coalesce(lPlantMachines.plant, 'N/A') = coalesce(lPlant.plant, 'N/A')
-					on msbp.BackflushingPrinciple = 5 --(select dbo.udf_TypeValue('dbo.MES_SetupBackflushingPrinciples', 'BackflushingPrinciple, 'Plant'))
+					on msbp.BackflushingPrinciple = 5 --(select dbo.udf_TypeValue('dbo.MES_SetupBackflushingPrinciples', 'BackflushingPrinciple', 'Plant'))
 					and lPlant.code = oAvailable.LocationCode
 				join dbo.WorkOrderDetails wod
 					join dbo.WorkOrderHeaders woh
@@ -158,6 +163,7 @@ begin
 		Part
 	,	Suffix
 	,	AllocationDT
+	,	Serial
 
 	update
 		ia
@@ -231,10 +237,10 @@ begin
 	,	XScrap = xr.XScrap
 	,	XSuffix = xr.XSuffix
 	,	SubRate = xr.SubRate
-	,	Children = (select count(*) from @XRt xr1 where xr1.Hierarchy like xr.Hierarchy + '%' and xr1.BOMLevel > xr.BOMLevel)
+	,	Children = (select count(*) from @XRt xr1 where xr1.Hierarchy like xr.Hierarchy + '/' + '%' and xr1.BOMLevel > xr.BOMLevel)
 	,	Leaf =
 			case
-				when (select count(*) from @XRt xr1 where xr1.Hierarchy like xr.Hierarchy + '%' and xr1.BOMLevel > xr.BOMLevel) = 0 then 1
+				when (select count(*) from @XRt xr1 where xr1.Hierarchy like xr.Hierarchy + '/' + '%' and xr1.BOMLevel > xr.BOMLevel) = 0 then 1
 				else 0
 			end
 	,	QtyAvailable = coalesce(ma.QtyAvailable / ma.Concurrence / (xr.XQty * xr.XScrap * xr.XSuffix), 0) --Weight for dups in BOM
@@ -262,7 +268,7 @@ begin
 	update
 		nm
 	set
-		QtySubbed = coalesce((select sum(QtySub / XQty / XScrap / XSuffix) from @NetMPS nm1 where nm1.Hierarchy like nm.Hierarchy + '%' and nm1.BOMLevel = nm.BOMLevel + 1) * XQty * XScrap * XSuffix, 0)
+		QtySubbed = coalesce((select sum(QtySub / XQty / XScrap / XSuffix) from @NetMPS nm1 where nm1.Hierarchy like nm.Hierarchy + '/' + '%' and nm1.BOMLevel = nm.BOMLevel + 1) * XQty * XScrap * XSuffix, 0)
 	from
 		@NetMPS nm
 
@@ -316,7 +322,7 @@ begin
 					from
 						@NetMPS nmX
 					where
-						nm.Hierarchy like nmX.Hierarchy + '%'
+						nm.Hierarchy like nmX.Hierarchy + '/' + '%'
 						and nmX.BOMLevel < nm.BOMLevel
 				)
 			,	0
@@ -349,7 +355,7 @@ begin
 					from
 						@NetMPS nmY
 					where
-						nmY.Hierarchy like nm.Hierarchy + '%'
+						nmY.Hierarchy like nm.Hierarchy + '/' + '%'
 						and nmY.BOMLevel = nm.BOMLevel + 1
 				)
 			,	0
@@ -392,7 +398,7 @@ begin
 					from
 						@NetMPS nmX
 					where
-						nm.Hierarchy like nmX.Hierarchy + '%'
+						nm.Hierarchy like nmX.Hierarchy + '/' + '%'
 						and nmX.BOMLevel < nm.BOMLevel
 				)
 			,	0
@@ -458,9 +464,27 @@ begin
 end
 go
 
+
+begin transaction
+go
+
+update
+	dbo.object
+set
+	quantity = 288
+,	std_quantity = 288
+where
+	serial in (2096998, 2097034, 2097558, 2097683)
+go
+
+
 select
 	*
 from
-	dbo.fn_MES_GetBackflushDetails('WO_0000000001', 1, 140) ugbd
+	dbo.fn_MES_GetJobBackflushDetails('WO_0000005744', 1, 6) ugbd
+where
+	ugbd.Part = '33014R-R'
 go
 
+rollback
+go

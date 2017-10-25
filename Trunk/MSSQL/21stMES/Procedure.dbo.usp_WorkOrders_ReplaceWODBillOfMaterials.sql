@@ -14,8 +14,8 @@ go
 create procedure dbo.usp_WorkOrders_ReplaceWODBillOfMaterials
 	@WorkOrderNumber varchar(50)
 ,	@WorkOrderDetailLine float
-,	@TranDT datetime out
-,	@Result integer out
+,	@TranDT datetime = null out
+,	@Result integer = null out
 as
 set nocount on
 set ansi_warnings off
@@ -80,6 +80,77 @@ end
 --- </Delete>
 
 /*	Insert WOD BOM.*/
+declare
+	@PartNumber varchar(25)
+,	@MachineCode varchar(10)
+,	@PrimaryMachine varchar(10)
+
+select
+	@PartNumber = wod.PartCode
+,	@MachineCode = woh.MachineCode
+,	@PrimaryMachine = pmPrimary.machine
+from
+	dbo.WorkOrderHeaders woh
+	join dbo.WorkOrderDetails wod
+		on wod.WorkOrderNumber = woh.WorkOrderNumber
+	left join dbo.part_machine pmPrimary
+		on pmPrimary.part = wod.PartCode
+		and pmPrimary.sequence = 1
+where
+	woh.WorkOrderNumber = @WorkOrderNumber
+	and wod.Line = @WorkOrderDetailLine
+
+declare
+	@silp table
+(	TopPartCode varchar(25)
+,	Hierarchy varchar(500)
+,	BOMLevel int
+,	Sequence int
+,	InLineTemp int
+)
+
+insert
+	@silp
+(	TopPartCode
+,	Hierarchy
+,	BOMLevel
+,	Sequence
+,	InLineTemp
+)
+select
+	silp.TopPartCode
+,	silp.Hierarchy
+,	silp.BOMLevel
+,	silp.Sequence
+,	silp.InLineTemp
+from
+	dbo.Scheduling_InLineProcessNew silp
+where
+	silp.TopPartCode = @PartNumber
+	and	silp.MachineCode = @MachineCode
+
+if	@@ROWCOUNT = 0 begin
+	insert
+		@silp
+	(	TopPartCode
+	,	Hierarchy
+	,	BOMLevel
+	,	Sequence
+	,	InLineTemp
+	)
+	select
+		silp.TopPartCode
+	,	silp.Hierarchy
+	,	silp.BOMLevel
+	,	silp.Sequence
+	,	silp.InLineTemp
+	from
+		dbo.Scheduling_InLineProcessNew silp
+	where
+		silp.TopPartCode = @PartNumber
+		and	silp.MachineCode = @PrimaryMachine
+end
+
 --- <Insert rows="*">
 set	@TableName = 'dbo.WorkOrderDetailBillOfMaterials'
 
@@ -119,11 +190,11 @@ select
 ,	xr.XScrap
 from
 	FT.XRt xr
-	join dbo.Scheduling_InLineProcess silp
+	join @silp silp
 		on silp.TopPartCode = xr.TopPart
 		and xr.Hierarchy like silp.Hierarchy + '/%'
 		and xr.BOMLevel = silp.BOMLevel + 1
-	left join dbo.Scheduling_InLineProcess silp2
+	left join @silp silp2
 		 on silp2.TopPartCode = xr.TopPart
 		 and silp2.Sequence = xr.Sequence
 	join dbo.WorkOrderDetails wod

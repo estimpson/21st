@@ -1,6 +1,6 @@
 
 if	objectproperty(object_id('dbo.usp_MES_Backflush'), 'IsProcedure') = 1 begin
-	drop procedure dbo.usp_MES_Backflush
+	exec sp_rename 'dbo.usp_MES_Backflush', 'dbo.usp_MES_Backflush_bk'
 end
 go
 
@@ -131,7 +131,7 @@ from
 
 /*	Prevent backflush if missing components. */
 /*	disable check */
-if 1 = 0 begin
+if	1 = 0 begin
 	if	exists
 		(	select
 				*
@@ -150,7 +150,7 @@ if 1 = 0 begin
 end
 
 /*	Loop through overages. */
---- <DefineCursor curosrName="overages">
+--- <DefineCursor cursorName="overages">
 declare
 	@overageSerial int
 ,	@qtyOverage numeric(20,6)
@@ -352,8 +352,7 @@ select
 from
 	@InventoryConsumption ic
 where
-	ic.Serial > 0
-	and ic.QtyIssue > 0
+	ic.QtyIssue > 0
 order by
 	ic.Sequence
 ,	ic.AllocationDT

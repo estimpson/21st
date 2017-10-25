@@ -1,4 +1,17 @@
-alter procedure dbo.usp_InventoryControl_CycleCount_HandleScanInput
+
+/*
+Create procedure Fx.dbo.usp_InventoryControl_CycleCount_HandleScanInput
+*/
+
+--use Fx
+--go
+
+if	objectproperty(object_id('dbo.usp_InventoryControl_CycleCount_HandleScanInput'), 'IsProcedure') = 1 begin
+	drop procedure dbo.usp_InventoryControl_CycleCount_HandleScanInput
+end
+go
+
+create procedure dbo.usp_InventoryControl_CycleCount_HandleScanInput
 	@User varchar(10)
 ,	@CycleCountNumber varchar(50)
 ,	@Serial int
@@ -479,7 +492,6 @@ if (@ActionTaken & ( @SET_CORRECTED_QUANTITY | @SET_CORRECTED_LOCATION ) = 0) be
 	set @ActionTakenMessage = @ActionTakenMessage + 'Marked as found. '
 end
 
-
 -- Insert actions taken into the cycle count logging table
 --- <Insert>
 insert FT.CycleCountRFLogging
@@ -511,8 +523,6 @@ set	@Result = 0
 return
 	@Result
 --- </Return>
-
-
 
 /*
 Example:

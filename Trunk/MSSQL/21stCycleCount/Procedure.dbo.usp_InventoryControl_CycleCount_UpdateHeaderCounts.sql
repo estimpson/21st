@@ -55,21 +55,21 @@ set	@TranDT = coalesce(@TranDT, GetDate())
 --- <Body>
 /*	Update objects. */
 --- <Update rows="*">
-set	@TableName = '[tableName]'
+set	@TableName = 'dbo.InventoryControl_CycleCountObjects'
 
 update
 	iccco
 set
 	Status =
 		case
-			when iccco.Status >= 0 and o.serial is null then 5
+			when iccco.Status > 0 and o.serial is null then 5
 			when iccco.Status > 0 and o.serial is not null and iccco.CorrectedQuantity is null and iccco.CorrectedLocation is null then 1
 			when iccco.Status > 0 and o.serial is not null and iccco.CorrectedQuantity != iccco.OriginalQuantity and iccco.CorrectedLocation is null then 2
 			when iccco.Status > 0 and o.serial is not null and iccco.CorrectedQuantity is null and iccco.CorrectedLocation != iccco.OriginalLocation then 3
 			when iccco.Status > 0 and o.serial is not null and iccco.CorrectedQuantity != iccco.OriginalQuantity and iccco.CorrectedLocation != iccco.OriginalLocation then 4
 			else iccco.Status
 		end
-,	Type = case when o.serial is null then 1 else 0 end
+,	Type = case when o.serial is null and iccco.Status > 0 then 1 else 0 end
 from
 	dbo.InventoryControl_CycleCountObjects iccco
 	left join dbo.object o

@@ -120,34 +120,13 @@ namespace Shipping
 
         private void btnStageUnstage_Click(object sender, EventArgs e)
         {
-            int serial = controller.ValidateSerial(tbxSerial.Text.Trim());
-            if (serial > 0)
-            {
-                controller.StageOrUnstageSerial(serial);
-            }
+
         }
 
-        private void tbxSerial_KeyPress(object sender, KeyPressEventArgs e)
+        private void cbxSerials_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (e.KeyChar == (char)13)
-            {
-                int serial = controller.ValidateSerial(tbxSerial.Text.Trim());
-                if (serial > 0)
-                {
-                    controller.StageOrUnstageSerial(serial);
-                }
-            }
-        }
 
-        private void gridLines_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (gridLines.VisibleRowCount > 0)
-            {
-                int x = gridLines.CurrentCell.RowNumber;
-                controller.GetObjects(gridLines[x, 0].ToString());
-            }
         }
-
 
 
 

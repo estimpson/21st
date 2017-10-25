@@ -55,14 +55,51 @@ set	@TranDT = coalesce(@TranDT, GetDate())
 ---	</ArgumentValidation>
 
 --- <Body>
-/*	Check if object exists. */
-if	not exists
+/*	Check if object was "most recently" backflushed against. */
+if	exists
 	(	select
-			*
+			bd.BackflushNumber
+		,	bd.QtyIssue - bd.QtyOverage
+		,	bh.WorkOrderNumber
+		,	bh.WorkOrderDetailLine
+		,	bd.RowID
+		,	bd.Line
+		,	coalesce(bdNext.Line, bd.Line + 1)
 		from
-			dbo.object o
+			dbo.BackflushHeaders bh
+			join dbo.BackflushDetails bd
+				left join dbo.BackflushDetails bdNext
+					on bdNext.BackflushNumber = bd.BackflushNumber
+					and bdNext.Line =
+						(	select
+								min(bd2.Line)
+							from
+								dbo.BackflushDetails bd2
+							where
+								bd2.BackflushNumber = bd.BackflushNumber
+								and bd2.Line > bd.Line
+						)
+				on bh.BackflushNumber = bd.BackflushNumber
 		where
-			o.serial = @Serial
+			bd.SerialConsumed = @Serial
+			and bd.RowCreateDT >
+				(	select
+						max(atBF.date_stamp)
+					from
+						dbo.audit_trail atBF
+					where
+						atBF.serial = @Serial
+						and atBF.date_stamp not in
+							(	select
+									bh2.TranDT
+								from
+									dbo.BackflushHeaders bh2
+									join dbo.BackflushDetails bd2
+										on bh2.BackflushNumber = bd2.BackflushNumber
+								where
+									bd2.SerialConsumed = @Serial
+							)
+				)
 	) begin
 	
 	/*	Check if object is of the correct part number for this shipper. */
@@ -351,6 +388,7 @@ update
 	o
 set
 	shipper = @Shipper
+,	show_on_shipper = 'Y'
 from
 	dbo.object o
 where
@@ -436,9 +474,9 @@ declare
 ,	@PalletSerial int
 
 set	@User = 'EES'
-set @Shipper = 25710
-set @Serial = 1830087
-set @PalletSerial = null
+set	@Shipper = 29390
+set	@Serial = 2095145
+set	@PalletSerial = null
 
 begin transaction Test
 
@@ -453,6 +491,7 @@ execute
 	@User = @User
 ,	@Shipper = @Shipper
 ,	@Serial = @Serial
+,	@PalletSerial = @PalletSerial
 ,	@TranDT = @TranDT out
 ,	@Result = @ProcResult out
 

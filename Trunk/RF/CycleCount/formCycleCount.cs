@@ -41,38 +41,38 @@ namespace CycleCount
 
 
 
-                #region RFScanner
+        #region RFScanner
 #if PocketPC
-                private RFScanEventHandler _RFScanEventHandler;
+        private RFScanEventHandler _RFScanEventHandler;
 #endif
 
-                private void InitializeScanning()
-                {
+        private void InitializeScanning()
+        {
 #if PocketPC
-                    _RFScanEventHandler = new RFScanEventHandler(MyRFGun_RFScan);
-                    FXRFGlobals.MyRFGun.RFScan += _RFScanEventHandler;
+            _RFScanEventHandler = new RFScanEventHandler(MyRFGun_RFScan);
+            FXRFGlobals.MyRFGun.RFScan += _RFScanEventHandler;
 #endif
-                }
+        }
 
 
-                void MyRFGun_RFScan(object sender, RFScanEventArgs e)
-                {
-                    controller.handleScan(e);
-                }
+        void MyRFGun_RFScan(object sender, RFScanEventArgs e)
+        {
+            controller.handleScan(e);
+        }
 
 
-        //        private void formFXMES_Closing(object sender, CancelEventArgs e)
-        //        {
-        //#if PocketPC
-        //            if (FXRFGlobals.MyRFGun != null)
-        //            {
-        //                FXRFGlobals.MyRFGun.StopRead();
-        //                FXRFGlobals.MyRFGun.RFScan -= _RFScanEventHandler;
-        //                FXRFGlobals.MyRFGun.Close();
-        //            }
-        //#endif
-        //        }
-                #endregion
+//        private void formFXMES_Closing(object sender, CancelEventArgs e)
+//        {
+//#if PocketPC
+//            if (FXRFGlobals.MyRFGun != null)
+//            {
+//                FXRFGlobals.MyRFGun.StopRead();
+//                FXRFGlobals.MyRFGun.RFScan -= _RFScanEventHandler;
+//                FXRFGlobals.MyRFGun.Close();
+//            }
+//#endif
+//        }
+        #endregion
 
 
 

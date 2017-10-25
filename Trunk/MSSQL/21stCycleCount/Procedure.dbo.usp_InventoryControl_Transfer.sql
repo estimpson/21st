@@ -279,8 +279,13 @@ if	@ProcResult != 0 begin
 	return	@Result
 end
 --- </Call>
-
 --- </Body>
+
+--- <Tran AutoClose=Yes>
+if	@TranCount = 0 begin
+	commit tran @ProcName
+end
+--- </Tran>
 
 ---	<Return>
 set	@Result = 0

@@ -1,0 +1,1 @@
+alter table FT.MenuItems alter column ObjectClass nvarchar(1024) not null

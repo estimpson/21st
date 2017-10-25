@@ -1,0 +1,7 @@
+<Modules>
+  <Module PersistentId="CF05274E-3C5A-4104-9D0C-C8D5F9C867F6" ModuleId="CycleCount" />
+  <Module PersistentId="60DB29CD-0F27-473A-B42B-64240BE3E8AC" ModuleId="Connection" />
+  <Module PersistentId="3A628CEE-EAE1-4A6F-9908-779B5C93AFD3" ModuleId="SymbolRFGun" />
+  <Module PersistentId="5ABA4FEA-4FBC-4B45-824E-3BF8623C2DB8" ModuleId="Controls" />
+  <Module PersistentId="BD16241A-A893-4868-B9BE-6FCB659DF41F" ModuleId="DataLayer" />
+</Modules>

@@ -29,6 +29,8 @@ select
 ,	CurrentInventory = coalesce(max(Inventory.OnHand), 0)
 ,	TotalConsumption = sum(bdRecentRaw.QtyIssue)
 ,	ConsumptionPercentage = sum(bdRecentRaw.QtyIssue) / (sum(bdRecentRaw.QtyIssue) + coalesce(max(Inventory.OnHand), 0))
+,	ConsumedByPart = custom.udf_GetConsumedByForPartInDateRange(bdRecentRaw.PartConsumed, min(bdRecentRaw.RowCreateDT), max(bdRecentRaw.RowCreateDT))
+,	ConsumedAtMachine = custom.udf_GetConsumedWhereForPartInDateRange(bdRecentRaw.PartConsumed, min(bdRecentRaw.RowCreateDT), max(bdRecentRaw.RowCreateDT))
 from
 	dbo.BackflushDetails bdRecentRaw
 		join dbo.part pRaw

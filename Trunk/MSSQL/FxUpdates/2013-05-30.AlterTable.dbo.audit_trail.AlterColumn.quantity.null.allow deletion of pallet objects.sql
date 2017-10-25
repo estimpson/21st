@@ -1,0 +1,1 @@
+alter table dbo.audit_trail alter column quantity numeric(20,6) null

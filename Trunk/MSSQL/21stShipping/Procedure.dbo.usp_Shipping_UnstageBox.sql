@@ -130,7 +130,8 @@ update
 	o
 set
 	shipper = null
-,	parent_serial = null  
+,	parent_serial = null
+,	show_on_shipper = 'Y'
 from
 	dbo.object o
 where

@@ -3,6 +3,30 @@
   <Items>
     <LogicalFolder Name="Connections" Type="2" Sorted="true">
       <Items>
+        <ConnectionNode Name="192.168.0.200:estimpson">
+          <Created>2016-09-29T14:09:54.0234479-04:00</Created>
+          <Type>SQL</Type>
+          <Server>192.168.0.200</Server>
+          <UserName>estimpson</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+        <ConnectionNode Name="192.168.0.228:estimpson">
+          <Created>2014-05-05T14:26:04.7099663-04:00</Created>
+          <Type>SQL</Type>
+          <Server>192.168.0.228</Server>
+          <UserName>estimpson</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB>FIS_Empower_21st</InitialDB>
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
         <ConnectionNode Name="192.168.0.228:sa">
           <Created>2013-01-07T17:20:03.8823115-05:00</Created>
           <Type>SQL</Type>
@@ -10,6 +34,30 @@
           <UserName>sa</UserName>
           <Authentication>SQL</Authentication>
           <InitialDB>FIS_Empower_21st</InitialDB>
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+        <ConnectionNode Name="aztecsql2.aztecmfgcorp.local\fx:sa">
+          <Created>2013-10-28T15:06:47.2972711-04:00</Created>
+          <Type>SQL</Type>
+          <Server>aztecsql2.aztecmfgcorp.local\fx</Server>
+          <UserName>sa</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+        <ConnectionNode Name="FTEESW520\SQL2008R2:sa">
+          <Created>2013-02-21T08:33:30.1426554-05:00</Created>
+          <Type>SQL</Type>
+          <Server>FTEESW520\SQL2008R2</Server>
+          <UserName>sa</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
           <LoginTimeout>15</LoginTimeout>
           <ExecutionTimeout>0</ExecutionTimeout>
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
@@ -49,6 +97,12 @@
           <AssociatedConnUserName />
           <FullPath>Procedure.custom.usp_MES_SetJobQtyRequired.sql</FullPath>
         </FileNode>
+        <FileNode Name="Procedure.custom.usp_MES_WorkOrderDetailBOMVerify.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:aztecsql2.aztecmfgcorp.local\fx:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>aztecsql2.aztecmfgcorp.local\fx</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Procedure.custom.usp_MES_WorkOrderDetailBOMVerify.sql</FullPath>
+        </FileNode>
         <FileNode Name="Procedure.dbo.usp_InventoryControl_Breakout.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
@@ -62,16 +116,10 @@
           <FullPath>Procedure.dbo.usp_InventoryControl_MaterialIssue.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_InventoryControl_UpdatePartOnHand.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>Procedure.dbo.usp_InventoryControl_UpdatePartOnHand.sql</FullPath>
-        </FileNode>
-        <FileNode Name="Procedure.dbo.usp_MES_.JCPreObject.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
-          <FullPath>Procedure.dbo.usp_MES_.JCPreObject.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_ActivateRawMaterial.sql">
           <AssociatedConnectionMoniker />
@@ -86,9 +134,9 @@
           <FullPath>Procedure.dbo.usp_MES_AllocateLocationForBackflush.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_AllocateSerial.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>Procedure.dbo.usp_MES_AllocateSerial.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_AllocateSerial_toDepartment.sql">
@@ -116,8 +164,8 @@
           <FullPath>Procedure.dbo.usp_MES_AllocateSerial_toStagingLocation.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_BackFlush.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:FTEESW520\SQL2008R2:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>FTEESW520\SQL2008R2</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>Procedure.dbo.usp_MES_BackFlush.sql</FullPath>
         </FileNode>
@@ -241,6 +289,12 @@
           <AssociatedConnUserName />
           <FullPath>Procedure.dbo.usp_MES_InventoryDiscrepancies.sql</FullPath>
         </FileNode>
+        <FileNode Name="Procedure.dbo.usp_MES_JCPreObject.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.200:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.200</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>Procedure.dbo.usp_MES_JCPreObject.sql</FullPath>
+        </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_MoveJob.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
@@ -254,9 +308,9 @@
           <FullPath>Procedure.dbo.usp_MES_NewExcessQty.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_NewPreObject.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>Procedure.dbo.usp_MES_NewPreObject.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_NewScrapEntry.sql">
@@ -308,9 +362,9 @@
           <FullPath>Procedure.dbo.usp_MES_ReportAsFinishedPreObject.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_ResetJobBOM.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
           <FullPath>Procedure.dbo.usp_MES_ResetJobBOM.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_RestoreBackflushedObject.sql">
@@ -338,9 +392,9 @@
           <FullPath>Procedure.dbo.usp_MES_SetSubstituteMaterial.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_Scheduling_BuildXRt.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
           <FullPath>Procedure.dbo.usp_Scheduling_BuildXRt.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_Scheduling_ScheduleJob.sql">
@@ -368,9 +422,9 @@
           <FullPath>Procedure.dbo.usp_WorkOrders_CreateNextBuildWorkOrderHeader.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_WorkOrders_CreateSubstituteMaterial.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>Procedure.dbo.usp_WorkOrders_CreateSubstituteMaterial.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_WorkOrders_CreateWODBillOfMaterials.sql">
@@ -398,9 +452,9 @@
           <FullPath>Procedure.dbo.usp_WorkOrders_EditSubstituteMaterial.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_WorkOrders_ReplaceWODBillOfMaterials.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
           <FullPath>Procedure.dbo.usp_WorkOrders_ReplaceWODBillOfMaterials.sql</FullPath>
         </FileNode>
         <FileNode Name="ScalarFunction.dbo.fn_Accounting_FiscalWeek.sql">
@@ -451,16 +505,40 @@
           <AssociatedConnUserName />
           <FullPath>ScalarFunction.dbo.udf_GetQtyFromStdQty.sql</FullPath>
         </FileNode>
+        <FileNode Name="Script.ResetBOMs of JobList.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>Script.ResetBOMs of JobList.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Troubleshoot Offline Consumption.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Script.Troubleshoot Offline Consumption.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SQLQuery1.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>SQLQuery1.sql</FullPath>
+        </FileNode>
         <FileNode Name="Table.custom.MoldingColorLetdown.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
           <AssociatedConnUserName />
           <FullPath>Table.custom.MoldingColorLetdown.sql</FullPath>
         </FileNode>
+        <FileNode Name="Table.custom.WorkOrderDetailBOMVerification.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>Table.custom.WorkOrderDetailBOMVerification.sql</FullPath>
+        </FileNode>
         <FileNode Name="Table.custom.WorkOrderDetailMattecSchedule.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>Table.custom.WorkOrderDetailMattecSchedule.sql</FullPath>
         </FileNode>
         <FileNode Name="Table.dbo.Defects.sql">
@@ -541,16 +619,10 @@
           <AssociatedConnUserName />
           <FullPath>TableFunction.dbo.fn_GetNetout.sql</FullPath>
         </FileNode>
-        <FileNode Name="TableFunction.dbo.fn_MES_GetBackflushDetails.sql">
+        <FileNode Name="TableFunction.dbo.fn_MES_GetJobBackflushDetails.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
-          <FullPath>TableFunction.dbo.fn_MES_GetBackflushDetails.sql</FullPath>
-        </FileNode>
-        <FileNode Name="TableFunction.dbo.fn_MES_GetJobBackflushDetails.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
           <FullPath>TableFunction.dbo.fn_MES_GetJobBackflushDetails.sql</FullPath>
         </FileNode>
         <FileNode Name="TableFunction.dbo.fn_MES_GetPartFIFO.sql">
@@ -576,12 +648,6 @@
           <AssociatedConnSrvName />
           <AssociatedConnUserName />
           <FullPath>TableFunction.dbo.udf_GetInventory_FromDT.sql</FullPath>
-        </FileNode>
-        <FileNode Name="TableFunction.dbo.udf_MES_GetBackflushDetails.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
-          <FullPath>TableFunction.dbo.udf_MES_GetBackflushDetails.sql</FullPath>
         </FileNode>
         <FileNode Name="TableIndex.ix_BackflushDetails_SerialConsumed.Table.dbo.BackflushDetails.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
@@ -632,9 +698,9 @@
           <FullPath>View.dbo.MES_JobBillOfMaterials.sql</FullPath>
         </FileNode>
         <FileNode Name="View.dbo.MES_JobList.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>View.dbo.MES_JobList.sql</FullPath>
         </FileNode>
         <FileNode Name="View.dbo.MES_JobObjects.sql">
@@ -662,10 +728,16 @@
           <FullPath>View.dbo.MES_SetupBackflushingPrinciples.sql</FullPath>
         </FileNode>
         <FileNode Name="View.dbo.Scheduling_InLineProcess.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>View.dbo.Scheduling_InLineProcess.sql</FullPath>
+        </FileNode>
+        <FileNode Name="View.dbo.Scheduling_InLineProcessNew.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>View.dbo.Scheduling_InLineProcessNew.sql</FullPath>
         </FileNode>
         <FileNode Name="View.dbo.Scheduling_NetRequirementsDetails.sql">
           <AssociatedConnectionMoniker />

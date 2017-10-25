@@ -178,7 +178,7 @@ select
 ,   origin = o.origin
 ,   destination = o.destination
 ,   sequence = o.sequence
-,   object_type = o.type
+,   object_type = o.object_type
 ,   part_name = (select name from part where part = o.part)
 ,   start_date = o.start_date
 ,   field1 = o.field1
@@ -385,8 +385,13 @@ if	@ProcResult != 0 begin
 	return	@Result
 end
 --- </Call>
-
 --- </Body>
+
+--- <Tran AutoClose=Yes>
+if	@TranCount = 0 begin
+	commit tran @ProcName
+end
+--- </Tran>
 
 ---	<Return>
 set	@Result = 0

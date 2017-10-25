@@ -103,8 +103,13 @@ if	@RowCount != 1 begin
 	
 end
 --- </Update>
-
 --- </Body>
+
+--- <Tran AutoClose=Yes>
+if	@TranCount = 0 begin
+	commit tran @ProcName
+end
+--- </Tran>
 
 ---	<Return>
 set	@Result = 0

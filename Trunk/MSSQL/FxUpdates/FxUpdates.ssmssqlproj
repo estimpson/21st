@@ -1,0 +1,412 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="FxUpdates">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="192.168.0.228:estimpson">
+          <Created>2014-06-07T15:02:07.0030401-04:00</Created>
+          <Type>SQL</Type>
+          <Server>192.168.0.228</Server>
+          <UserName>estimpson</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+        <ConnectionNode Name="21st:estimpson">
+          <Created>2016-08-29T12:09:48.842214-04:00</Created>
+          <Type>SQL</Type>
+          <Server>21st</Server>
+          <UserName>estimpson</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="2014-05-01.Indexes.Part Inquiry.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-05-01.Indexes.Part Inquiry.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-05-01.Procedure.dbo.usp_NetMPS_Replace.Store NetMPS.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-05-01.Procedure.dbo.usp_NetMPS_Replace.Store NetMPS.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-05-01.TableFunction.dbo.fn_GetNetout.performance.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-05-01.TableFunction.dbo.fn_GetNetout.performance.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-05-01.View.dbo.IC_PartOnline.Part Inquiry.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-05-01.View.dbo.IC_PartOnline.Part Inquiry.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-06-07.Procedure.Fx.dbo.usp_Admin_LoginUser.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-06-07.Procedure.Fx.dbo.usp_Admin_LoginUser.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-06-07.Schema.Fx.FXSYS.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-06-07.Schema.Fx.FXSYS.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-06-07.Table.Fx.FxSYS.UserLogin.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-06-07.Table.Fx.FxSYS.UserLogin.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-06-07.Table.FxTSM.FxSYS.USP_Calls.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-06-07.Table.FxTSM.FxSYS.USP_Calls.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-24.AlterTable.dbo.po_detail.RowTracking.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-24.AlterTable.dbo.po_detail.RowTracking.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-24.Procedure.Fx.dbo.usp_Purchasing_AddReceipt.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-24.Procedure.Fx.dbo.usp_Purchasing_AddReceipt.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-24.Procedure.Fx.dbo.usp_ReceivingDock_CreateReceiverLines_fromPlantTReceiverHeader.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-24.Procedure.Fx.dbo.usp_ReceivingDock_CreateReceiverLines_fromPlantTReceiverHeader.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-24.Procedure.Fx.dbo.usp_ReceivingDock_PutAwaySerial.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-24.Procedure.Fx.dbo.usp_ReceivingDock_PutAwaySerial.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-24.Procedure.Fx.dbo.usp_ReceivingDock_ReceiveObject_Inventory.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-24.Procedure.Fx.dbo.usp_ReceivingDock_ReceiveObject_Inventory.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-24.Procedure.Fx.dbo.usp_ReceivingDock_ReceiveRMAObjects.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-24.Procedure.Fx.dbo.usp_ReceivingDock_ReceiveRMAObjects.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-24.Script.Insert.MenuItem.Receiving Dock v2.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-24.Script.Insert.MenuItem.Receiving Dock v2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.AlterTable.Fx.dbo.po_detail_history.Drop Constraints.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-25.AlterTable.Fx.dbo.po_detail_history.Drop Constraints.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_AdjustVendorInventory.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_AdjustVendorInventory.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_AutoCreateFirmPOLineItem.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_AutoCreateFirmPOLineItem.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_GetVendorInventory.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_GetVendorInventory.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_NewExcessQty.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_NewExcessQty.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_NewShortageQty.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_NewShortageQty.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_UndoAutoCreateFirmPOLineItem.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-25.Procedure.Fx.dbo.usp_OutsideProcessing_UndoAutoCreateFirmPOLineItem.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.Procedure.Fx.dbo.usp_ReceivingDock_Backflush.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-25.Procedure.Fx.dbo.usp_ReceivingDock_Backflush.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.Procedure.Fx.dbo.usp_ReceivingDock_NewExcessQty.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-25.Procedure.Fx.dbo.usp_ReceivingDock_NewExcessQty.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.View.Fx.dbo.Inventory_CycleCountList.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>2014-09-25.View.Fx.dbo.Inventory_CycleCountList.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.View.Fx.dbo.OutsideProcessing_BlanketPOs.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-25.View.Fx.dbo.OutsideProcessing_BlanketPOs.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-09-25.View.Fx.dbo.OutsideProcessing_ProcessorParts.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-09-25.View.Fx.dbo.OutsideProcessing_ProcessorParts.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-10-01.View.Fx.dbo.Inventory_QualityInventoryList.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-10-01.View.Fx.dbo.Inventory_QualityInventoryList.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-10-13.AlterProcedure.dbo.msp_reconcile_shipper.Leave Qty 0 on Invoices.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-10-13.AlterProcedure.dbo.msp_reconcile_shipper.Leave Qty 0 on Invoices.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-10-13.AlterProcedure.dbo.usp_ReceivingDock_ReceiveRMAObjects.Update alternative_qty.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-10-13.AlterProcedure.dbo.usp_ReceivingDock_ReceiveRMAObjects.Update alternative_qty.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-10-13.AlterView.dbo.cdivw_inv_inquiry.Include 0 Qty Lines.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-10-13.AlterView.dbo.cdivw_inv_inquiry.Include 0 Qty Lines.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-10-15.AlterFunction.dbo.udf_GetShipmentPullSignals.transfer shippers.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-10-15.AlterFunction.dbo.udf_GetShipmentPullSignals.transfer shippers.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-10-15.Index.performance for po change vendor or ship to.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-10-15.Index.performance for po change vendor or ship to.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-10-15.Procedure.Fx.dbo.usp_Purchasing_ChangePOShipTo.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-10-15.Procedure.Fx.dbo.usp_Purchasing_ChangePOShipTo.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-10-16.AlterProcedure.EDIToyota.usp_SaveNewShipper.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-10-16.AlterProcedure.EDIToyota.usp_SaveNewShipper.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-10-30.AlterProcedure.dbo.usp_InventoryControl_CycleCount_CommitObjectRow.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-10-30.AlterProcedure.dbo.usp_InventoryControl_CycleCount_CommitObjectRow.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-10-30.AlterProcedure.dbo.usp_InventoryControl_CycleCount_CountObjects.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-10-30.AlterProcedure.dbo.usp_InventoryControl_CycleCount_CountObjects.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-10-30.Procedure.Fx.dbo.usp_ReceivingDock_SetRemainingQty_ofReceiverLines.fix for nonrecurring parts.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-10-30.Procedure.Fx.dbo.usp_ReceivingDock_SetRemainingQty_ofReceiverLines.fix for nonrecurring parts.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2014-11-11.AlterProcedure.dbo.usp_InventoryControl_MaterialIssue[_Now Updates ObjectLastDateandLastTimeWithTranDT].sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2014-11-11.AlterProcedure.dbo.usp_InventoryControl_MaterialIssue[_Now Updates ObjectLastDateandLastTimeWithTranDT].sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-01-06.AlterTable.dbo.edi_setups.add Armada columns.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-01-06.AlterTable.dbo.edi_setups.add Armada columns.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-01-06.CreateView.dbo.ReportLibrary.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-01-06.CreateView.dbo.ReportLibrary.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-01-06.NewMenuItem.ReportLibrary.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-01-06.NewMenuItem.ReportLibrary.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-01-09.CreateView.dbo.ReportLibrary_ReportTypeList.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-01-09.CreateView.dbo.ReportLibrary_ReportTypeList.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-02-04.Procedure.FxTSM.custom.usp_Shipping_PostShipout.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-02-04.Procedure.FxTSM.custom.usp_Shipping_PostShipout.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-02-04.Procedure.FxTSM.custom.usp_Shipping_PreShipout.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-02-04.Procedure.FxTSM.custom.usp_Shipping_PreShipout.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-02-04.Procedure.FxTSM.dbo.usp_Shipping_ShipoutShipper[Add custom Pre-Shipout and Post-Shipout calls.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-02-04.Procedure.FxTSM.dbo.usp_Shipping_ShipoutShipper[Add custom Pre-Shipout and Post-Shipout calls.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-02-18.ScalarFunction.Fx.dbo.Greater.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-02-18.ScalarFunction.Fx.dbo.Greater.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-02-18.ScalarFunction.Fx.dbo.Lesser.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-02-18.ScalarFunction.Fx.dbo.Lesser.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-02-18.Table.FxVoltTech.dbo.MRP_PartVendor.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-02-18.Table.FxVoltTech.dbo.MRP_PartVendor.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-02-25.Procedure.Fx.dbo.usp_ReceivingDock_UndoReceiveObjects.[fix subquery in part_venodr update].sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-02-25.Procedure.Fx.dbo.usp_ReceivingDock_UndoReceiveObjects.[fix subquery in part_venodr update].sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-02-27.Procedure.dbo.usp_InventoryControl_CycleCount_AddObject.[allow for null value in object.std_quantuty].sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-02-27.Procedure.dbo.usp_InventoryControl_CycleCount_AddObject.[allow for null value in object.std_quantuty].sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-03-17.Procedure.Fx.dbo.usp_Admin_AddUserMenuItem.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-03-17.Procedure.Fx.dbo.usp_Admin_AddUserMenuItem.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-03-17.Procedure.Fx.dbo.usp_Admin_RemoveUserMenuItem.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-03-17.Procedure.Fx.dbo.usp_Admin_RemoveUserMenuItem.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-04-09.New Security.Procedure.Fx.dbo.usp_Admin_LoginUser.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-04-09.New Security.Procedure.Fx.dbo.usp_Admin_LoginUser.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-04-09.Procedure.Fx.dbo.usp_Purchasing_CleanPOList.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-04-09.Procedure.Fx.dbo.usp_Purchasing_CleanPOList.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-04-09.Procedure.Fx.dbo.usp_Purchasing_DeletePOList.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-04-09.Procedure.Fx.dbo.usp_Purchasing_DeletePOList.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-04-09.Script.Insert.MenuItem.Purchasing_PO_Inquiry.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-04-09.Script.Insert.MenuItem.Purchasing_PO_Inquiry.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-04-09.View.Fx.dbo.Purchasing_PurchaseOrderList.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-04-09.View.Fx.dbo.Purchasing_PurchaseOrderList.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2015-04-10.Procedure.Fx.dbo.usp_Purchasing_ClosePOList.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2015-04-10.Procedure.Fx.dbo.usp_Purchasing_ClosePOList.sql</FullPath>
+        </FileNode>
+        <FileNode Name="2016-08-29.Procedure.Fx.dbo.usp_ReceivingDock_NewReceiverObjectFromScan.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>2016-08-29.Procedure.Fx.dbo.usp_ReceivingDock_NewReceiverObjectFromScan.sql</FullPath>
+        </FileNode>
+        <FileNode Name="dbo.udf_GetShipmentPullSignalCalendar.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>dbo.udf_GetShipmentPullSignalCalendar.sql</FullPath>
+        </FileNode>
+        <FileNode Name="dbo.udf_GetShipmentPullSignals.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>dbo.udf_GetShipmentPullSignals.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>

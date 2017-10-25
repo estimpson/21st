@@ -22,6 +22,7 @@ select
 ,	MachineCode = woh.MachineCode
 ,	WorkOrderDetailLine = wod.Line
 ,	MattecJobNumber = coalesce(wodms.MattecJobNumber, right(woh.WorkOrderNumber, 3))
+,	BOMVerified = case when wodbv.OperatorCode is null then 0 else 1 end
 ,	WorkOrderDetailStatus = wod.Status
 ,	wod.PartCode
 ,	WorkOrderDetailSequence = wod.Sequence
@@ -48,6 +49,9 @@ from
 		left join custom.WorkOrderDetailMattecSchedule wodms
 			on wodms.WorkOrderNumber = wod.WorkOrderNumber
 			and wodms.WorkOrderDetailLine = wod.Line
+		left join custom.WorkOrderDetailBOMVerification wodbv
+			on wodbv.WorkOrderNumber = wod.WorkOrderNumber
+			and wodbv.WorkOrderDetailLine = wod.Line
 		left join dbo.order_header oh
 			on oh.order_no = wod.SalesOrderNumber 
 		left join dbo.order_detail od

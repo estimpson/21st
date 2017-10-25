@@ -205,8 +205,13 @@ if	@RowCount != 1 begin
 	return
 end
 --- </Insert>
-
 --- </Body>
+
+--- <Tran AutoClose=Yes>
+if	@TranCount = 0 begin
+	commit tran @ProcName
+end
+--- </Tran>
 
 ---	<Return>
 set	@Result = 0

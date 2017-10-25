@@ -63,6 +63,8 @@ select
 ,	[Last_Cycle_Count_DT] = icccrrcn.LastCycleCountDT
 ,	[Current_Inventory] = convert(int, icccrrcn.CurrentInventory)
 ,	[Total_Consumption] = convert(int, icccrrcn.TotalConsumption)
+,	[Consumed_by_Part] = icccrrcn.ConsumedByPart
+,	[Consumed_at_Machine] = icccrrcn.ConsumedAtMachine
 into
 	##Temp
 from
@@ -108,7 +110,7 @@ if	@Email = 1 begin
 	
 	exec msdb.dbo.sp_send_dbmail
 		@profile_name = 'DBMail'
-	,	@recipients = 'estimpson@fore-thought.com; aboulanger@fore-thought.com; bolinger@21stcpc.com'
+	,	@recipients = 'estimpson@fore-thought.com; aboulanger@fore-thought.com; bolinger@21stcpc.com; munderwood@21stcpc.com'
 	, 	@subject = @EmailHeader
 	,	@body = @EmailBody
 	,	@body_format = 'HTML'
@@ -124,9 +126,11 @@ else begin
 end
 --- </Body>
 
+--- <Tran AutoClose=Yes>
 if	@TranCount = 0 begin
 	commit tran @ProcName
 end
+--- </Tran>
 
 ---	<Return>
 set	@Result = 0
@@ -151,7 +155,7 @@ go
 declare
 	@Email bit
 
-set	@Email = 1
+set	@Email = 0
 
 begin transaction Test
 
@@ -187,5 +191,5 @@ go
 Results {
 }
 */
-GO
+go
 
