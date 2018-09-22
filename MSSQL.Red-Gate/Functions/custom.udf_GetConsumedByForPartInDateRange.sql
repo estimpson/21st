@@ -3,7 +3,7 @@ GO
 SET ANSI_NULLS ON
 GO
 
-create function [custom].[udf_GetConsumedByForPartInDateRange]
+CREATE function [custom].[udf_GetConsumedByForPartInDateRange]
 (	@PartConsumed varchar(25)
 ,	@FromDT datetime
 ,	@ToDT datetime
@@ -15,10 +15,8 @@ begin
 	declare
 		@ConsumedByPart varchar(max)
 	
-	set	@ConsumedByPart = ''
-	
-	select distinct
-		@ConsumedByPart = @ConsumedByPart + bh.PartProduced + ','
+	select
+		@ConsumedByPart = Fx.ToList(distinct bh.PartProduced)
 	from
 		dbo.BackflushDetails bd
 		join dbo.BackflushHeaders bh
@@ -27,9 +25,7 @@ begin
 		bd.PartConsumed = @PartConsumed
 		and bd.RowCreateDT between @FromDT and @ToDT
 	
-	if	@ConsumedByPart > '' begin
-		set @ConsumedByPart = left(@ConsumedByPart, len(@ConsumedByPart) - 1)
-	end
+	set @ConsumedByPart = replace(@ConsumedByPart, ', ', ',')
 --- </Body>
 
 ---	<Return>
