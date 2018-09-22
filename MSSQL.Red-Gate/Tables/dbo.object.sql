@@ -677,7 +677,7 @@ Results {
 GO
 ALTER TABLE [dbo].[object] ADD CONSTRAINT [PK__object__35A7EF71] PRIMARY KEY CLUSTERED  ([serial]) ON [PRIMARY]
 GO
-CREATE NONCLUSTERED INDEX [part] ON [dbo].[object] ([part]) ON [PRIMARY]
+CREATE NONCLUSTERED INDEX [part] ON [dbo].[object] ([part]) INCLUDE ([std_quantity]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [ix_object_3] ON [dbo].[object] ([shipper]) ON [PRIMARY]
 GO
