@@ -8,6 +8,7 @@ GO
 
 
 
+
 CREATE VIEW [EDI_XML_PLEX_ASN].[ASNHeaders]
 AS
  WITH ExcludeShippers (ShipperID, cpCount, cp2Count)
@@ -41,8 +42,8 @@ SELECT
 ,	SupplierName = '21st Century Plastics'
 ,	EquipInitial = COALESCE( bol.equipment_initial, s.ship_via )
 ,	BOLQuantity = s.staged_objs
-,	GrossWeight = CONVERT(INT, ROUND(COALESCE(s.gross_weight,0), 0))+1
-,	NetWeight = CONVERT(INT, ROUND(COALESCE(s.net_weight,0), 0))+1
+,	GrossWeight = CONVERT(numeric, ROUND(COALESCE(s.gross_weight,0), 0))+1
+,	NetWeight = CONVERT(numeric, ROUND(COALESCE(s.net_weight,0), 0))+1
 ,	Carrier = s.ship_via
 ,	TransMode = s.trans_mode
 ,	TruckNumber = LEFT(UPPER(COALESCE(NULLIF(s.truck_number,''), 'TRUCKNO')),10)
@@ -62,6 +63,7 @@ FROM
 WHERE
 	s.id in  (Select ShipperID from ExcludeShippers where cpCount != cp2Count) and
 	es.asn_overlay_group = 'PLX'
+
 
 
 

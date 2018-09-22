@@ -4,26 +4,42 @@ SET ANSI_NULLS ON
 GO
 
 
-CREATE procedure [custom].[usp_InventoryValuation_CycleCountUpdateStandardCost]
 
-as
+
+CREATE PROCEDURE [custom].[usp_InventoryValuation_CycleCountUpdateStandardCost]
+
+AS
 set nocount on
 set ansi_warnings off
 
 --- <Body>
-update	
+UPDATE	
 	part_standard
-Set
+SET
 	cost = [custom].[fn_Inventory_GetLastCost](part_standard.part),
 	cost_cum = [custom].[fn_Inventory_GetLastCost](part_standard.part),
 	material = [custom].[fn_Inventory_GetLastCost](part_standard.part),
-	material_cum = [custom].[fn_Inventory_GetLastCost](part_standard.part)
-from
+	material_cum = [custom].[fn_Inventory_GetLastCost](part_standard.part),
+	price =  [custom].[fn_Inventory_GetLastCost](part_standard.part)
+FROM
 	part_standard 
-join
-	part on part.part = part_standard.part
-where
-	part.type = 'R'
+JOIN
+	part ON part.part = part_standard.part
+WHERE
+	part.class =  'P' AND
+	ISNULL(part.user_defined_2,'N') != 'Y'
+
+UPDATE	
+	part_standard
+SET
+	price =  [custom].[fn_Inventory_GetLastCost](part_standard.part)
+FROM
+	part_standard 
+JOIN
+	part ON part.part = part_standard.part
+WHERE
+	part.class =  'F' AND
+	ISNULL(part.user_defined_2,'N') != 'Y'
 --- </Body>
 
 /*
@@ -74,6 +90,8 @@ go
 Results {
 }
 */
+
+
 
 
 GO

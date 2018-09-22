@@ -5,6 +5,7 @@ GO
 
 
 
+
 CREATE PROCEDURE [custom].[usp_InventoryValuation_CycleCountObjects]
 	@Class VARCHAR(1) = NULL,
 	@Type VARCHAR(1) = NULL,
@@ -18,18 +19,19 @@ SET ANSI_WARNINGS OFF
 SELECT
 	CCO.Serial,
 	CCO.part,
+	CASE WHEN p.type = 'R' THEN 'RAW' WHEN p.type = 'F' THEN 'FINISHED' WHEN P.TYPE = 'W' THEN 'WIP' ELSE 'NotDefined' END AS PartType,
 	p.name,
-	p.commodity,
+	CASE WHEN p.type IN ('F', 'W') THEN p.product_line ELSE p.commodity END AS Commodity,
 	COALESCE(CCO.CorrectedLocation, CCO.OriginalLocation) AS Location,
 	COALESCE(CCO.CorrectedQuantity, CCO.OriginalQuantity) AS Quantity,
 	CCO.Unit,
-	COALESCE(ps.cost_cum, 0) AS Cost,
-	COALESCE(CCO.CorrectedQuantity, CCO.OriginalQuantity)*COALESCE(ps.cost_cum, 0) AS ExtendedCost
+	COALESCE(ps.price, 0) AS Cost, --now using price from part_standard asb FT, LLC 2018-06-28
+	COALESCE(CCO.CorrectedQuantity, CCO.OriginalQuantity)*COALESCE(ps.price, 0) AS ExtendedCost --now using price from part_standard asb FT, LLC 2018-06-28
 	
 FROM
 	dbo.InventoryControl_CycleCountObjects CCO
 JOIN
-	dbo.part p ON p.part = CCO.part AND p.class = COALESCE(@Class,'P')
+	dbo.part p ON p.part = CCO.part -----AND p.class = COALESCE(@Class,'P') return all class of part numbers asb 2018-06-28
 JOIN
 	dbo.part_standard ps ON ps.part = p.part
 WHERE
@@ -98,6 +100,7 @@ go
 Results {
 }
 */
+
 
 
 
