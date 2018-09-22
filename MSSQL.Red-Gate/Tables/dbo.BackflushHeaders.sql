@@ -156,5 +156,7 @@ ALTER TABLE [dbo].[BackflushHeaders] ADD CONSTRAINT [PK__BackflushHeaders__1A75A
 GO
 ALTER TABLE [dbo].[BackflushHeaders] ADD CONSTRAINT [UQ__BackflushHeaders__1B69C5D8] UNIQUE NONCLUSTERED  ([BackflushNumber]) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [ix_BackflushHeaders_1] ON [dbo].[BackflushHeaders] ([BackflushNumber]) INCLUDE ([MachineCode], [PartProduced]) ON [PRIMARY]
+GO
 ALTER TABLE [dbo].[BackflushHeaders] ADD CONSTRAINT [FK__BackflushHeaders__230AE7A0] FOREIGN KEY ([WorkOrderNumber], [WorkOrderDetailLine]) REFERENCES [dbo].[WorkOrderDetails] ([WorkOrderNumber], [Line])
 GO

@@ -2,59 +2,107 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-Create procedure [custom].[Usp_InventoryControl_CycleCount_RecentRawConsumptionNotice] (@DaysHistory int)
+CREATE procedure [custom].[Usp_InventoryControl_CycleCount_RecentRawConsumptionNotice]
+	@DaysHistory int
 as
-Begin
+
+declare
+	@PartLastCycleCount table
+(	PartCode varchar(25) primary key
+,	LastCountDT datetime null
+)
+
+insert
+	@PartLastCycleCount
+(	PartCode
+,	LastCountDT
+)
+select
+	PartCode = reverse
+		(	substring
+			(	reverse
+				(	substring
+					(	iccch.Description
+					,	24
+					,	27
+					)
+				)
+			,	3
+			,	25
+			)
+		)
+,	LastCountDT = max(iccch.CountEndDT)
+from
+	dbo.InventoryControl_CycleCountHeaders iccch
+where
+	left(iccch.Description, 22) = 'All inventory of part '
+group by
+	iccch.Description
+
+declare
+	@MaterialConsumption table
+(	PartConsumed varchar(25)
+,	PartProduced varchar(25)
+,	MachineCode varchar(10)
+,	ConsumptionDT datetime
+,	ConsumedQty numeric(20,6)
+)
+insert
+	@MaterialConsumption
+(	PartConsumed
+,	PartProduced
+,	MachineCode
+,	ConsumptionDT
+,	ConsumedQty
+)
+select
+	bdRecentRaw.PartConsumed
+,	bh.PartProduced
+,	bh.MachineCode
+,	ConsumptionDT = min(bdRecentRaw.RowCreateDT)
+,	ConsumedQty = sum(bdRecentRaw.QtyIssue)
+from
+	dbo.BackflushDetails bdRecentRaw
+	left join @PartLastCycleCount plcc
+		on plcc.PartCode = bdRecentRaw.PartConsumed
+	join dbo.BackflushHeaders bh
+		on bh.BackflushNumber = bdRecentRaw.BackflushNumber
+where
+	bdRecentRaw.RowCreateDT > coalesce(plcc.LastCountDT, getdate() - @DaysHistory)
+group by
+	bdRecentRaw.PartConsumed
+,	bh.PartProduced
+,	bh.MachineCode
 
 select
 	Commodity = pRaw.commodity
-,	RawPart = bdRecentRaw.PartConsumed
-,	ConsumptionDT = min(bdRecentRaw.RowCreateDT)
-,	LastCycleCountDT =
-		(	select
-				max(iccch.CountEndDT)
-			from
-				dbo.InventoryControl_CycleCountHeaders iccch
-			where
-				iccch.Description = 'All inventory of part ''' + bdRecentRaw.PartConsumed + '''.'
-		)
+,	RawPart = mc.PartConsumed
+,	ConsumptionDT = min(mc.ConsumptionDT)
+,	LastCycleCountDT = max(plcc.LastCountDT)
 ,	CurrentInventory = coalesce(max(Inventory.OnHand), 0)
-,	TotalConsumption = sum(bdRecentRaw.QtyIssue)
-,	ConsumptionPercentage = sum(bdRecentRaw.QtyIssue) / (sum(bdRecentRaw.QtyIssue) + coalesce(max(Inventory.OnHand), 0))
-,	ConsumedByPart = custom.udf_GetConsumedByForPartInDateRange(bdRecentRaw.PartConsumed, min(bdRecentRaw.RowCreateDT), max(bdRecentRaw.RowCreateDT))
-,	ConsumedAtMachine = custom.udf_GetConsumedWhereForPartInDateRange(bdRecentRaw.PartConsumed, min(bdRecentRaw.RowCreateDT), max(bdRecentRaw.RowCreateDT))
+,	TotalConsumption = sum(mc.ConsumedQty)
+,	ConsumptionPercentage = sum(mc.ConsumedQty)
+		/ (sum(mc.ConsumedQty) + coalesce(max(Inventory.OnHand), 0))
+,	ConsumedByPart = replace(Fx.ToList(distinct mc.PartProduced), ', ', ',')
+,	ConsumedAtMachine = replace(Fx.ToList(distinct mc.MachineCode), ', ', ',')
 from
-	dbo.BackflushDetails bdRecentRaw
-		join dbo.part pRaw
-			on pRaw.type = 'R'
-			and pRaw.part = bdRecentRaw.PartConsumed
+	@MaterialConsumption mc
+	join dbo.part pRaw
+		on pRaw.type = 'R'
+			and pRaw.part = mc.PartConsumed
+	left join @PartLastCycleCount plcc
+		on plcc.PartCode = mc.PartConsumed
 	left join
-		(	select
-				PartCode = o.part
-			,	OnHand = sum(o.std_quantity)
-			from
-				dbo.object o
-			group by
-				o.part
-		) Inventory
-		on Inventory.PartCode = bdRecentRaw.PartConsumed
-		
-where
-	bdRecentRaw.RowCreateDT > coalesce
-	(	(	select
-				max(iccch.CountEndDT)
-			from
-				dbo.InventoryControl_CycleCountHeaders iccch
-			where
-				iccch.CountEndDT > getdate() - @DaysHistory
-				and iccch.Description = 'All inventory of part ''' + bdRecentRaw.PartConsumed + '''.'
-		)
-	,	getdate() - @DaysHistory
-	)
+	(	select
+			PartCode = o.part
+		,	OnHand = sum(o.std_quantity)
+		from
+			dbo.object o
+		group by
+			o.part
+	) Inventory
+		on Inventory.PartCode = mc.PartConsumed
 group by
-	bdRecentRaw.PartConsumed
+	mc.PartConsumed
 ,	pRaw.commodity
-
-
-End
 GO

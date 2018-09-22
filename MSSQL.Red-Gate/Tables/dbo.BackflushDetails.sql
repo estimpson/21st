@@ -19,7 +19,7 @@ CREATE TABLE [dbo].[BackflushDetails]
 [RowCreateUser] [sys].[sysname] NOT NULL CONSTRAINT [DF__Backflush__RowCr__2E7C9A4C] DEFAULT (suser_name()),
 [RowModifiedDT] [datetime] NULL CONSTRAINT [DF__Backflush__RowMo__2F70BE85] DEFAULT (getdate()),
 [RowModifiedUser] [sys].[sysname] NOT NULL CONSTRAINT [DF__Backflush__RowMo__3064E2BE] DEFAULT (suser_name())
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
 GO
@@ -66,6 +66,8 @@ GO
 ALTER TABLE [dbo].[BackflushDetails] ADD CONSTRAINT [PK__BackflushDetails__27CF9CBD] PRIMARY KEY CLUSTERED  ([RowID]) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[BackflushDetails] ADD CONSTRAINT [UQ__BackflushDetails__28C3C0F6] UNIQUE NONCLUSTERED  ([BackflushNumber], [Line]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [ix_BackflushDetails_1] ON [dbo].[BackflushDetails] ([RowCreateDT], [PartConsumed], [BackflushNumber], [RowID]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [ix_BackflushDetails_SerialConsumed] ON [dbo].[BackflushDetails] ([SerialConsumed], [BackflushNumber]) ON [PRIMARY]
 GO
