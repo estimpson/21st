@@ -58,13 +58,15 @@ CREATE TABLE [dbo].[ap_headers]
 [pay_postal_code] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [pay_country] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [document_source] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[ap_headers] ADD CONSTRAINT [pk_ap_headers] PRIMARY KEY NONCLUSTERED  ([vendor], [invoice_cm], [inv_cm_flag]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [apheaders_approver] ON [dbo].[ap_headers] ([approver]) ON [PRIMARY]
 GO
 CREATE CLUSTERED INDEX [apheaders_batch] ON [dbo].[ap_headers] ([batch]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [ix_AP_Headers_1] ON [dbo].[ap_headers] ([invoice_cm], [inv_cm_flag], [gl_date]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [apheaders_pay_invcm] ON [dbo].[ap_headers] ([pay_vendor], [inv_cm_flag], [invoice_cm]) ON [PRIMARY]
 GO

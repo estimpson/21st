@@ -42,7 +42,9 @@ CREATE TABLE [dbo].[ap_items]
 [amleadexpense_adstart] [datetime] NULL,
 [amleadexpense_adend] [datetime] NULL,
 [sycampusid] [int] NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[ap_items] ADD CONSTRAINT [pk_ap_items] PRIMARY KEY CLUSTERED  ([vendor], [invoice_cm], [inv_cm_flag], [inv_cm_line]) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX [ix_AP_Items_1] ON [dbo].[ap_items] ([item], [invoice_cm], [inv_cm_flag]) INCLUDE ([price]) ON [PRIMARY]
 GO

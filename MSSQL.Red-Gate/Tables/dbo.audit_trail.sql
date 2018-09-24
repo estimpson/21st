@@ -1096,6 +1096,8 @@ CREATE NONCLUSTERED INDEX [audit_trail_serial_datestamp_ix] ON [dbo].[audit_trai
 GO
 CREATE NONCLUSTERED INDEX [audit_trail_shipper_ix] ON [dbo].[audit_trail] ([shipper]) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [ix_AuditTrail_1] ON [dbo].[audit_trail] ([type], [part], [date_stamp]) INCLUDE ([cost]) ON [PRIMARY]
+GO
 CREATE NONCLUSTERED INDEX [ix_AuditTrail_PO] ON [dbo].[audit_trail] ([type], [po_number]) ON [PRIMARY]
 GO
 CREATE NONCLUSTERED INDEX [audit_trail_workorder_ix] ON [dbo].[audit_trail] ([workorder]) ON [PRIMARY]
