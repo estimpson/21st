@@ -149,5 +149,7 @@ deallocate
 GO
 ALTER TABLE [dbo].[InventoryControl_CycleCountHeaders] ADD CONSTRAINT [PK__InventoryControl__61D22120] PRIMARY KEY NONCLUSTERED  ([RowID]) ON [PRIMARY]
 GO
+CREATE NONCLUSTERED INDEX [ix_InventoryControl_CycleCountHeaders] ON [dbo].[InventoryControl_CycleCountHeaders] ([CountEndDT], [Description], [RowID]) ON [PRIMARY]
+GO
 ALTER TABLE [dbo].[InventoryControl_CycleCountHeaders] ADD CONSTRAINT [UQ__InventoryControl__60DDFCE7] UNIQUE CLUSTERED  ([CycleCountNumber]) ON [PRIMARY]
 GO
