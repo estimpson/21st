@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE procedure [custom].[Usp_InventoryControl_CycleCount_RecentRawConsumptionNotice]
 	@DaysHistory int
 as
@@ -35,7 +36,8 @@ select
 from
 	dbo.InventoryControl_CycleCountHeaders iccch
 where
-	left(iccch.Description, 22) = 'All inventory of part '
+	iccch.CountEndDT > getdate() - @DaysHistory
+	and left(iccch.Description, 22) = 'All inventory of part '
 group by
 	iccch.Description
 
