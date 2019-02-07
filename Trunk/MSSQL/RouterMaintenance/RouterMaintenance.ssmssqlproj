@@ -2,15 +2,58 @@
 <SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="RouterMaintenance">
   <Items>
     <LogicalFolder Name="Connections" Type="2" Sorted="true">
-      <Items />
+      <Items>
+        <ConnectionNode Name="21st:estimpson">
+          <Created>2017-10-31T14:45:18.4807693-04:00</Created>
+          <Type>SQL</Type>
+          <Server>21st</Server>
+          <UserName>estimpson</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
         <FileNode Name="Script.QueryMultipleRouters.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>Script.QueryMultipleRouters.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Replace BOM 1.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>Script.Replace BOM 1.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Replace BOM 2.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
           <AssociatedConnUserName />
-          <FullPath>Script.QueryMultipleRouters.sql</FullPath>
+          <FullPath>Script.Replace BOM 2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Replace BOM 3.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Script.Replace BOM 3.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Script.Replace BOM 4.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Script.Replace BOM 4.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SQLQuery1.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>SQLQuery1.sql</FullPath>
         </FileNode>
       </Items>
     </LogicalFolder>

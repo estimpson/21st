@@ -3,13 +3,13 @@
   <Items>
     <LogicalFolder Name="Connections" Type="2" Sorted="true">
       <Items>
-        <ConnectionNode Name="192.168.0.228:estimpson">
-          <Created>2014-09-25T11:59:52.7014426-04:00</Created>
+        <ConnectionNode Name="192.168.0.200:estimpson">
+          <Created>2018-09-21T14:52:47.8624357-04:00</Created>
           <Type>SQL</Type>
-          <Server>192.168.0.228</Server>
+          <Server>192.168.0.200</Server>
           <UserName>estimpson</UserName>
           <Authentication>SQL</Authentication>
-          <InitialDB>FIS_Empower_21st</InitialDB>
+          <InitialDB />
           <LoginTimeout>15</LoginTimeout>
           <ExecutionTimeout>0</ExecutionTimeout>
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
@@ -253,6 +253,12 @@
           <AssociatedConnUserName />
           <FullPath>SQLQuery3.sql</FullPath>
         </FileNode>
+        <FileNode Name="SQLQuery6.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.200:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.200</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <FullPath>SQLQuery6.sql</FullPath>
+        </FileNode>
         <FileNode Name="Table.dbo.InventoryControl_CycleCountHeaders.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />
@@ -296,9 +302,9 @@
           <FullPath>View.custom.InventoryControl_CycleCount_RecentRawConsumptionNotice.sql</FullPath>
         </FileNode>
         <FileNode Name="View.Fx.dbo.Inventory_CycleCountList.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.228:False:estimpson</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>192.168.0.228</AssociatedConnSrvName>
-          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
           <FullPath>View.Fx.dbo.Inventory_CycleCountList.sql</FullPath>
         </FileNode>
       </Items>

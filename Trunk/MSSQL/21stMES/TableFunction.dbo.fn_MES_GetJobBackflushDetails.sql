@@ -124,9 +124,12 @@ begin
 			,	QtyAvailable = o.std_quantity
 			from
 				dbo.object o
+				left join dbo.location l
+					on o.location = l.code
 			where
 				o.status = 'A'
 				and o.shipper is null
+				and coalesce(l.secured_location, 'N') != 'Y'
 		) oAvailable
 				left join dbo.MES_SetupBackflushingPrinciples msbp
 					on msbp.Type = 3
