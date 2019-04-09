@@ -3,7 +3,7 @@ GO
 SET ANSI_NULLS ON
 GO
 
-create function [dbo].[fn_MES_GetJobBackflushDetails]
+CREATE function [dbo].[fn_MES_GetJobBackflushDetails]
 (	@WorkOrderNumber varchar(50)
 ,	@WorkOrderDetailLine float
 ,	@QtyRequested numeric(20,6)
@@ -83,7 +83,7 @@ begin
 	,	Sequence = xr.Sequence
 	,	Suffix = coalesce (xr.Suffix, -1)
 	,	AllocationDT = coalesce
-		(	case when msbpX.Type != 5 then
+		(	case when msbpX.BackflushingPrinciple != 5 then
 				coalesce
 				(	(	select
 							max(atTransfer.date_stamp)
@@ -464,4 +464,5 @@ begin
 ---	<Return>
 	return
 end
+
 GO
