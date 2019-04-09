@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[positions]
 (
 [position] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-[position_description] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[position_description] [varchar] (75) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [grade] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [pay_type] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [changed_date] [datetime] NULL,
@@ -27,8 +27,10 @@ CREATE TABLE [dbo].[positions]
 [ledger_account_code] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ipeds_soc_code] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ipeds_soc_subcategory] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[include_position_budget_init] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+[include_position_budget_init] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[review_form] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[ipeds_occupational_category] [char] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[positions] ADD CONSTRAINT [pk_positions] PRIMARY KEY CLUSTERED  ([position]) ON [PRIMARY]
 GO

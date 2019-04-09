@@ -41,7 +41,8 @@ CREATE TABLE [dbo].[ap_items]
 [amleadexpenseid] [int] NULL,
 [amleadexpense_adstart] [datetime] NULL,
 [amleadexpense_adend] [datetime] NULL,
-[sycampusid] [int] NULL
+[sycampusid] [int] NULL,
+[c1099r_taxable_amount] [decimal] (18, 6) NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[ap_items] ADD CONSTRAINT [pk_ap_items] PRIMARY KEY CLUSTERED  ([vendor], [invoice_cm], [inv_cm_flag], [inv_cm_line]) ON [PRIMARY]

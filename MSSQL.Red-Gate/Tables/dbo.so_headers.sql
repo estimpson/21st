@@ -112,21 +112,10 @@ CREATE TABLE [dbo].[so_headers]
 [so_freight_cost] [decimal] (18, 6) NULL,
 [cancelled_date] [datetime] NULL,
 [cancelled_reason] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[discount_item] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[discount_item_description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[discount_item_percent] [decimal] (18, 6) NULL,
-[discount_item_basis] [decimal] (18, 6) NULL,
 [discount_item_amount] [decimal] (18, 6) NULL,
-[discount_item_ledger_account] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[discount_item_cost_account] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[discount_item_sales_analysis] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[discount_item_tax_1] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[discount_item_tax_2] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[discount_item_agent_percent] [decimal] (18, 6) NULL,
-[discount_item_manager_percent] [decimal] (18, 6) NULL,
 [label_name] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [destination_label_name] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]
 GO
 SET QUOTED_IDENTIFIER ON
 GO

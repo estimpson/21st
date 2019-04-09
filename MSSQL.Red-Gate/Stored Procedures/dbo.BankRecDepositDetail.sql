@@ -7,6 +7,8 @@ CREATE PROCEDURE [dbo].[BankRecDepositDetail] @as_bankalias VARCHAR(25),
                                  @as_securityid VARCHAR(25)
 AS
 
+-- 24-Apr-2014 Added "approved = 'Y' OR approved is null" to WHERE clause.
+
 BEGIN
 DECLARE @chkseparate CHAR(1),
         @application VARCHAR(25)
@@ -86,6 +88,7 @@ DECLARE @chkseparate CHAR(1),
 			END
 		FROM	bank_register
 		WHERE	bank_alias = @as_bankalias and
+				( approved = 'Y' OR approved = 'A' OR approved is null ) AND
 				( reconciled = 'N' OR
 					reconciled_date = @ad_reconcileddate ) AND
 				(( document_class in ('AR','CR') AND

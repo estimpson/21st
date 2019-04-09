@@ -42,7 +42,8 @@ CREATE TABLE [dbo].[employee_attributes]
 [date_9] [datetime] NULL,
 [date_10] [datetime] NULL,
 [changed_user_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[changed_date] [datetime] NULL
+[changed_date] [datetime] NULL,
+[import_batch] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[employee_attributes] ADD CONSTRAINT [pk_employee_attributes] PRIMARY KEY CLUSTERED  ([employee]) ON [PRIMARY]

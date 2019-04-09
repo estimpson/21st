@@ -21,7 +21,9 @@ CREATE TABLE [dbo].[employee_tax_types]
 [prov_tax_credit_rate_event] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [import_batch] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [cost_account_code] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[employee_tax_percent] [decimal] (18, 6) NULL
+[employee_tax_percent] [decimal] (18, 6) NULL,
+[employee_md_status] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[employee_md_local_tax_pct] [decimal] (18, 6) NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[employee_tax_types] ADD CONSTRAINT [pk_employee_tax_types] PRIMARY KEY CLUSTERED  ([employee], [tax_type]) ON [PRIMARY]

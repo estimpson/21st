@@ -23,8 +23,9 @@ CREATE TABLE [dbo].[journal_entries]
 [document_type] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [transaction_type] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [document_comment] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[document_source] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+[document_source] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[created_by] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[journal_entries] ADD CONSTRAINT [pk_journal_entries] PRIMARY KEY CLUSTERED  ([fiscal_year], [ledger], [gl_entry]) ON [PRIMARY]
 GO

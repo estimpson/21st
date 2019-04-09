@@ -12,7 +12,10 @@ CREATE TABLE [dbo].[ledger_organizations]
 [changed_user_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [due_from_account] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [pay_to_account] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[active_inactive] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[active_inactive] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[report_column] [smallint] NULL,
+[report_column_description] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[fund_type] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[ledger_organizations] ADD CONSTRAINT [pk_ledger_organizations] PRIMARY KEY CLUSTERED  ([fiscal_year], [ledger], [organization_level], [organization]) ON [PRIMARY]

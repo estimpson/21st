@@ -3,7 +3,7 @@ GO
 SET ANSI_NULLS ON
 GO
 
-CREATE PROCEDURE [dbo].[CostCommitments]
+CREATE PROCEDURE [dbo].[CostCommitmentsDateRange]
        @as_begcostid varchar(25),
        @as_endcostid varchar(25),
        @as_begcostsub varchar(25),
@@ -17,7 +17,8 @@ CREATE PROCEDURE [dbo].[CostCommitments]
        @ad_asofdate datetime,
        @as_status char(1),
        @as_detailorsummary char(2),
-       @as_userid varchar(25)
+       @as_userid varchar(25),
+       @ad_begindate datetime
 
 AS
 
@@ -30,6 +31,14 @@ BEGIN
 --        would generate a key size of 726 for a work table.  This exceeds
 --        the maximum allowable limit of 600."  If the 300 is changed here,
 --        it must also be changed in w_create_sql_command_files_edit.
+
+-- 08-Jul-2013 This SP was previously named CostCommitments.  New name is
+--             CostCommitmentsDateRange and it has been modified to use both a
+--             begin date and an as of date when selecting transactions.
+--             It is not an error that the updates for the uncommitments
+--             don't use the begin date.  Because of PO year end, the
+--             uncommitments may actually be in a prior year but we need
+--             to pick them up in the same year we pick up the PO.
 
 -- 13-Mar-2013 Modified to get gl_cost_transactions.transaction_date instead of
 --             gl_cost_transactions.exchange_date for CMC.
@@ -177,6 +186,7 @@ INSERT INTO #cost_po_trans
          cost_accounts.cost_sub = cost_identifiers.cost_sub and
          gl_cost_transactions.contract_account_id = cost_accounts.cost_account and
          gl_cost_transactions.exchange_date <= @ad_asofdate and
+         gl_cost_transactions.exchange_date >= @ad_begindate and
          gl_cost_transactions.document_type = 'PO' and
          gl_cost_transactions.document_id1 >= @as_begdocumentid1 and
          gl_cost_transactions.document_id1 <= @as_enddocumentid1 and
@@ -331,6 +341,7 @@ ELSE
              IsNull((SELECT Sum(amount)
                        FROM gl_cost_transactions with (index(glcosttrans_cost_account)), journal_entries
                       WHERE gl_cost_transactions.contract_account_id = cost_accounts.cost_account AND
+                            gl_cost_transactions.exchange_date >= @ad_begindate and
                             gl_cost_transactions.exchange_date <= @ad_asofdate AND
                             gl_cost_transactions.update_balances='Y' AND
                             journal_entries.fiscal_year=gl_cost_transactions.fiscal_year AND
@@ -340,6 +351,7 @@ ELSE
              + IsNull((SELECT Sum(amount)
                        FROM gl_cost_transactions
                       WHERE gl_cost_transactions.contract_account_id = cost_accounts.cost_account AND
+                            gl_cost_transactions.exchange_date >= @ad_begindate and
                             gl_cost_transactions.exchange_date <= @ad_asofdate AND
                             gl_cost_transactions.document_id2='ACTUAL' AND
                             gl_cost_transactions.document_type = 'COST ACCOUNT'),0),

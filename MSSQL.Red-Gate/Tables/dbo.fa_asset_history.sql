@@ -20,7 +20,8 @@ CREATE TABLE [dbo].[fa_asset_history]
 [depreciation_calc_id] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [glentry_fiscal_year] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [glentry_fiscal_period] [int] NULL,
-[gl_date] [datetime] NULL
+[gl_date] [datetime] NULL,
+[import_batch] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[fa_asset_history] ADD CONSTRAINT [pk_fa_asset_history] PRIMARY KEY CLUSTERED  ([asset_id], [asset_event], [asset_event_date], [sequence_number], [column_changed]) ON [PRIMARY]

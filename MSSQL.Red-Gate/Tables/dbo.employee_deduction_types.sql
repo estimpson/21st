@@ -28,8 +28,9 @@ CREATE TABLE [dbo].[employee_deduction_types]
 [cr_cost_account_code] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [dd_foreign] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [dd_foreign_bank] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[exempt_amount] [decimal] (18, 6) NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+[exempt_amount] [decimal] (18, 6) NULL,
+[employee_deduction_type_line] [int] NOT NULL IDENTITY(1, 1)
+) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[employee_deduction_types] ADD CONSTRAINT [pk_employee_deduction_types] PRIMARY KEY CLUSTERED  ([employee], [deduction_type]) ON [PRIMARY]
 GO

@@ -33,7 +33,8 @@ CREATE TABLE [dbo].[fa_asset_books]
 [rsl_life_unit_of_measure] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [rsl_fiscal_year] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [rsl_fiscal_period] [smallint] NULL,
-[bonus_depreciation] [decimal] (18, 6) NULL
+[bonus_depreciation] [decimal] (18, 6) NULL,
+[import_batch] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[fa_asset_books] ADD CONSTRAINT [pk_fa_asset_books] PRIMARY KEY CLUSTERED  ([asset_id], [depreciation_book]) ON [PRIMARY]

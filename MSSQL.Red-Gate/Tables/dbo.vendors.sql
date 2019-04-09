@@ -297,7 +297,6 @@ GO
 SET ANSI_NULLS ON
 GO
 
-
 CREATE TRIGGER [dbo].[Update_VendorMonitor]
 ON [dbo].[vendors] FOR UPDATE
 AS
@@ -345,8 +344,8 @@ IF UPDATE(changed_user_id)
    END
 
 IF UPDATE(vendor_name) or UPDATE(hdr_terms) or UPDATE(hdr_freight_terms) or 
-	UPDATE(hdr_buyer) or UPDATE(hdr_location) or 
-	UPDATE(item_freight) or UPDATE(hdr_buy_unit) or UPDATE(hdr_currency)
+   UPDATE(hdr_buyer) or UPDATE(hdr_location) or 
+   UPDATE(item_freight) or UPDATE(hdr_buy_unit) or UPDATE(hdr_currency)
      BEGIN
 
        DECLARE @s_vendorname varchar(40),
@@ -497,16 +496,15 @@ IF UPDATE(contact_id)
    /* Contact id has been changed, therefore we need to update the
       Monitor vendor table with the new contact information.       */
    BEGIN
-       DECLARE 
-				@s_contactid VARCHAR(25),
-				@s_firstname VARCHAR(40), 
-				@s_lastname VARCHAR(40), 
-				@s_contactname VARCHAR(50),  
-				@s_phone VARCHAR(25),   
-				@s_fax VARCHAR(25)
+       DECLARE @s_contactid varchar(25),
+               @s_firstname varchar(40), 
+               @s_lastname varchar(40), 
+               @s_contactname varchar(50),  
+               @s_phone varchar(25),   
+               @s_fax varchar(25)
 
        /*  Make sure that we have a row in the inserted table for processing */
-       SELECT @i_rowcount = COUNT(*) FROM inserted
+       SELECT @i_rowcount = Count(*) FROM inserted
 
        IF @i_rowcount > 0
          BEGIN
@@ -518,7 +516,7 @@ IF UPDATE(contact_id)
              FROM inserted
 
            /* Get the default ledger. */
-           SELECT @s_ledger = ISNULL(value,'')
+           SELECT @s_ledger = IsNull(value,'')
              FROM preferences_standard
             WHERE preference = 'GLLedger'
 
@@ -531,14 +529,14 @@ IF UPDATE(contact_id)
            AND @s_ledger <> 'RENOSOL CORP' RETURN
 
           /*  Select contact fields from the contacts table */
-           SELECT @s_firstname = ISNULL(first_name,''),
-                  @s_lastname = ISNULL(last_name,''),
+           SELECT @s_firstname = IsNull(first_name,''),
+                  @s_lastname = IsNull(last_name,''),
                   @s_phone = phone,
                   @s_fax = fax_phone
              FROM contacts
             WHERE contact_id = @s_contactid
 
-           SELECT @s_contactname = RTRIM(@s_firstname) + ' ' + @s_lastname
+           SELECT @s_contactname = RTrim(@s_firstname) + ' ' + @s_lastname
 
            /*  Update the Monitor vendor table with the new contact info */
            UPDATE vendor SET contact = @s_contactname,
@@ -549,119 +547,6 @@ IF UPDATE(contact_id)
   
          END
      END
-
-
-   /* asb FT, LLC 08/03/2016 - Allows Vendors to be insterted into Fx when vendor class is changed to Monitor     */
-IF UPDATE(vendor_class)
-
-   BEGIN
-       DECLARE
-				@s1_vendor varchar(25),
-				@s1_vendorname varchar(40),
-				@s1_hdrterms varchar(25), 
-				@s1_hdrfreightterms varchar(25),  
-				@s1_hdrbuyer varchar(25),  
-				@s1_hdrlocation varchar(25),  
-				@s1_itemfreight varchar(25),  
-				@s1_hdrbuyunit varchar(25), 
-				@s1_hdrcurrency varchar(25), 
-				@s1_ledger varchar(40),
-				@s1_curexchenabled varchar(25),
-				@s1_vendorclass varchar(25),
-				@s1_monitorvendorclass varchar(25),
-				@s1_userid varchar(25),
-				@s1_contactid VARCHAR(25),
-				@s1_firstname VARCHAR(40), 
-				@s1_lastname VARCHAR(40), 
-				@s1_contactname VARCHAR(50),  
-				@s1_phone VARCHAR(25),   
-				@s1_fax VARCHAR(25),
-				@s1_addressid varchar(25),
-				@s1_address1 varchar(50), 
-				@s1_address2 varchar(50), 
-				@s1_address3 varchar(50),  
-				@s1_city VARCHAR(25),   
-				@s1_state VARCHAR(25),  
-				@s1_postalcode varchar(10),
-				@s1_country varchar(50)
-
-       /*  Make sure that we have a row in the inserted table for processing */
-       SELECT @i_rowcount = COUNT(*) FROM inserted WHERE Inserted.vendor_class = 'MONITOR'  AND Inserted.vendor NOT IN (SELECT code FROM vendor) AND EXISTS ( SELECT 1 FROM deleted WHERE deleted.vendor_class != 'MONITOR')
-
-       IF @i_rowcount > 0
-         BEGIN
-
-           /*  Select contact id from the inserted table */
-           SELECT @s1_vendor=vendor,
-						@s1_vendorclass=vendor_class,
-						@s1_contactid=contact_id
-             FROM inserted
-
-           /* Get the default ledger. */
-           SELECT @s1_ledger = ISNULL(value,'')
-             FROM preferences_standard
-            WHERE preference = 'GLLedger'
-
-           IF @s1_ledger = 'LEXAMAR'
-             SELECT @s1_monitorvendorclass = 'PRODUCTION VENDORS'
-           ELSE
-             SELECT @s1_monitorvendorclass = 'MONITOR'
-
-           IF @s_vendorclass <> @s_monitorvendorclass 
-           AND @s_ledger <> 'RENOSOL CORP' RETURN
-
-          /*  Insert Vendor if it does not exist in Fx 2016-08-03 asb FT, LLC */
-           SELECT @s1_firstname = ISNULL(first_name,''),
-						@s1_lastname = ISNULL(last_name,''),
-						@s1_contactname = ISNULL(first_name,'') + ' ' +  ISNULL(last_name,''),
-						@s1_phone = phone,
-						@s1_fax = fax_phone,
-						@s1_vendor = vendors.vendor,
-						@s1_vendorname =  LEFT(vendors.vendor_name,35),
-						@s1_hdrterms = hdr_terms , 
-						@s1_hdrfreightterms  =  hdr_freight_terms,  
-						@s1_hdrbuyer = hdr_buyer ,  
-						@s1_hdrlocation = hdr_location  ,  
-						@s1_itemfreight = item_freight  ,  
-						@s1_hdrbuyunit = hdr_buy_unit , 
-						@s1_hdrcurrency = hdr_currency  , 
-						@s1_phone  = phone ,   
-						@s1_fax = fax_phone  ,
-						@s1_addressid  = addresses.address_id,
-						@s1_address1 = address_1 , 
-						@s1_address2 = address_2 , 
-						@s1_address3 = LEFT((RTRIM(COALESCE(city,'')) + ' ' + RTrim(COALESCE([state],'')) + '  ' + COALESCE(postal_code,'')), 50)  ,  
-						@s1_city  = city,   
-						@s1_state = [state] ,  
-						@s1_postalcode = postal_code,
-						@s1_country = country
-             FROM	Vendors
-				JOIN contacts ON contacts.contact_id = Vendors.contact_id
-				JOIN addresses  ON addresses.address_id = vendors.address_id
-            WHERE Vendors.vendor = @s1_vendor
-
-           
-
-           /*  Insert Fx vendor table   */
-            INSERT INTO VENDOR ( code, name, outside_processor, contact,
-                                 phone, terms, ytd_sales, balance,
-                                 frieght_type, fob, buyer, plant,
-                                 ship_via, company, address_1, address_2,
-                                 address_3, address_4,
-                                 fax, flag, partial_release_update,
-                                 default_currency_unit,
-                                 empower_flag)
-                        VALUES ( @s1_vendor, @s1_vendorname, '', @s1_contactname,
-                                 @s1_phone, @s1_hdrterms, 0, 0, 
-                                 @s1_hdrfreightterms, '', @s1_hdrbuyer, @s1_hdrlocation,
-                                 @s1_itemfreight, @s1_hdrbuyunit, @s1_address1, @s1_address2,
-                                 @s1_address3, @s1_country, @s1_fax, 0, '', @s1_hdrcurrency,
-                                 'EMPOWER' )  
-  
-         END
-     END
-
-
 GO
 ALTER TABLE [dbo].[vendors] ADD CONSTRAINT [pk_vendors] PRIMARY KEY NONCLUSTERED  ([vendor]) ON [PRIMARY]
 GO

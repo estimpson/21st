@@ -14,8 +14,11 @@ CREATE PROCEDURE
 			@as_userid varchar(25),
 			@ai_period integer,
 			@as_approved char(1),
-			@as_currency varchar(25) AS
+			@as_currency varchar(25),
+			@as_createdby varchar(25) AS
 
+-- 06-Mar-2014	Added argument createdby to use for update of journal_entries table.
+-- 12-Aug-2013	Modified to update journal_entries if approved is changed.
 -- 25-Apr-2013	Added argument currency to use for update of journal_entries table.
 -- 04-Feb-2013	Added argument approved to use for update of journal_entries table.
 
@@ -42,13 +45,26 @@ BEGIN
 /*  write a journal entry header record in the case where a header record
     doesn't already exist. */
   IF @i_recordcount=0
+    BEGIN
     INSERT INTO journal_entries
       (fiscal_year, ledger, gl_entry, period, balance_name,
       je_description, entry_date, entry_type, related_gl_entry,
-      changed_date, changed_user_id, approved, currency)
+      changed_date, changed_user_id, approved, currency, created_by)
       VALUES
       (@as_fiscalyear, @as_ledger ,@as_glentry, @ai_period, @as_balancename,
       @as_jedescription, @as_entrydate, @as_entrytype, @as_relatedglentry,
-      GETDATE(), @as_userid, @as_approved, @as_currency)
+      GETDATE(), @as_userid, @as_approved, @as_currency, @as_createdby)
+    END
+  ELSE
+    BEGIN
+                UPDATE journal_entries
+                   SET approved = @as_approved,
+                       changed_user_id = @as_userid,
+                       changed_date = GETDATE()
+                 WHERE fiscal_year = @as_fiscalyear AND
+                       ledger = @as_ledger AND
+                       gl_entry = @as_glentry AND
+                       ( approved is null OR approved <> @as_approved )
+    END
 END
 GO

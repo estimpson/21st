@@ -52,9 +52,6 @@ CREATE TRIGGER [dbo].[Delete_TimeCards]
 
 AS
 
-/** The following installations have a custom version of this trigger: **/
-/**     Lott has a custom version of this trigger. **/
-
 /** 2/13/2008 Modified to verify that an absence tracking row exists before
               attempting to delete it.
               Modified to verify that an entitlement transactions row exists before

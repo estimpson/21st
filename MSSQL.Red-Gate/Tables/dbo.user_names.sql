@@ -30,7 +30,6 @@ CREATE TRIGGER [dbo].[Delete_UserNames]
 AS
 BEGIN
 	SET NOCOUNT ON;
-	delete from user_roles where user_id in (select user_id from deleted);
 	delete from user_secured_columns where security_id in (select security_id from deleted);
 END
 GO

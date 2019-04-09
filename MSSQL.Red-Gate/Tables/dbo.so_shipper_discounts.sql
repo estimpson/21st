@@ -18,8 +18,9 @@ CREATE TABLE [dbo].[so_shipper_discounts]
 [sales_order] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [changed_date] [datetime] NULL,
 [changed_user_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[shipper_rma_flag] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+[shipper_rma_flag] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+[so_line] [smallint] NULL
+) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[so_shipper_discounts] ADD CONSTRAINT [pk_so_shipper_discounts] PRIMARY KEY CLUSTERED  ([shipper], [shipper_rma_flag], [shipper_line]) ON [PRIMARY]
 GO

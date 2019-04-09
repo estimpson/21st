@@ -10,7 +10,8 @@ CREATE TABLE [dbo].[fa_asset_dispositions]
 [changed_date] [datetime] NULL,
 [changed_user_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ledger] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[gl_entry] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[gl_entry] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[import_batch] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[fa_asset_dispositions] ADD CONSTRAINT [pk_fa_asset_dispositions] PRIMARY KEY CLUSTERED  ([asset_id]) ON [PRIMARY]

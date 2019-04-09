@@ -24,7 +24,8 @@ CREATE TABLE [dbo].[companies]
 [trade_name] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [address_id_1099] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [address_id_w2] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[kind_of_employer] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[kind_of_employer] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[address_id_w2submitter] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[companies] ADD CONSTRAINT [pk_companies] PRIMARY KEY CLUSTERED  ([company]) ON [PRIMARY]

@@ -72,6 +72,10 @@ AS
 -- for a Monitor PO. It inserts a PO Item row and the corresponding 
 -- gl_cost_transaction row.
 
+-- 11-Aug-2014 Use part.user_defined_2 as the variance
+--             account if it is nonblank and the ledger is
+--             HONDURAS or EMPIRE.
+
 -- 07-Oct-2005 Use vendor_attributes.text_1 as the variance
 --             account if it is nonblank and the ledger is
 --             RENOSOL CORP.
@@ -113,7 +117,7 @@ BEGIN
           @s_accountstyle        VARCHAR(25),
           @s_itemledgeraccount   VARCHAR(50),
           @s_varianceledgeraccount VARCHAR(50),
-          @s_vendorattrvariance VARCHAR(25)
+          @s_alternatevarianceaccount VARCHAR(25)
 
 -- Make sure that we have a row in the inserted table for processing
 SELECT @i_rowcount = Count(*) FROM inserted
@@ -247,11 +251,20 @@ IF @i_rowcount > 0
 
           IF @s_ledger = 'RENOSOL CORP'
            BEGIN
-             SELECT @s_vendorattrvariance = RTrim(IsNull(text_1,'')) 
+             SELECT @s_alternatevarianceaccount = RTrim(IsNull(text_1,'')) 
                FROM vendor_attributes
               WHERE vendor = @s_vendor
-             IF @@rowcount > 0 AND @s_vendorattrvariance <> ''
-               SELECT @s_varianceaccount = @s_vendorattrvariance
+             IF @@rowcount > 0 AND @s_alternatevarianceaccount <> ''
+               SELECT @s_varianceaccount = @s_alternatevarianceaccount
+           END
+
+          IF @s_ledger = 'HONDURAS' OR @s_ledger = 'EMPIRE'
+           BEGIN
+             SELECT @s_alternatevarianceaccount = RTrim(IsNull(user_defined_2,'')) 
+               FROM part
+              WHERE part = @s_part
+             IF @@rowcount > 0 AND @s_alternatevarianceaccount <> ''
+               SELECT @s_varianceaccount = @s_alternatevarianceaccount
            END
 
           SELECT @s_itemledgeraccount = @s_draccount + @s_plantaccount + @s_productlineaccount
@@ -1029,12 +1042,14 @@ GO
 SET ANSI_NULLS ON
 GO
 
-
 CREATE TRIGGER [dbo].[Update_PODetailMonitor]
 ON [dbo].[po_detail] FOR UPDATE
 AS
 
--- 07-Oct-2016 Added part_number, due_date and row_id to join of inserted and deleted.
+-- 04-Mar-2015 Added part_number, due_date, and row_id to join of inserted and deleted.
+
+-- 04-Oct-2013 Corrected order of c_oldreceived and c_newreceived in the fetch.
+--             Their order was reversed.
 
 -- 25-Mar-2010 Incorporated Eric Stimpson's mods to update po_items
 --             with the received quantity when it is greater than
@@ -1055,10 +1070,10 @@ IF update(date_due) OR update(quantity) OR update(alternate_price) OR
           @i_poline         SMALLINT,
           @c_oldqty         DECIMAL(18,6),
           @c_oldprice       DECIMAL(18,6),
-          @c_oldreceived	DECIMAL(18,6),
+          @c_oldreceived    DECIMAL(18,6),
           @c_newqty         DECIMAL(18,6),
           @c_newprice       DECIMAL(18,6),
-          @c_newreceived	DECIMAL(18,6),
+          @c_newreceived    DECIMAL(18,6),
           @c_qtychg         DECIMAL(18,6),
           @c_amtchg         DECIMAL(18,6),
           @i_rowcount       INTEGER
@@ -1080,9 +1095,9 @@ IF update(date_due) OR update(quantity) OR update(alternate_price) OR
             IsNull(inserted.deleted,'')
        FROM inserted, deleted
       WHERE inserted.po_number = deleted.po_number
-	    AND inserted.part_number = deleted.part_number
-		AND inserted.date_due = deleted.date_due
-		AND inserted.row_id = deleted.row_id
+        AND inserted.part_number = deleted.part_number
+  	AND inserted.date_due = deleted.date_due
+  	AND inserted.row_id = deleted.row_id
 
     OPEN updpodetcursor
 
@@ -1097,7 +1112,7 @@ IF update(date_due) OR update(quantity) OR update(alternate_price) OR
             @c_oldprice,
             @c_newprice,
             @c_oldreceived,
-            @c_newreceived,           
+            @c_newreceived,
             @s_deleted
 
       IF @@fetch_status <> 0 BREAK
@@ -1184,7 +1199,6 @@ IF update(date_due) OR update(quantity) OR update(alternate_price) OR
     DEALLOCATE updpodetcursor
    END
  END
-
 GO
 ALTER TABLE [dbo].[po_detail] ADD CONSTRAINT [PK__po_detail__47127295] PRIMARY KEY CLUSTERED  ([po_number], [part_number], [date_due], [row_id]) ON [PRIMARY]
 GO

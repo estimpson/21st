@@ -16,7 +16,7 @@ CREATE TABLE [dbo].[applicants]
 [changed_user_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [active_inactive] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [address_2_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[file_id] [uniqueidentifier] NULL,
+[file_id] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [user_id] [uniqueidentifier] NULL,
 [ipeds_ethnic_hispanic] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ipeds_race_white] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -24,7 +24,8 @@ CREATE TABLE [dbo].[applicants]
 [ipeds_race_asian] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ipeds_race_indian] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ipeds_race_hawaiian] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[ipeds_non_resident_alien] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[ipeds_non_resident_alien] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[ipeds_race] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[applicants] ADD CONSTRAINT [pk_applicants] PRIMARY KEY CLUSTERED  ([applicant]) ON [PRIMARY]

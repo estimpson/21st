@@ -22,6 +22,7 @@ CREATE TABLE [dbo].[budget_transfer_temporary]
 [amount_10] [numeric] (18, 6) NULL,
 [amount_11] [numeric] (18, 6) NULL,
 [amount_12] [numeric] (18, 6) NULL,
-[user_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[user_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[approved] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO

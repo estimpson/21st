@@ -13,7 +13,8 @@ CREATE TABLE [dbo].[employee_dependents]
 [handicapped] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [changed_user_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [changed_date] [datetime] NULL,
-[social_security] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[social_security] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[import_batch] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[employee_dependents] ADD CONSTRAINT [pk_employee_dependents] PRIMARY KEY CLUSTERED  ([employee], [dependent_id]) ON [PRIMARY]

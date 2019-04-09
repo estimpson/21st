@@ -22,7 +22,8 @@ CREATE TABLE [dbo].[budget_transfer_headers]
 [amount_11] [numeric] (18, 6) NULL,
 [amount_12] [numeric] (18, 6) NULL,
 [changed_date] [datetime] NULL,
-[changed_user_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[changed_user_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[approved] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[budget_transfer_headers] ADD CONSTRAINT [pk_budget_transfer_headers] PRIMARY KEY CLUSTERED  ([budget_transfer_id]) ON [PRIMARY]

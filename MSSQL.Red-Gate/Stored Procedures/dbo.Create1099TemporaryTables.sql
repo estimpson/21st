@@ -8,6 +8,10 @@ CREATE PROCEDURE [dbo].[Create1099TemporaryTables]
 
 AS
 
+-- 25-Nov-2013 Corrected sub-query that determined if there was backup withholding
+--             (code 4) for non-employee compensation (code 7).  Previously, the
+--             sub-query didn't include company and year.
+
 -- 14-Jan-2013 Corrected Report Code C (Box 14-Gross proceeds paid to an attorney) to
 --             pick up amounts of $600 or more.  Previously amounts over $600 were
 --             being reported.
@@ -15,7 +19,7 @@ AS
 -- 20-Dec-2011 1. Report Code C (Box 14-Gross proceeds paid to an attorney) amounts
 --                over $600.  We were incorrectly reporting ALL amounts.
 --             2. Report Code 8 (Box 8-Substitute payments in lieu of dividents or
---                interest) amounts over $600.  We were incorrectly reporting ALL amounts.
+--                interest) amounts of $10 or more.  We were incorrectly reporting ALL amounts.
 
 -- 19-Dec-2011 Select code 7 amounts less than $600 if the vendor has
 --             backup withholding (code 4).
@@ -142,9 +146,11 @@ DECLARE sumcursor CURSOR FOR
                (sum(paid_amount) > 0 AND
                (SELECT IsNull(sum(paid_amount),0)
                   FROM t1099_detail_temporary t_temp
-                 WHERE t_temp.pay_vendor = t1099_detail_temporary.pay_vendor AND
+                 WHERE t_temp.company = @as_company AND
+                       t_temp.year_1099 = @ai_year AND
+                       t_temp.pay_vendor = t1099_detail_temporary.pay_vendor AND
                        code_1099 = '4') > 0 ))) OR
-           (code_1099 = '8' AND sum(paid_amount) > 10) OR
+           (code_1099 = '8' AND sum(paid_amount) >= 10) OR
            (code_1099 = '9' AND sum(paid_amount) >= 5000) OR
            (code_1099 = 'A' AND sum(paid_amount) >= 600) OR
            (code_1099 = 'B' AND sum(paid_amount) > 0) OR

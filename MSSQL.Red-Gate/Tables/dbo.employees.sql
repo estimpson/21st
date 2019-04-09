@@ -60,7 +60,14 @@ CREATE TABLE [dbo].[employees]
 [dd_foreign_bank] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [ipeds_faculty_contract_status] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [faculty_contract_status] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[ipeds_2012_contract_length] [decimal] (18, 6) NULL
+[ipeds_2012_contract_length] [decimal] (18, 6) NULL,
+[employee_middle_name] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[home_cell_phone] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[office_cell_phone] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[security_id] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[ipeds_race] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[ipeds_tenure_status] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[ipeds_months_worked] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[employees] ADD CONSTRAINT [pk_employees] PRIMARY KEY CLUSTERED  ([employee]) ON [PRIMARY]

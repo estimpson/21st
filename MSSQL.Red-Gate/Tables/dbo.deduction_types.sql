@@ -20,7 +20,8 @@ CREATE TABLE [dbo].[deduction_types]
 [deduction_style] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [title_iii] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [cr_cost_account_code] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[enable_exempt_amount] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+[enable_exempt_amount] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[allow_employee_edit] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[deduction_types] ADD CONSTRAINT [pk_deduction_types] PRIMARY KEY CLUSTERED  ([deduction_type]) ON [PRIMARY]

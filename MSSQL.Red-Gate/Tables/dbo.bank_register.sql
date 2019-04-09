@@ -56,8 +56,9 @@ CREATE TABLE [dbo].[bank_register]
 [pos_document_batch] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [document_source] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [document_type_before_void] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[bank_transfer] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+[bank_transfer] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[created_by] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[bank_register] ADD CONSTRAINT [pk_bank_register] PRIMARY KEY NONCLUSTERED  ([bank_alias], [document_class], [document_number], [check_void_nsf]) ON [PRIMARY]
 GO

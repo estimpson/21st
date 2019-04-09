@@ -66,6 +66,8 @@ CREATE PROCEDURE [dbo].[ARCustomerCredit] @as_customer VARCHAR(25),
 
 
 
+-- 15-Jun-13  Don't select intercompany or POS invoices or credit memos.
+
 -- 05-Oct-07 Modified to no longer reference ar_customers.contact_id.
 
 -- 07-Sep-06 Changed *= syntax to LEFT OUTER JOIN syntax.
@@ -171,7 +173,7 @@ BEGIN
       FROM ar_headers
 
      WHERE bill_customer = @as_customer AND document_type = 'I'
-
+       AND intercompany <> 'Y' AND IsNull(ar_headers.pos_paid,'N') <> 'Y'
 
 
   -- MSS and ASE would let us put an if around the cursor declaration and declare
@@ -681,9 +683,9 @@ BEGIN
     FROM ar_headers
 
    WHERE bill_customer = @as_customer AND document_type = 'C'
+     AND intercompany <> 'Y' AND IsNull(ar_headers.pos_paid,'N') <> 'Y'
 
   IF @ac_unappliedcrm IS NULL  SELECT @ac_unappliedcrm = 0
-
 
 
 END

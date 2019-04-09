@@ -17,6 +17,10 @@ CREATE PROCEDURE [dbo].[UpdatePOItemStatus] @as_purchaseorder varchar(25),
                    @as_receiver char(1)
 AS
 
+-- 05-Oct-2016 Modified to use the absolute value of the amounts when
+--             closing PO items without a quantity so that items with
+--             negative amounts (discounts) are handled properly.
+
 -- 20-Oct-2005 Removed code that updated the PO header status.  The
 --             status is stored on the PO release.
 
@@ -86,8 +90,10 @@ BEGIN   DECLARE @s_updateneeded char(1),
             END
           ELSE
             BEGIN
-              IF (@ac_invoicedamt + @ac_cancelledamt >= @ac_extendedamt AND
-                     @ac_extendedamt > 0 AND @ac_qtyordered = 0 )
+--            IF (@ac_invoicedamt + @ac_cancelledamt >= @ac_extendedamt AND
+--                    @ac_extendedamt > 0 AND @ac_qtyordered = 0 )
+              IF (ABS(@ac_invoicedamt + @ac_cancelledamt) >= ABS(@ac_extendedamt) AND
+                    @ac_qtyordered = 0 )
                 BEGIN
                   /* close this item */
                   SELECT @as_status = 'C'

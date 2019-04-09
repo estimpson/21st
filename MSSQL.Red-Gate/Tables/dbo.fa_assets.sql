@@ -53,8 +53,10 @@ CREATE TABLE [dbo].[fa_assets]
 [acq_asset_cost_account] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [acq_liability_cost_account] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 [invoice] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-[active_inactive] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+[active_inactive] [char] (1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[asset_image_file_id] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[import_batch] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[fa_assets] ADD CONSTRAINT [pk_fa_assets] PRIMARY KEY CLUSTERED  ([asset_id]) ON [PRIMARY]
 GO

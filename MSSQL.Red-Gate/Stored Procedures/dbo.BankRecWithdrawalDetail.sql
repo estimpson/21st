@@ -7,6 +7,8 @@ CREATE PROCEDURE [dbo].[BankRecWithdrawalDetail] @as_bankalias VARCHAR(25),
                                  @as_securityid VARCHAR(25)
 AS
 
+-- 24-Apr-2014 Added "approved = 'Y' OR approved is null" to WHERE clause.
+
 BEGIN
 DECLARE @ddbatch CHAR(1),
 	@campusvueintegrated CHAR(1)
@@ -132,6 +134,7 @@ DECLARE @ddbatch CHAR(1),
 		FROM	bank_register
 
 		WHERE bank_alias = @as_bankalias AND
+				( approved = 'Y' OR approved = 'A' OR approved is null ) AND
 				( reconciled = 'N' OR reconciled_date = @ad_reconcileddate ) AND
 				( document_type not in ('V', 'A', 'D', 'EIN', 'ECA', 'ECX', 'CCA' ) ) AND
 				( document_class not in ('AR','CR') OR ( check_void_nsf = 'N' ) ) AND

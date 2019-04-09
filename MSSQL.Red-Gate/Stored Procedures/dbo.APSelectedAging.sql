@@ -25,6 +25,12 @@ CREATE PROCEDURE [dbo].[APSelectedAging] @as_begpayvendor VARCHAR(25),
 
 AS
 
+-- 12-Sep-14 1.  Appended the pay vendor to the vendor name when sorting on vendor
+--               name so that two vendors with the same name don't end up combined.
+--           2.  Trimmed pay_vendor when sorting on pay vendor.  If some invoices
+--               having a trailing space on paY_vendor, PowerBuilder treats them
+--               as being different vendors.
+
 -- 29-Dec-09 The names of the new temporary tables #ap_selected_aging2 and
 --           #ap_selected_aging3 caused errors in ASE, as the first 12? characters
 --           need to be unique.  Modified the names of these tables to be
@@ -87,7 +93,7 @@ CREATE TABLE #ap_selected_aging
     exchanged_applied_amount DEC(18,6) NULL,
     exchanged_open_amount DEC(18,6) NULL,
     sort_1 VARCHAR(50),
-    sort_2 VARCHAR(100))
+    sort_2 VARCHAR(125))
 
 -- This table's format is identical to that of
 -- #ap_selected_aging.  It is used as a working
@@ -640,12 +646,12 @@ ELSE
 IF @as_sortby = 'NAME'
   BEGIN
     UPDATE #ap_selected_aging
-       SET sort_2 = vendor_name
+       SET sort_2 = vendor_name + '{||}' + RTRIM(pay_vendor)
   END
 ELSE
   BEGIN
     UPDATE #ap_selected_aging
-       SET sort_2 = pay_vendor
+       SET sort_2 = RTRIM(pay_vendor)
   END
 
 SELECT vendor,

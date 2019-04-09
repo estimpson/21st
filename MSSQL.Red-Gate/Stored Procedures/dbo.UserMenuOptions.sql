@@ -7,6 +7,10 @@ CREATE PROCEDURE [dbo].[UserMenuOptions] @as_securityid varchar(25),
 
 AS
 
+-- 18-Aug-2015 Deleted options that are web applications.  Deleted tablets
+--             that have no options (the only tablets woth no options should
+--             be ones that are web related).
+
 -- 07-Oct-2008 Modified the LOJ of navigation_options to only select rows
 --             where the navigation_tablet_options.option_type =
 --             navigation_options.option_type.  This is necessary so that
@@ -197,6 +201,22 @@ INSERT INTO #user_menu_options
    WHERE #user_menu_options.option_type = 'T'
      AND #user_menu_options.option_level = 4
      AND navigation_tablet_options.tablet = #user_menu_options.option_description
+
+-- Delete the menu options that apply to web applications
+DELETE FROM #user_menu_options
+WHERE
+	(
+		LEFT(option_parameters,6) = '~/web/' OR
+		option_parameters LIKE '~/%.aspx'
+	)
+
+
+-- Delete the (web-related) tablets that have no menu options
+DELETE FROM #user_menu_options
+WHERE
+	option_type = 'T'
+	AND NOT EXISTS (SELECT 1 FROM #user_menu_options t2
+                         WHERE t2.tablet = #user_menu_options.option_description)
 
 -- Add the table title to those options that are tablets.
 UPDATE #user_menu_options
