@@ -1,38 +1,29 @@
-declare jobList cursor for
+declare
+	@BomChangeParts varchar(max) = 'WPP-231, 19501'
+
+declare
+	jobList cursor read_only local for
 select
 	mjl.WorkOrderNumber
 ,	mjl.WorkOrderDetailLine
---from
---	dbo.MES_JobList mjl
---where
---	not exists
---		(	select
---				*
---			from
---				dbo.MES_JobBillOfMaterials mjbom
---			where
---				mjbom.WODID = mjl.WODID
---		)
 from
 	dbo.MES_JobList mjl
 where
 	exists
-		(	select
+		(
+			select
 				*
 			from
 				dbo.MES_JobBillOfMaterials mjbom
 			where
 				mjbom.WODID = mjl.WODID
-				and mjbom.ChildPart in ('1235', '1232', '1252')
-		)
-	and not exists
-		(	select
-				*
-			from
-				dbo.MES_JobBillOfMaterials mjbom
-			where
-				mjbom.WODID = mjl.WODID
-				and mjbom.ChildPart = '1202'
+				and mjbom.ChildPart in
+				(
+					select
+						ltrim(rtrim(fsstr.Value))
+					from
+						dbo.fn_SplitStringToRows(@BomChangeParts, ',') fsstr
+				)
 		)
 
 open jobList

@@ -84,7 +84,7 @@ begin
 	,	Sequence = xr.Sequence
 	,	Suffix = coalesce (xr.Suffix, -1)
 	,	AllocationDT = coalesce
-		(	case when msbpX.Type != 5 then
+		(	case when msbpX.BackflushingPrinciple != 5 then
 				coalesce
 				(	(	select
 							max(atTransfer.date_stamp)
@@ -468,26 +468,26 @@ end
 go
 
 
-begin transaction
-go
+--begin transaction
+--go
 
-update
-	dbo.object
-set
-	quantity = 288
-,	std_quantity = 288
-where
-	serial in (2096998, 2097034, 2097558, 2097683)
-go
+--update
+--	dbo.object
+--set
+--	quantity = 288
+--,	std_quantity = 288
+--where
+--	serial in (2096998, 2097034, 2097558, 2097683)
+--go
 
 
-select
-	*
-from
-	dbo.fn_MES_GetJobBackflushDetails('WO_0000005744', 1, 6) ugbd
-where
-	ugbd.Part = '33014R-R'
-go
+--select
+--	*
+--from
+--	dbo.fn_MES_GetJobBackflushDetails('WO_0000005744', 1, 6) ugbd
+--where
+--	ugbd.Part = '33014R-R'
+--go
 
-rollback
-go
+--rollback
+--go

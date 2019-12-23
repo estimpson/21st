@@ -15,6 +15,18 @@
           <ConnectionProtocol>NotSpecified</ConnectionProtocol>
           <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
         </ConnectionNode>
+        <ConnectionNode Name="21st:estimpson">
+          <Created>2019-04-09T09:47:36.2375649-04:00</Created>
+          <Type>SQL</Type>
+          <Server>21st</Server>
+          <UserName>estimpson</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
       </Items>
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
@@ -116,9 +128,9 @@
           <FullPath>Procedure.dbo.usp_MES_AllocateSerial_toStagingLocation.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_BackFlush.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
           <FullPath>Procedure.dbo.usp_MES_BackFlush.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_BOMDiscrepancies.sql">
@@ -200,9 +212,9 @@
           <FullPath>Procedure.dbo.usp_MES_GetJobDetails.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_GetJobList.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
           <FullPath>Procedure.dbo.usp_MES_GetJobList.sql</FullPath>
         </FileNode>
         <FileNode Name="Procedure.dbo.usp_MES_GetMoveJobMachines.sql">
@@ -458,9 +470,9 @@
           <FullPath>ScalarFunction.dbo.udf_GetQtyFromStdQty.sql</FullPath>
         </FileNode>
         <FileNode Name="Script.ResetBOMs of JobList.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.200:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>192.168.0.200</AssociatedConnSrvName>
+          <AssociatedConnUserName>estimpson</AssociatedConnUserName>
           <FullPath>Script.ResetBOMs of JobList.sql</FullPath>
         </FileNode>
         <FileNode Name="Script.Troubleshoot Offline Consumption.sql">
@@ -578,8 +590,8 @@
           <FullPath>TableFunction.dbo.fn_GetNetout.sql</FullPath>
         </FileNode>
         <FileNode Name="TableFunction.dbo.fn_MES_GetJobBackflushDetails.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:192.168.0.200:False:estimpson</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>192.168.0.200</AssociatedConnSrvName>
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:21st:False:estimpson</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>21st</AssociatedConnSrvName>
           <AssociatedConnUserName>estimpson</AssociatedConnUserName>
           <FullPath>TableFunction.dbo.fn_MES_GetJobBackflushDetails.sql</FullPath>
         </FileNode>
