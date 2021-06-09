@@ -41,12 +41,17 @@ GO
 SET ANSI_NULLS ON
 GO
 
+
 CREATE TRIGGER [dbo].[mtr_part_i] ON [dbo].[part]
-FOR INSERT
+FOR INSERT 
 AS
 BEGIN
    INSERT INTO part_standard (part) (SELECT part FROM inserted)
+   
+	Update Part set part.user_defined_1 = 'NOASN' where part.part like '5321BTMC-4C%' AND PART.PART in ( Select part from inserted )
+
 END
+
 GO
 SET QUOTED_IDENTIFIER OFF
 GO
