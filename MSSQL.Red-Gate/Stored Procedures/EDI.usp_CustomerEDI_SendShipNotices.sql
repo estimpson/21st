@@ -2,9 +2,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
-
-
 CREATE procedure [EDI].[usp_CustomerEDI_SendShipNotices]
 	@ShipperList varchar(max) = null
 ,	@TranDT datetime = null out
@@ -301,18 +298,18 @@ from
 	join @PendingShipNotices psn
 		on psn.ShipperID = s.id
 
-update
-	s
-set	
-	s.status = 'Z'
-from
-	dbo.shipper s
-where
-	s.id in (Select
-					shipperID
-				from
-					@IgnoreShippers
-				where cpCnt1 = cpCnt2 ) 
+--update
+--	s
+--set	
+--	s.status = 'Z'
+--from
+--	dbo.shipper s
+--where
+--	s.id in (Select
+--					shipperID
+--				from
+--					@IgnoreShippers
+--				where cpCnt1 = cpCnt2 ) 
 
 select
 	@Error = @@Error
