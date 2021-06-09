@@ -2,8 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
-create procedure [custom].[usp_MES_InventoryDiscrepancies]
+CREATE procedure [custom].[usp_MES_InventoryDiscrepancies]
 	@BeginSnapshot varchar(255) = null
 ,	@EndSnapshot varchar(255) = null
 ,	@TranDT datetime = null out
@@ -247,7 +246,7 @@ if	@Email = 1 begin
 	
 	exec msdb.dbo.sp_send_dbmail
 		@profile_name = 'DBMail'
-	,	@recipients = 'estimpson@fore-thought.com; aboulanger@fore-thought.com; jmclean@21stcpc.com; munderwood@21stcpc.com; tBursley@21stcpc.com'
+	,	@recipients = 'missingboms@21stpc.com'
 	, 	@subject = @EmailHeader
 	,	@body = @EmailBody
 	,	@body_format = 'HTML'

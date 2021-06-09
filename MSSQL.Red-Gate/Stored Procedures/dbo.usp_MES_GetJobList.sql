@@ -2,7 +2,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
 CREATE procedure [dbo].[usp_MES_GetJobList]
 	@TranDT datetime = null out
 ,	@Result integer = null out
@@ -45,7 +44,8 @@ set	@TranDT = coalesce(@TranDT, GetDate())
 --- <Body>
 select
 	mjl.WODID
-,	mjl.PartCode
+--,	PartCode = replace(mjl.PartCode, '_', '%O') --mjl.PartCode
+,	PartCode = mjl.PartCode
 ,	mjl.MattecJobNumber
 ,	MattecJobAndPart = mjl.MattecJobNumber + ' ' + mjl.PartCode
 ,	BoxesRequired = mjl.NewBoxesRequired + mjl.BoxesLabelled
@@ -65,7 +65,11 @@ where
 	 			and woo.WorkOrderDetailLine = wod.Line
 	 	where
 	 		mjl.WODID = wod.RowID
-	)	
+	)
+order by
+--	case when mjl.PartCode = '52S_19-MRN-MRN-Y-Y-Y' then 0 else 1 end
+--,
+	mjl.PartCode
 
 --- </Body>
 

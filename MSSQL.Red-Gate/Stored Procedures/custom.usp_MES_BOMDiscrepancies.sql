@@ -2,8 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
-create procedure [custom].[usp_MES_BOMDiscrepancies]
+CREATE procedure [custom].[usp_MES_BOMDiscrepancies]
 	@TranDT datetime = null out
 ,	@Result integer = null out
 ,	@Email bit = 1
@@ -114,7 +113,7 @@ if	@Email = 1 begin
 
 	exec msdb.dbo.sp_send_dbmail
 		@profile_name = 'DBMail'
-	,	@recipients = 'estimpson@fore-thought.com; aboulanger@fore-thought.com; jmclean@21stcpc.com; munderwood@21stcpc.com; tBursley@21stcpc.com; jhinkson@21stcpc.com'
+	,	@recipients = 'missingboms@21stcpc.com'
 	, 	@subject = @EmailHeader
 	,	@body = @EmailBody
 	,	@body_format = 'HTML'
