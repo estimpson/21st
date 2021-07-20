@@ -71,8 +71,7 @@ begin
 		1
 
 	declare @Shipments table
-	(
-		ShipperID varchar(25)
+	(	ShipperID varchar(25)
 	,	DateShipped datetime
 	,	Operator varchar(50)
 	,	Destination varchar(25)
@@ -189,8 +188,7 @@ begin
 		)
 		and sedi.LegacyGenerator = 0
 		and not exists
-			(
-				select
+			(	select
 					*
 				from
 					EDI_iConnect.FailedASNLog fal
@@ -198,6 +196,14 @@ begin
 					fal.ShipperID = s.id
 					and fal.Status >= coalesce (sedi.FileStatus, -3)
 			)
+		and exists
+			(	select
+					*
+				from
+					@Shipments s1
+				where
+					s.id = s1.ShipperID
+			)			
 	group by
 		s.id
 	,	s.date_shipped
