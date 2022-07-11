@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # SQL Server Management Studio Solution File, Format Version 14.00
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "21stCycleCount", "21stCycleCount\21stCycleCount.ssmssqlproj", "{7131CBBF-64C1-4644-B22E-74DFEAF8CD55}"
 EndProject
@@ -25,6 +25,8 @@ Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "Fx.EDI", "Fx.EDI\Fx.EDI.ssm
 EndProject
 Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "21st.Support", "21st.Support\21st.Support.ssmssqlproj", "{E8EA18F5-FF94-4F52-B48C-7DAD20755210}"
 EndProject
+Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "Fx.custom", "Fx.custom\Fx.custom.ssmssqlproj", "{5F20DC1D-DBAC-4964-8CF8-90628F99C505}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Default|Default = Default|Default
@@ -40,8 +42,9 @@ Global
 		{365D0454-51BB-4878-B6D7-38E969DE92BB}.Default|Default.ActiveCfg = Default
 		{B962C4B9-E53F-4A5D-B435-D5D9BF63D6D7}.Default|Default.ActiveCfg = Default
 		{68458263-7C95-44E3-9E46-E98C5F21F882}.Default|Default.ActiveCfg = Default
-		{7D1679DC-BEF3-4AB9-A74E-9181FD27F546}.Default|Default.ActiveCfg = Default
 		{E8EA18F5-FF94-4F52-B48C-7DAD20755210}.Default|Default.ActiveCfg = Default
+		{5F20DC1D-DBAC-4964-8CF8-90628F99C505}.Default|Default.ActiveCfg = Default
+		{96FF3354-3F60-4B20-8252-9801BB6BCAB4}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
